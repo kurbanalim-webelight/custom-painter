@@ -334,8 +334,8 @@ void paint(Canvas canvas, Size size) {<br>
                 <li>Y increases going <strong>down</strong> ↓</li>
                 <li>Units are <strong>logical pixels</strong> (Flutter handles device pixel density)</li>
             </ul>
-                <section class="section">
-                
+            <section class="section">
+
                 <div class="example-images">
                     <div class="example-item">
                         <img src="../assets/coordinates_example.png" alt="Flutter Canvas Visual Guide">
@@ -363,7 +363,8 @@ void clipPath(Path path, { bool doAntiAlias = true })<br>
                 </code>
             </div>
             <p><strong>Purpose:</strong> Restricts subsequent drawing operations to only appear within the given
-                <code>Path</code> shape.</p>
+                <code>Path</code> shape.
+            </p>
             <p><strong>Parameters:</strong></p>
             <ul>
                 <li><code>path</code> – The <code>Path</code> defining the clipping region.</li>
@@ -392,7 +393,8 @@ void clipRect(Rect rect, { ClipOp clipOp = ClipOp.intersect, bool doAntiAlias = 
             <ul>
                 <li><code>rect</code> – Rectangle defining the clip region.</li>
                 <li><code>clipOp</code> – How to combine with existing clips (usually
-                    <code>ClipOp.intersect</code>).</li>
+                    <code>ClipOp.intersect</code>).
+                </li>
                 <li><code>doAntiAlias</code> – Smooth edges (default: <code>true</code>).</li>
             </ul>
             <p><strong>Common uses:</strong> rectangular viewports, preventing drawing outside bounds, basic
@@ -508,8 +510,10 @@ void drawImageNine(ui.Image image, Rect center, Rect dst, Paint paint)<br>
             </div>
             <ul>
                 <li><strong><code>drawImage</code></strong> – draw an image at a position, 1:1 size.</li>
-                <li><strong><code>drawImageRect</code></strong> – draw part of an image, scaled into a destination rect.</li>
-                <li><strong><code>drawImageNine</code></strong> – nine‑patch rendering for scalable borders/backgrounds.</li>
+                <li><strong><code>drawImageRect</code></strong> – draw part of an image, scaled into a destination rect.
+                </li>
+                <li><strong><code>drawImageNine</code></strong> – nine‑patch rendering for scalable borders/backgrounds.
+                </li>
             </ul>
 
             <h3><code>drawColor</code> and <code>drawPaint</code></h3>
@@ -540,7 +544,7 @@ void drawShadow(Path path, Color color, double elevation, bool transparentOcclud
             </div>
             <p><strong>Purpose:</strong> Draws a Material‑style drop shadow for the given shape.</p>
 
-            
+
         </section>
 
         <section class="section">
@@ -693,7 +697,8 @@ void paint(Canvas canvas, Size size) {<br>
                 <ul>
                     <li>Your low‑level drawing interface with rich APIs for shapes, paths, images, and text.</li>
                     <li>Supports transformations (<code>translate</code>, <code>rotate</code>, <code>scale</code>,
-                        <code>skew</code>) and clipping.</li>
+                        <code>skew</code>) and clipping.
+                    </li>
                     <li>Uses <code>save()</code> / <code>restore()</code> to manage drawing state.</li>
                 </ul>
                 <p><strong>Size:</strong></p>

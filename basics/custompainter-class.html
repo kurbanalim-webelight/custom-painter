@@ -511,18 +511,18 @@ class CirclePainter extends CustomPainter {<br>
         function copyCode(button) {
             const codeBlock = button.parentElement;
             const codeElement = codeBlock.querySelector('code');
-            
+
             if (!codeElement) return;
 
             // Get the text content and convert HTML entities to plain text
             let text = codeElement.innerHTML;
-            
+
             // Replace <br> with newlines
             text = text.replace(/<br\s*\/?>/gi, '\n');
-            
+
             // Replace &nbsp; with spaces
             text = text.replace(/&nbsp;/g, ' ');
-            
+
             // Remove any remaining HTML tags
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = text;
@@ -535,7 +535,7 @@ class CirclePainter extends CustomPainter {<br>
                 const originalText = copyText.textContent;
                 copyText.textContent = 'Copied!';
                 button.classList.add('copied');
-                
+
                 setTimeout(() => {
                     copyText.textContent = originalText;
                     button.classList.remove('copied');

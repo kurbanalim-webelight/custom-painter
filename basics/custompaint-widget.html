@@ -469,129 +469,130 @@ CustomPaint(<br>
         </section>
         <!-- ADD AFTER PROPERTY 4 SECTION -->
 
-<hr>
+        <hr>
 
-<h3>Property 5: <code>isComplex</code> 🧠</h3>
+        <h3>Property 5: <code>isComplex</code> 🧠</h3>
 
-<p><strong>Type:</strong> <code>bool</code></p>
+        <p><strong>Type:</strong> <code>bool</code></p>
 
-<p><strong>Purpose:</strong> A performance hint telling Flutter that this painting is computationally expensive.</p>
+        <p><strong>Purpose:</strong> A performance hint telling Flutter that this painting is computationally expensive.
+        </p>
 
-<p><strong>Default:</strong> <code>false</code></p>
+        <p><strong>Default:</strong> <code>false</code></p>
 
-<p><strong>Details:</strong></p>
-<ul>
-    <li>When set to <code>true</code>, Flutter assumes the painting is expensive to compute</li>
-    <li>Flutter may cache the painted output as a raster image (bitmap)</li>
-    <li>On future frames, Flutter can reuse the cached image instead of repainting</li>
-    <li>Helps reduce CPU/GPU workload if the painting does not change often</li>
-</ul>
+        <p><strong>Details:</strong></p>
+        <ul>
+            <li>When set to <code>true</code>, Flutter assumes the painting is expensive to compute</li>
+            <li>Flutter may cache the painted output as a raster image (bitmap)</li>
+            <li>On future frames, Flutter can reuse the cached image instead of repainting</li>
+            <li>Helps reduce CPU/GPU workload if the painting does not change often</li>
+        </ul>
 
-<p><strong>When to use <code>true</code>:</strong></p>
-<ul>
-    <li>Complex paths with many points</li>
-    <li>Intricate patterns or gradients</li>
-    <li>Heavy blur or shadow effects</li>
-    <li>Detailed illustrations</li>
-    <li>Anything that takes noticeable time to paint</li>
-</ul>
+        <p><strong>When to use <code>true</code>:</strong></p>
+        <ul>
+            <li>Complex paths with many points</li>
+            <li>Intricate patterns or gradients</li>
+            <li>Heavy blur or shadow effects</li>
+            <li>Detailed illustrations</li>
+            <li>Anything that takes noticeable time to paint</li>
+        </ul>
 
-<p><strong>When to use <code>false</code>:</strong></p>
-<ul>
-    <li>Simple shapes (circles, rectangles, lines)</li>
-    <li>Lightweight drawings</li>
-    <li>Frequently changing or animated content</li>
-    <li>When you want Flutter to repaint fresh every frame</li>
-</ul>
+        <p><strong>When to use <code>false</code>:</strong></p>
+        <ul>
+            <li>Simple shapes (circles, rectangles, lines)</li>
+            <li>Lightweight drawings</li>
+            <li>Frequently changing or animated content</li>
+            <li>When you want Flutter to repaint fresh every frame</li>
+        </ul>
 
-<p><strong>Trade-offs:</strong></p>
-<ul>
-    <li><code>true</code> → Uses more memory (cached bitmap) but saves CPU/GPU on repaints</li>
-    <li><code>false</code> → Uses less memory but recalculates painting every frame</li>
-</ul>
+        <p><strong>Trade-offs:</strong></p>
+        <ul>
+            <li><code>true</code> → Uses more memory (cached bitmap) but saves CPU/GPU on repaints</li>
+            <li><code>false</code> → Uses less memory but recalculates painting every frame</li>
+        </ul>
 
-<div class="info-box">
-    <strong>✅ Best Practice:</strong>  
-    Set <code>isComplex</code> to <code>true</code> for complex, static, or rarely-changing graphics.
-    Leave it <code>false</code> for simple or animated graphics.
-</div>
+        <div class="info-box">
+            <strong>✅ Best Practice:</strong>
+            Set <code>isComplex</code> to <code>true</code> for complex, static, or rarely-changing graphics.
+            Leave it <code>false</code> for simple or animated graphics.
+        </div>
 
-<div class="code-block">
-    <button class="copy-button" onclick="copyCode(this)" title="Copy code">
-        <span class="copy-text">Copy</span>
-    </button>
-    <code>
+        <div class="code-block">
+            <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                <span class="copy-text">Copy</span>
+            </button>
+            <code>
 CustomPaint(<br>
 &nbsp;&nbsp;painter: MyPainter(),<br>
 &nbsp;&nbsp;isComplex: true,<br>
 )
     </code>
-</div>
+        </div>
 
-<hr>
+        <hr>
 
-<h3>Property 6: <code>willChange</code> 🔄</h3>
+        <h3>Property 6: <code>willChange</code> 🔄</h3>
 
-<p><strong>Type:</strong> <code>bool</code></p>
+        <p><strong>Type:</strong> <code>bool</code></p>
 
-<p><strong>Purpose:</strong> A performance hint telling Flutter that this painting will change frequently.</p>
+        <p><strong>Purpose:</strong> A performance hint telling Flutter that this painting will change frequently.</p>
 
-<p><strong>Default:</strong> <code>false</code></p>
+        <p><strong>Default:</strong> <code>false</code></p>
 
-<p><strong>Details:</strong></p>
-<ul>
-    <li>When set to <code>true</code>, Flutter avoids caching the painted output</li>
-    <li>Optimized for frequent repaints (like animations)</li>
-    <li>Opposite intent of <code>isComplex</code></li>
-</ul>
+        <p><strong>Details:</strong></p>
+        <ul>
+            <li>When set to <code>true</code>, Flutter avoids caching the painted output</li>
+            <li>Optimized for frequent repaints (like animations)</li>
+            <li>Opposite intent of <code>isComplex</code></li>
+        </ul>
 
-<p><strong>When to use <code>true</code>:</strong></p>
-<ul>
-    <li>Animations running at 60fps</li>
-    <li>Real-time drawing (signature pads, scribbles)</li>
-    <li>Live data visualizations</li>
-    <li>Interactive graphics responding to gestures</li>
-    <li>Progress indicators that update constantly</li>
-</ul>
+        <p><strong>When to use <code>true</code>:</strong></p>
+        <ul>
+            <li>Animations running at 60fps</li>
+            <li>Real-time drawing (signature pads, scribbles)</li>
+            <li>Live data visualizations</li>
+            <li>Interactive graphics responding to gestures</li>
+            <li>Progress indicators that update constantly</li>
+        </ul>
 
-<p><strong>When to use <code>false</code>:</strong></p>
-<ul>
-    <li>Static graphics</li>
-    <li>Rarely changing visuals</li>
-    <li>One-time or occasional updates</li>
-</ul>
+        <p><strong>When to use <code>false</code>:</strong></p>
+        <ul>
+            <li>Static graphics</li>
+            <li>Rarely changing visuals</li>
+            <li>One-time or occasional updates</li>
+        </ul>
 
-<p><strong>Trade-offs:</strong></p>
-<ul>
-    <li><code>true</code> → Avoids cache overhead, keeps pipeline ready for changes</li>
-    <li><code>false</code> → Allows Flutter to optimize assuming static content</li>
-</ul>
+        <p><strong>Trade-offs:</strong></p>
+        <ul>
+            <li><code>true</code> → Avoids cache overhead, keeps pipeline ready for changes</li>
+            <li><code>false</code> → Allows Flutter to optimize assuming static content</li>
+        </ul>
 
-<p><strong>Relationship with <code>isComplex</code>:</strong></p>
-<ul>
-    <li>Complex + rarely changes → <code>isComplex: true</code>, <code>willChange: false</code></li>
-    <li>Simple + frequently changes → <code>isComplex: false</code>, <code>willChange: true</code></li>
-    <li>Complex + frequently changes → Potential performance issue; consider optimization</li>
-    <li>Simple + rarely changes → Default values are sufficient</li>
-</ul>
+        <p><strong>Relationship with <code>isComplex</code>:</strong></p>
+        <ul>
+            <li>Complex + rarely changes → <code>isComplex: true</code>, <code>willChange: false</code></li>
+            <li>Simple + frequently changes → <code>isComplex: false</code>, <code>willChange: true</code></li>
+            <li>Complex + frequently changes → Potential performance issue; consider optimization</li>
+            <li>Simple + rarely changes → Default values are sufficient</li>
+        </ul>
 
-<div class="info-box">
-    <strong>✅ Best Practice:</strong>  
-    Set <code>willChange</code> to <code>true</code> for animations and interactive graphics.
-    Leave it <code>false</code> for static content.
-</div>
+        <div class="info-box">
+            <strong>✅ Best Practice:</strong>
+            Set <code>willChange</code> to <code>true</code> for animations and interactive graphics.
+            Leave it <code>false</code> for static content.
+        </div>
 
-<div class="code-block">
-    <button class="copy-button" onclick="copyCode(this)" title="Copy code">
-        <span class="copy-text">Copy</span>
-    </button>
-    <code>
+        <div class="code-block">
+            <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                <span class="copy-text">Copy</span>
+            </button>
+            <code>
 CustomPaint(<br>
 &nbsp;&nbsp;painter: AnimatedPainter(),<br>
 &nbsp;&nbsp;willChange: true,<br>
 )
     </code>
-</div>
+        </div>
 
 
         <section class="section">
@@ -607,43 +608,43 @@ CustomPaint(<br>
                     </tr>
                 </thead>
                 <tbody>
-    <tr>
-        <td><code>painter</code></td>
-        <td>CustomPainter?</td>
-        <td>Background painter</td>
-        <td>Main drawing layer</td>
-    </tr>
-    <tr>
-        <td><code>foregroundPainter</code></td>
-        <td>CustomPainter?</td>
-        <td>Overlay painter</td>
-        <td>Effects on top of child</td>
-    </tr>
-    <tr>
-        <td><code>child</code></td>
-        <td>Widget?</td>
-        <td>Standard widget</td>
-        <td>Mixing custom + regular widgets</td>
-    </tr>
-    <tr>
-        <td><code>size</code></td>
-        <td>Size</td>
-        <td>Explicit dimensions</td>
-        <td>Fixed-size graphics</td>
-    </tr>
-    <tr>
-        <td><code>isComplex</code></td>
-        <td>bool</td>
-        <td>Hint for expensive painting</td>
-        <td>Complex, static graphics</td>
-    </tr>
-    <tr>
-        <td><code>willChange</code></td>
-        <td>bool</td>
-        <td>Hint for frequent repainting</td>
-        <td>Animations & interactive graphics</td>
-    </tr>
-</tbody>
+                    <tr>
+                        <td><code>painter</code></td>
+                        <td>CustomPainter?</td>
+                        <td>Background painter</td>
+                        <td>Main drawing layer</td>
+                    </tr>
+                    <tr>
+                        <td><code>foregroundPainter</code></td>
+                        <td>CustomPainter?</td>
+                        <td>Overlay painter</td>
+                        <td>Effects on top of child</td>
+                    </tr>
+                    <tr>
+                        <td><code>child</code></td>
+                        <td>Widget?</td>
+                        <td>Standard widget</td>
+                        <td>Mixing custom + regular widgets</td>
+                    </tr>
+                    <tr>
+                        <td><code>size</code></td>
+                        <td>Size</td>
+                        <td>Explicit dimensions</td>
+                        <td>Fixed-size graphics</td>
+                    </tr>
+                    <tr>
+                        <td><code>isComplex</code></td>
+                        <td>bool</td>
+                        <td>Hint for expensive painting</td>
+                        <td>Complex, static graphics</td>
+                    </tr>
+                    <tr>
+                        <td><code>willChange</code></td>
+                        <td>bool</td>
+                        <td>Hint for frequent repainting</td>
+                        <td>Animations & interactive graphics</td>
+                    </tr>
+                </tbody>
 
             </table>
         </section>
@@ -713,18 +714,18 @@ CustomPaint(<br>
         function copyCode(button) {
             const codeBlock = button.parentElement;
             const codeElement = codeBlock.querySelector('code');
-            
+
             if (!codeElement) return;
 
             // Get the text content and convert HTML entities to plain text
             let text = codeElement.innerHTML;
-            
+
             // Replace <br> with newlines
             text = text.replace(/<br\s*\/?>/gi, '\n');
-            
+
             // Replace &nbsp; with spaces
             text = text.replace(/&nbsp;/g, ' ');
-            
+
             // Remove any remaining HTML tags
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = text;
@@ -737,7 +738,7 @@ CustomPaint(<br>
                 const originalText = copyText.textContent;
                 copyText.textContent = 'Copied!';
                 button.classList.add('copied');
-                
+
                 setTimeout(() => {
                     copyText.textContent = originalText;
                     button.classList.remove('copied');
