@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Todo: change title -->
+    <title>📋 What is Canvas? - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #5a6c7d;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul,
+        ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+            transform: translateY(-1px);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .highlight-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .success-box {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #e8f0fe;
+            margin: 30px 0;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+
+        .example-images {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .example-item {
+            width: 100%;
+            text-align: center;
+        }
+
+        .example-item img {
+            max-width: 100%;
+            height: auto;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-caption {
+            margin-top: 10px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .example-item img {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <!-- Todo: change page heading -->
+            <h1>📋 What is Canvas? (Canvas & Size Object Guide)</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>📚 Part 1: What is Canvas?</h2>
+            <h3>Definition</h3>
+            <p>
+                <strong>Canvas</strong> is a class in Flutter (from <code>dart:ui</code>) that represents a
+                <strong>2D drawing surface</strong>. It's the interface through which you give drawing commands to
+                Flutter's graphics engine.
+            </p>
+            <p><strong>Think of Canvas as:</strong></p>
+            <ul>
+                <li>A digital drawing board</li>
+                <li>Your direct connection to the screen's pixels</li>
+                <li>A command interface for the graphics renderer</li>
+                <li>The "pen and paper" of Flutter custom graphics</li>
+            </ul>
+
+            <h3>Where Canvas Comes From</h3>
+            <p>
+                Canvas is <strong>provided automatically</strong> by Flutter when it calls your
+                <code>paint()</code> method:
+            </p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;// 'canvas' is given to you by Flutter<br>
+&nbsp;&nbsp;// You don't create it yourself<br>
+}<br>
+                </code>
+            </div>
+
+            <p><strong>The Process:</strong></p>
+            <ol>
+                <li>Flutter's rendering pipeline needs to draw your <code>CustomPaint</code> widget</li>
+                <li>It creates a <strong>Canvas</strong> object connected to that screen region</li>
+                <li>It calls your <code>paint()</code> method and passes the Canvas to you</li>
+                <li>You issue drawing commands to the Canvas</li>
+                <li>Canvas forwards commands to the GPU/rendering engine</li>
+                <li>Your graphics appear on screen</li>
+            </ol>
+
+            <h3>Coordinate System</h3>
+            <ul>
+                <li>Origin <code>(0, 0)</code> is at the <strong>top-left corner</strong></li>
+                <li>X increases going <strong>right</strong> →</li>
+                <li>Y increases going <strong>down</strong> ↓</li>
+                <li>Units are <strong>logical pixels</strong> (Flutter handles device pixel density)</li>
+            </ul>
+                <section class="section">
+                
+                <div class="example-images">
+                    <div class="example-item">
+                        <img src="../assets/coordinates_example.png" alt="Flutter Canvas Visual Guide">
+                        <p class="image-caption">Flutter Canvas: Your Guide to 2D Drawing</p>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section class="section">
+            <h2>🧰 Part 2: Canvas Methods (A to Z)</h2>
+            <p>
+                Here's a detailed reference of commonly used <strong>Canvas</strong> methods. Each method receives the
+                current Canvas state (transformations, clip, etc.) and draws into the active painting region of your
+                <code>CustomPaint</code>.
+            </p>
+
+            <h3><code>clipPath</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+void clipPath(Path path, { bool doAntiAlias = true })<br>
+                </code>
+            </div>
+            <p><strong>Purpose:</strong> Restricts subsequent drawing operations to only appear within the given
+                <code>Path</code> shape.</p>
+            <p><strong>Parameters:</strong></p>
+            <ul>
+                <li><code>path</code> – The <code>Path</code> defining the clipping region.</li>
+                <li><code>doAntiAlias</code> – Whether to smooth the edges (default: <code>true</code>).</li>
+            </ul>
+            <p><strong>What it does:</strong></p>
+            <ul>
+                <li>Creates a mask from the path.</li>
+                <li>Any drawing outside this path becomes invisible.</li>
+                <li>Clips accumulate (new clips intersect with existing ones).</li>
+                <li>Use with <code>save()</code>/<code>restore()</code> to limit clip scope.</li>
+            </ul>
+            <p><strong>Common uses:</strong> circular image masks, complex shape viewports, masking effects. Clipping is
+                relatively expensive, so use it sparingly.</p>
+
+            <h3><code>clipRect</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+void clipRect(Rect rect, { ClipOp clipOp = ClipOp.intersect, bool doAntiAlias = true })<br>
+                </code>
+            </div>
+            <p><strong>Purpose:</strong> Restricts drawing to a rectangular region.</p>
+            <ul>
+                <li><code>rect</code> – Rectangle defining the clip region.</li>
+                <li><code>clipOp</code> – How to combine with existing clips (usually
+                    <code>ClipOp.intersect</code>).</li>
+                <li><code>doAntiAlias</code> – Smooth edges (default: <code>true</code>).</li>
+            </ul>
+            <p><strong>Common uses:</strong> rectangular viewports, preventing drawing outside bounds, basic
+                optimization.</p>
+
+            <h3><code>clipRRect</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+void clipRRect(RRect rrect, { bool doAntiAlias = true })<br>
+                </code>
+            </div>
+            <p><strong>Purpose:</strong> Restricts drawing to a rounded-rectangle region.</p>
+            <p><strong>Common uses:</strong> rounded card masks, rounded image clipping, pill-shaped viewports.</p>
+
+            <h3><code>drawArc</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+void drawArc(Rect rect, double startAngle, double sweepAngle,<br>
+&nbsp;&nbsp;bool useCenter, Paint paint)<br>
+                </code>
+            </div>
+            <p><strong>Purpose:</strong> Draws an arc (portion of an ellipse or circle).</p>
+            <ul>
+                <li><code>rect</code> – Bounding box for the circle/ellipse.</li>
+                <li><code>startAngle</code> – Start angle in radians (0 = 3 o'clock).</li>
+                <li><code>sweepAngle</code> – How far to sweep in radians (positive = clockwise).</li>
+                <li><code>useCenter</code> – <code>true</code> draws a pie slice, <code>false</code> draws just the
+                    arc.</li>
+            </ul>
+            <p><strong>Common uses:</strong> circular progress indicators, pie charts, gauge dials, Pac‑Man shapes.</p>
+
+            <h3><code>drawCircle</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+void drawCircle(Offset c, double radius, Paint paint)<br>
+                </code>
+            </div>
+            <p><strong>Purpose:</strong> Draws a perfect circle at the given center with the given radius.</p>
+            <p><strong>Common uses:</strong> dots, indicators, avatars, circular buttons, decorative shapes.</p>
+
+            <h3><code>drawLine</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+void drawLine(Offset p1, Offset p2, Paint paint)<br>
+                </code>
+            </div>
+            <p><strong>Purpose:</strong> Draws a straight line between two points.</p>
+            <p><strong>Common uses:</strong> axes, grid lines, separators, chart lines, connectors.</p>
+
+            <h3><code>drawRect</code> and <code>drawRRect</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+void drawRect(Rect rect, Paint paint)<br>
+void drawRRect(RRect rrect, Paint paint)<br>
+                </code>
+            </div>
+            <p><strong>Purpose:</strong> Draws rectangles and rounded rectangles.</p>
+            <ul>
+                <li><code>drawRect</code> – plain rectangle (super fast, great for grids, bars, backgrounds).</li>
+                <li><code>drawRRect</code> – rounded rectangle (cards, buttons, modern UI surfaces).</li>
+            </ul>
+
+            <h3><code>drawPath</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+void drawPath(Path path, Paint paint)<br>
+                </code>
+            </div>
+            <p><strong>Purpose:</strong> Draws an arbitrary shape defined by a <code>Path</code>.</p>
+            <p><strong>Common uses:</strong> custom polygons, curves, wave shapes, freehand drawing, signatures.</p>
+
+            <h3><code>drawPoints</code> / <code>drawRawPoints</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+void drawPoints(PointMode pointMode, List&lt;Offset&gt; points, Paint paint)<br>
+void drawRawPoints(PointMode pointMode, Float32List points, Paint paint)<br>
+                </code>
+            </div>
+            <p><strong>Purpose:</strong> Efficiently draws many points, lines, or polygons in one call.</p>
+            <p><strong>Common uses:</strong> scatter plots, line graphs, particle systems, grids.</p>
+
+            <h3><code>drawImage</code>, <code>drawImageRect</code>, <code>drawImageNine</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+void drawImage(ui.Image image, Offset offset, Paint paint)<br>
+void drawImageRect(ui.Image image, Rect src, Rect dst, Paint paint)<br>
+void drawImageNine(ui.Image image, Rect center, Rect dst, Paint paint)<br>
+                </code>
+            </div>
+            <ul>
+                <li><strong><code>drawImage</code></strong> – draw an image at a position, 1:1 size.</li>
+                <li><strong><code>drawImageRect</code></strong> – draw part of an image, scaled into a destination rect.</li>
+                <li><strong><code>drawImageNine</code></strong> – nine‑patch rendering for scalable borders/backgrounds.</li>
+            </ul>
+
+            <h3><code>drawColor</code> and <code>drawPaint</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+void drawColor(Color color, BlendMode blendMode)<br>
+void drawPaint(Paint paint)<br>
+                </code>
+            </div>
+            <p><strong>Purpose:</strong> Fill the entire canvas (or clip region) with a color or paint.
+            </p>
+            <ul>
+                <li><code>drawColor</code> – solid color fill using a specific <code>BlendMode</code>.</li>
+                <li><code>drawPaint</code> – fill using a full <code>Paint</code> (gradients, shaders, etc.).</li>
+            </ul>
+
+            <h3><code>drawShadow</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+void drawShadow(Path path, Color color, double elevation, bool transparentOccluder)<br>
+                </code>
+            </div>
+            <p><strong>Purpose:</strong> Draws a Material‑style drop shadow for the given shape.</p>
+
+            
+        </section>
+
+        <section class="section">
+            <h2>📐 Part 3: The <code>Size</code> Object</h2>
+            <p>
+                The <code>Size</code> object is the second parameter in your <code>paint()</code> method. It tells you
+                <strong>how much space you have to draw</strong>.
+            </p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;// 'size' tells you how much space you have<br>
+}<br>
+                </code>
+            </div>
+
+            <h3>What is <code>Size</code>?</h3>
+            <p>
+                <strong>Size</strong> represents 2D dimensions – <strong>width</strong> and <strong>height</strong> – in
+                logical pixels.
+            </p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+class Size {<br>
+&nbsp;&nbsp;final double width;<br>
+&nbsp;&nbsp;final double height;<br>
+}<br>
+                </code>
+            </div>
+
+            <h3>Core properties</h3>
+            <ul>
+                <li><code>width</code> – horizontal dimension in logical pixels.</li>
+                <li><code>height</code> – vertical dimension in logical pixels.</li>
+                <li><code>aspectRatio</code> – <code>width / height</code>.</li>
+                <li><code>longestSide</code> – <code>max(width, height)</code>.</li>
+                <li><code>shortestSide</code> – <code>min(width, height)</code>.</li>
+                <li><code>flipped</code> – returns <code>Size(height, width)</code>.</li>
+            </ul>
+
+            <h3>Where <code>size</code> comes from</h3>
+            <p>The <code>size</code> parameter is decided by:</p>
+            <ol>
+                <li>The <code>size</code> property of <code>CustomPaint</code> (if you set it).</li>
+                <li>The child widget's size (if <code>CustomPaint</code> has a child).</li>
+                <li>The parent constraints (if no explicit size and no child).</li>
+            </ol>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+CustomPaint(<br>
+&nbsp;&nbsp;size: Size(200, 100), // size will be exactly 200x100<br>
+&nbsp;&nbsp;painter: MyPainter(),<br>
+)<br>
+                </code>
+            </div>
+
+            <h3>Common <code>Size</code> patterns</h3>
+            <h4>Center point</h4>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+final center = Offset(size.width / 2, size.height / 2);<br>
+                </code>
+            </div>
+
+            <h4>Responsive positioning</h4>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+final topLeft = Offset(size.width * 0.1, size.height * 0.1);<br>
+final bottomRight = Offset(size.width * 0.9, size.height * 0.9);<br>
+                </code>
+            </div>
+
+            <h4>Creating rects from <code>Size</code></h4>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+// Full canvas rect<br>
+final rect = Offset.zero &amp; size; // Rect.fromLTWH(0, 0, width, height)<br>
+<br>
+// Centered rect using 80% of the canvas<br>
+final centerRect = Rect.fromCenter(<br>
+&nbsp;&nbsp;center: Offset(size.width / 2, size.height / 2),<br>
+&nbsp;&nbsp;width: size.width * 0.8,<br>
+&nbsp;&nbsp;height: size.height * 0.8,<br>
+);<br>
+                </code>
+            </div>
+
+            <h4>Responsive drawing using <code>Size</code></h4>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final padding = size.width * 0.1; // 10% padding<br>
+&nbsp;&nbsp;final radius = size.shortestSide * 0.4; // 40% of smallest side<br>
+<br>
+&nbsp;&nbsp;final center = Offset(size.width / 2, size.height / 2);<br>
+&nbsp;&nbsp;canvas.drawCircle(center, radius, Paint()..color = Colors.blue);<br>
+}<br>
+                </code>
+            </div>
+
+            <h4>Handling aspect ratios</h4>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;if (size.aspectRatio &gt; 1.5) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Wide layout<br>
+&nbsp;&nbsp;&nbsp;&nbsp;drawWideLayout(canvas, size);<br>
+&nbsp;&nbsp;} else {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Narrow or square layout<br>
+&nbsp;&nbsp;&nbsp;&nbsp;drawNarrowLayout(canvas, size);<br>
+&nbsp;&nbsp;}<br>
+}<br>
+                </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>✅ Summary: Canvas &amp; Size in Flutter</h2>
+            <div class="success-box">
+                <p><strong>Canvas:</strong></p>
+                <ul>
+                    <li>Your low‑level drawing interface with rich APIs for shapes, paths, images, and text.</li>
+                    <li>Supports transformations (<code>translate</code>, <code>rotate</code>, <code>scale</code>,
+                        <code>skew</code>) and clipping.</li>
+                    <li>Uses <code>save()</code> / <code>restore()</code> to manage drawing state.</li>
+                </ul>
+                <p><strong>Size:</strong></p>
+                <ul>
+                    <li>Tells you exactly how much space your <code>CustomPaint</code> has.</li>
+                    <li>Use it to build <strong>responsive</strong> drawings that adapt to any screen size.</li>
+                    <li>Combine <code>Canvas</code> + <code>Size</code> to create powerful, pixel‑perfect Flutter
+                        graphics.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🖼️ Visual Guide</h2>
+            <p>
+                Here are visual examples of Canvas and Size concepts:
+            </p>
+
+            <div class="example-images">
+                <div class="example-item">
+                    <img src="../assets/canvas.png" alt="Flutter Canvas Visual Guide">
+                    <p class="image-caption">Flutter Canvas: Your Guide to 2D Drawing</p>
+                </div>
+
+                <div class="example-item">
+                    <img src="../assets/size.png" alt="Flutter Size Object Visual Guide">
+                    <p class="image-caption">A Visual Guide to Flutter's Size Object</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">
+        <span>↑</span>
+        <span>Back to top</span>
+    </button>
+
+    <script>
+        // Back to Top Button Functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const backToTopButton = document.getElementById('backToTop');
+
+            if (backToTopButton) {
+                window.addEventListener('scroll', () => {
+                    if (window.pageYOffset > 300) {
+                        backToTopButton.classList.add('show');
+                    } else {
+                        backToTopButton.classList.remove('show');
+                    }
+                });
+
+                backToTopButton.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+
+        // Copy Code Functionality
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const codeElement = codeBlock.querySelector('code');
+
+            if (!codeElement) return;
+
+            // Get the text content and convert HTML entities to plain text
+            let text = codeElement.innerHTML;
+
+            // Replace <br> with newlines
+            text = text.replace(/<br\s*\/?>/gi, '\n');
+
+            // Replace &nbsp; with spaces
+            text = text.replace(/&nbsp;/g, ' ');
+
+            // Remove any remaining HTML tags
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = text;
+            text = tempDiv.textContent || tempDiv.innerText || '';
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(text).then(() => {
+                // Visual feedback
+                const copyText = button.querySelector('.copy-text');
+                const originalText = copyText.textContent;
+                copyText.textContent = 'Copied!';
+                button.classList.add('copied');
+
+                setTimeout(() => {
+                    copyText.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy code:', err);
+                alert('Failed to copy code. Please try again.');
+            });
+        }
+    </script>
+</body>
+
+</html>
