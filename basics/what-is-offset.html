@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📍 What is Offset? - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #5a6c7d;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul,
+        ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+            transform: translateY(-1px);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .highlight-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .success-box {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #e8f0fe;
+            margin: 30px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background-color: #1a73e8;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>📍 What is Offset?</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>📚 What is Offset?</h2>
+            <p>
+                <strong>Offset</strong> is a class in Flutter (from <code>dart:ui</code>) that represents a
+                <strong>2D point or position</strong> in the coordinate system. It's essentially a pair of X and Y
+                coordinates that tells you <strong>WHERE</strong> to draw something on the canvas.
+            </p>
+
+            <p><strong>Think of Offset as:</strong></p>
+            <ul>
+                <li>A point on a graph (x, y coordinates)</li>
+                <li>A location on the canvas</li>
+                <li>A position vector from the origin (0, 0)</li>
+                <li>The "address" of where to place shapes, lines, and text</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>💡 Key Concept:</strong> <strong>Offset</strong> is used extensively in CustomPainter's
+                <code>paint()</code> method to specify positions. Almost every Canvas drawing method requires an
+                <strong>Offset</strong> to know where to draw. For example, <code>canvas.drawCircle(Offset(100, 50), 30,
+                    paint)</code> draws a circle centered at position (100, 50).
+            </div>
+
+            <h3>Structure</h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+class Offset {<br>
+&nbsp;&nbsp;final double dx; // Horizontal position (X coordinate)<br>
+&nbsp;&nbsp;final double dy; // Vertical position (Y coordinate)<br>
+}<br>
+                </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🎯 Essential Offset Properties & Methods</h2>
+
+            <h3>Properties: <code>dx</code> and <code>dy</code></h3>
+            <p><strong>Type:</strong> <code>double dx</code>, <code>double dy</code></p>
+            <p><strong>Definition:</strong> The horizontal (dx) and vertical (dy) components of the offset.</p>
+            <p><strong>What They Represent:</strong></p>
+            <ul>
+                <li><code>dx</code> - Distance from the left edge (X-axis position)</li>
+                <li><code>dy</code> - Distance from the top edge (Y-axis position)</li>
+                <li>Both are measured in logical pixels</li>
+                <li>Can be positive, negative, or zero</li>
+            </ul>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final point = Offset(100, 50);<br>
+<br>
+&nbsp;&nbsp;// Access individual components<br>
+&nbsp;&nbsp;print('X position: ${point.dx}'); // 100.0<br>
+&nbsp;&nbsp;print('Y position: ${point.dy}'); // 50.0<br>
+<br>
+&nbsp;&nbsp;// Use in drawing<br>
+&nbsp;&nbsp;canvas.drawCircle(point, 30, Paint()..color = Colors.blue);<br>
+<br>
+&nbsp;&nbsp;// Create offset from size (center of canvas)<br>
+&nbsp;&nbsp;final center = Offset(size.width / 2, size.height / 2);<br>
+&nbsp;&nbsp;canvas.drawCircle(center, 40, Paint()..color = Colors.red);<br>
+}<br>
+                </code>
+            </div>
+
+            <hr>
+
+            <h3>Constructor: <code>Offset(dx, dy)</code></h3>
+            <p><strong>Purpose:</strong> Creates an Offset with specific X and Y coordinates.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;// Create offset at position (100, 50)<br>
+&nbsp;&nbsp;final point1 = Offset(100, 50);<br>
+<br>
+&nbsp;&nbsp;// Create offset at top-left corner<br>
+&nbsp;&nbsp;final topLeft = Offset(0, 0);<br>
+<br>
+&nbsp;&nbsp;// Create offset at bottom-right corner<br>
+&nbsp;&nbsp;final bottomRight = Offset(size.width, size.height);<br>
+<br>
+&nbsp;&nbsp;// Draw circles at these positions<br>
+&nbsp;&nbsp;canvas.drawCircle(point1, 20, Paint()..color = Colors.blue);<br>
+&nbsp;&nbsp;canvas.drawCircle(topLeft, 15, Paint()..color = Colors.red);<br>
+&nbsp;&nbsp;canvas.drawCircle(bottomRight, 15, Paint()..color = Colors.green);<br>
+}<br>
+                </code>
+            </div>
+
+            <hr>
+
+            <h3>Static: <code>Offset.zero</code></h3>
+            <p><strong>Purpose:</strong> Creates an Offset at the origin (0, 0) - the top-left corner.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;// Offset.zero is the same as Offset(0, 0)<br>
+&nbsp;&nbsp;final origin = Offset.zero;<br>
+<br>
+&nbsp;&nbsp;// Draw at top-left corner<br>
+&nbsp;&nbsp;canvas.drawCircle(origin, 25, Paint()..color = Colors.blue);<br>
+<br>
+&nbsp;&nbsp;// Common pattern: Create rect from origin<br>
+&nbsp;&nbsp;final rect = origin &amp; Size(100, 50);<br>
+&nbsp;&nbsp;canvas.drawRect(rect, Paint()..color = Colors.red);<br>
+}<br>
+                </code>
+            </div>
+
+            <hr>
+
+            <h3>Method: <code>distance</code></h3>
+            <p><strong>Type:</strong> <code>double distance</code></p>
+            <p><strong>Purpose:</strong> Calculates the Euclidean distance from the origin (0, 0) to this offset.</p>
+            <p><strong>Formula:</strong> <code>√(dx² + dy²)</code></p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final point = Offset(30, 40);<br>
+&nbsp;&nbsp;final dist = point.distance; // √(30² + 40²) = 50.0<br>
+<br>
+&nbsp;&nbsp;// Use distance to check if point is within a circle<br>
+&nbsp;&nbsp;final center = Offset(size.width / 2, size.height / 2);<br>
+&nbsp;&nbsp;final radius = 50.0;<br>
+<br>
+&nbsp;&nbsp;if (point.distance &lt; radius) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Point is inside the circle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawCircle(point, 10, Paint()..color = Colors.green);<br>
+&nbsp;&nbsp;} else {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawCircle(point, 10, Paint()..color = Colors.red);<br>
+&nbsp;&nbsp;}<br>
+}<br>
+                </code>
+            </div>
+
+            <hr>
+
+            <h3>Method: <code>distanceTo(Offset other)</code></h3>
+            <p><strong>Type:</strong> <code>double distanceTo(Offset other)</code></p>
+            <p><strong>Purpose:</strong> Calculates the distance between two offsets.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final point1 = Offset(50, 50);<br>
+&nbsp;&nbsp;final point2 = Offset(150, 100);<br>
+<br>
+&nbsp;&nbsp;// Calculate distance between two points<br>
+&nbsp;&nbsp;final dist = point1.distanceTo(point2);<br>
+<br>
+&nbsp;&nbsp;// Draw a line connecting the points<br>
+&nbsp;&nbsp;canvas.drawLine(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;point1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;point2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 2,<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;// Draw circles at both points<br>
+&nbsp;&nbsp;canvas.drawCircle(point1, 8, Paint()..color = Colors.red);<br>
+&nbsp;&nbsp;canvas.drawCircle(point2, 8, Paint()..color = Colors.green);<br>
+<br>
+&nbsp;&nbsp;// Display distance (if using TextPainter)<br>
+&nbsp;&nbsp;print('Distance: $dist');<br>
+}<br>
+                </code>
+            </div>
+
+            <hr>
+
+            <h3>Method: <code>scale(double scaleX, double scaleY)</code></h3>
+            <p><strong>Type:</strong> <code>Offset scale(double scaleX, double scaleY)</code></p>
+            <p><strong>Purpose:</strong> Returns a new Offset with scaled coordinates.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final original = Offset(50, 30);<br>
+<br>
+&nbsp;&nbsp;// Scale by 2x in both directions<br>
+&nbsp;&nbsp;final scaled = original.scale(2.0, 2.0); // Offset(100, 60)<br>
+<br>
+&nbsp;&nbsp;// Scale only horizontally<br>
+&nbsp;&nbsp;final horizontalScaled = original.scale(2.0, 1.0); // Offset(100, 30)<br>
+<br>
+&nbsp;&nbsp;// Draw original and scaled points<br>
+&nbsp;&nbsp;canvas.drawCircle(original, 5, Paint()..color = Colors.blue);<br>
+&nbsp;&nbsp;canvas.drawCircle(scaled, 5, Paint()..color = Colors.red);<br>
+&nbsp;&nbsp;canvas.drawCircle(horizontalScaled, 5, Paint()..color = Colors.green);<br>
+}<br>
+                </code>
+            </div>
+
+            <hr>
+
+            <h3>Method: <code>translate(double translateX, double translateY)</code></h3>
+            <p><strong>Type:</strong> <code>Offset translate(double translateX, double translateY)</code></p>
+            <p><strong>Purpose:</strong> Returns a new Offset moved by the given amounts.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final start = Offset(50, 50);<br>
+<br>
+&nbsp;&nbsp;// Move 100 pixels to the right, 30 pixels down<br>
+&nbsp;&nbsp;final moved = start.translate(100, 30); // Offset(150, 80)<br>
+<br>
+&nbsp;&nbsp;// Move only horizontally<br>
+&nbsp;&nbsp;final right = start.translate(50, 0); // Offset(100, 50)<br>
+<br>
+&nbsp;&nbsp;// Draw a path showing the movement<br>
+&nbsp;&nbsp;final path = Path()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..moveTo(start.dx, start.dy)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..lineTo(moved.dx, moved.dy);<br>
+<br>
+&nbsp;&nbsp;canvas.drawPath(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 2,<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;canvas.drawCircle(start, 8, Paint()..color = Colors.red);<br>
+&nbsp;&nbsp;canvas.drawCircle(moved, 8, Paint()..color = Colors.green);<br>
+}<br>
+                </code>
+            </div>
+
+            <hr>
+
+            <h3>Operators: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code></h3>
+            <p><strong>Purpose:</strong> Perform arithmetic operations on offsets.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final point1 = Offset(50, 30);<br>
+&nbsp;&nbsp;final point2 = Offset(20, 10);<br>
+<br>
+&nbsp;&nbsp;// Addition: Combine two offsets<br>
+&nbsp;&nbsp;final sum = point1 + point2; // Offset(70, 40)<br>
+<br>
+&nbsp;&nbsp;// Subtraction: Difference between offsets<br>
+&nbsp;&nbsp;final diff = point1 - point2; // Offset(30, 20)<br>
+<br>
+&nbsp;&nbsp;// Multiplication: Scale by a number<br>
+&nbsp;&nbsp;final scaled = point1 * 2.0; // Offset(100, 60)<br>
+<br>
+&nbsp;&nbsp;// Division: Divide by a number<br>
+&nbsp;&nbsp;final divided = point1 / 2.0; // Offset(25, 15)<br>
+<br>
+&nbsp;&nbsp;// Practical example: Calculate midpoint<br>
+&nbsp;&nbsp;final midpoint = (point1 + point2) / 2.0; // Offset(35, 20)<br>
+<br>
+&nbsp;&nbsp;canvas.drawCircle(midpoint, 10, Paint()..color = Colors.blue);<br>
+}<br>
+                </code>
+            </div>
+
+            <hr>
+
+            <h3>Common Patterns in CustomPainter</h3>
+
+            <h4>Finding the Center</h4>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;// Center of the canvas<br>
+&nbsp;&nbsp;final center = Offset(size.width / 2, size.height / 2);<br>
+<br>
+&nbsp;&nbsp;canvas.drawCircle(center, 50, Paint()..color = Colors.blue);<br>
+}<br>
+                </code>
+            </div>
+
+            <h4>Responsive Positioning</h4>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;// Position at 10% from left, 20% from top<br>
+&nbsp;&nbsp;final topLeft = Offset(size.width * 0.1, size.height * 0.2);<br>
+<br>
+&nbsp;&nbsp;// Position at 90% from left, 80% from top<br>
+&nbsp;&nbsp;final bottomRight = Offset(size.width * 0.9, size.height * 0.8);<br>
+<br>
+&nbsp;&nbsp;canvas.drawCircle(topLeft, 20, Paint()..color = Colors.red);<br>
+&nbsp;&nbsp;canvas.drawCircle(bottomRight, 20, Paint()..color = Colors.green);<br>
+}<br>
+                </code>
+            </div>
+
+            <h4>Creating Rects from Offset</h4>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;// Create a rect starting at (10, 20) with size 100x50<br>
+&nbsp;&nbsp;final topLeft = Offset(10, 20);<br>
+&nbsp;&nbsp;final rectSize = Size(100, 50);<br>
+&nbsp;&nbsp;final rect = topLeft &amp; rectSize; // Rect.fromLTWH(10, 20, 100, 50)<br>
+<br>
+&nbsp;&nbsp;canvas.drawRect(rect, Paint()..color = Colors.blue);<br>
+}<br>
+                </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📋 Complete Offset Reference Table</h2>
+            <p>Complete reference of all Offset properties, methods, and operators:</p>
+
+            <h3>Properties</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>dx</code></td>
+                        <td><code>double</code></td>
+                        <td>Horizontal component (X coordinate)</td>
+                    </tr>
+                    <tr>
+                        <td><code>dy</code></td>
+                        <td><code>double</code></td>
+                        <td>Vertical component (Y coordinate)</td>
+                    </tr>
+                    <tr>
+                        <td><code>distance</code></td>
+                        <td><code>double</code></td>
+                        <td>Distance from origin (0, 0) - getter</td>
+                    </tr>
+                    <tr>
+                        <td><code>distanceSquared</code></td>
+                        <td><code>double</code></td>
+                        <td>Squared distance from origin (dx² + dy²) - getter</td>
+                    </tr>
+                    <tr>
+                        <td><code>direction</code></td>
+                        <td><code>double</code></td>
+                        <td>Angle in radians from positive X-axis - getter</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Constructors</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Constructor</th>
+                        <th>Parameters</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Offset(dx, dy)</code></td>
+                        <td><code>double dx, double dy</code></td>
+                        <td>Creates offset with specified coordinates</td>
+                    </tr>
+                    <tr>
+                        <td><code>Offset.zero</code></td>
+                        <td>None</td>
+                        <td>Creates offset at (0, 0)</td>
+                    </tr>
+                    <tr>
+                        <td><code>Offset.infinite</code></td>
+                        <td>None</td>
+                        <td>Creates offset at (∞, ∞)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Methods</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Parameters</th>
+                        <th>Return Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>distance</code></td>
+                        <td>None</td>
+                        <td><code>double</code></td>
+                        <td>Distance from origin (0, 0)</td>
+                    </tr>
+                    <tr>
+                        <td><code>distanceSquared</code></td>
+                        <td>None</td>
+                        <td><code>double</code></td>
+                        <td>Squared distance from origin</td>
+                    </tr>
+                    <tr>
+                        <td><code>distanceTo(Offset other)</code></td>
+                        <td><code>Offset other</code></td>
+                        <td><code>double</code></td>
+                        <td>Distance to another offset</td>
+                    </tr>
+                    <tr>
+                        <td><code>distanceSquaredTo(Offset other)</code></td>
+                        <td><code>Offset other</code></td>
+                        <td><code>double</code></td>
+                        <td>Squared distance to another offset</td>
+                    </tr>
+                    <tr>
+                        <td><code>direction</code></td>
+                        <td>None</td>
+                        <td><code>double</code></td>
+                        <td>Angle in radians from positive X-axis</td>
+                    </tr>
+                    <tr>
+                        <td><code>scale(double scaleX, double scaleY)</code></td>
+                        <td><code>double scaleX, double scaleY</code></td>
+                        <td><code>Offset</code></td>
+                        <td>Returns scaled offset</td>
+                    </tr>
+                    <tr>
+                        <td><code>translate(double translateX, double translateY)</code></td>
+                        <td><code>double translateX, double translateY</code></td>
+                        <td><code>Offset</code></td>
+                        <td>Returns translated offset</td>
+                    </tr>
+                    <tr>
+                        <td><code>lerp(Offset a, Offset b, double t)</code></td>
+                        <td><code>Offset a, Offset b, double t</code></td>
+                        <td><code>Offset?</code></td>
+                        <td>Linear interpolation between two offsets (static)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Operators</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operator</th>
+                        <th>Usage</th>
+                        <th>Return Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>+</code></td>
+                        <td><code>offset1 + offset2</code></td>
+                        <td><code>Offset</code></td>
+                        <td>Adds two offsets component-wise</td>
+                    </tr>
+                    <tr>
+                        <td><code>-</code></td>
+                        <td><code>offset1 - offset2</code></td>
+                        <td><code>Offset</code></td>
+                        <td>Subtracts two offsets component-wise</td>
+                    </tr>
+                    <tr>
+                        <td><code>*</code></td>
+                        <td><code>offset * scalar</code></td>
+                        <td><code>Offset</code></td>
+                        <td>Multiplies offset by a scalar</td>
+                    </tr>
+                    <tr>
+                        <td><code>/</code></td>
+                        <td><code>offset / scalar</code></td>
+                        <td><code>Offset</code></td>
+                        <td>Divides offset by a scalar</td>
+                    </tr>
+                    <tr>
+                        <td><code>~</code></td>
+                        <td><code>~offset</code></td>
+                        <td><code>Offset</code></td>
+                        <td>Unary minus (negates both components)</td>
+                    </tr>
+                    <tr>
+                        <td><code>==</code></td>
+                        <td><code>offset1 == offset2</code></td>
+                        <td><code>bool</code></td>
+                        <td>Equality comparison</td>
+                    </tr>
+                    <tr>
+                        <td><code>&amp;</code></td>
+                        <td><code>offset &amp; size</code></td>
+                        <td><code>Rect</code></td>
+                        <td>Creates a Rect from offset and size</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="success-box">
+                <strong>✅ Key Takeaway:</strong> <strong>Offset</strong> is fundamental to CustomPainter - it's used in
+                almost every drawing operation to specify positions. Understanding how to create, manipulate, and
+                calculate with offsets is essential for creating responsive and dynamic custom graphics in Flutter.
+            </div>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">
+        <span>↑</span>
+        <span>Back to top</span>
+    </button>
+
+    <script>
+        // Back to Top Button Functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const backToTopButton = document.getElementById('backToTop');
+
+            if (backToTopButton) {
+                window.addEventListener('scroll', () => {
+                    if (window.pageYOffset > 300) {
+                        backToTopButton.classList.add('show');
+                    } else {
+                        backToTopButton.classList.remove('show');
+                    }
+                });
+
+                backToTopButton.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+
+        // Copy Code Functionality
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const codeElement = codeBlock.querySelector('code');
+
+            if (!codeElement) return;
+
+            // Get the text content and convert HTML entities to plain text
+            let text = codeElement.innerHTML;
+
+            // Replace <br> with newlines
+            text = text.replace(/<br\s*\/?>/gi, '\n');
+
+            // Replace &nbsp; with spaces
+            text = text.replace(/&nbsp;/g, ' ');
+
+            // Remove any remaining HTML tags
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = text;
+            text = tempDiv.textContent || tempDiv.innerText || '';
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(text).then(() => {
+                // Visual feedback
+                const copyText = button.querySelector('.copy-text');
+                const originalText = copyText.textContent;
+                copyText.textContent = 'Copied!';
+                button.classList.add('copied');
+
+                setTimeout(() => {
+                    copyText.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy code:', err);
+                alert('Failed to copy code. Please try again.');
+            });
+        }
+    </script>
+</body>
+
+</html>
