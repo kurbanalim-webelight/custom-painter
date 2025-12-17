@@ -125,7 +125,6 @@
             background-color: #f4f4f4;
             padding: 20px;
             border-radius: 5px;
-            margin: 20px 0;
             overflow-x: auto;
             border-left: 4px solid #1a73e8;
             position: relative;
@@ -194,6 +193,36 @@
             border-radius: 4px;
         }
 
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
         hr {
             border: none;
             border-top: 2px solid #e8f0fe;
@@ -257,6 +286,16 @@
             background-color: #1557b0;
             transform: translateY(-2px);
         }
+
+        @media (max-width: 900px) {
+            .property-layout {
+                flex-direction: column;
+            }
+
+            .property-image {
+                margin-top: -10px;
+            }
+        }
     </style>
 </head>
 
@@ -308,34 +347,46 @@
                 <li>If a shader is set, color is ignored (shader takes precedence)</li>
             </ul>
 
-            <div class="code-block">
-                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
-                    <span class="copy-text">Copy</span>
-                </button>
-                <code>
-@override<br>
-void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;// Solid red circle<br>
-&nbsp;&nbsp;final redPaint = Paint()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.red;<br>
-&nbsp;&nbsp;canvas.drawCircle(Offset(50, 50), 30, redPaint);<br>
-<br>
-&nbsp;&nbsp;// Blue with 50% opacity<br>
-&nbsp;&nbsp;final semiTransparentBluePaint = Paint()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue.withOpacity(0.5);<br>
-&nbsp;&nbsp;canvas.drawCircle(Offset(100, 50), 30, semiTransparentBluePaint);<br>
-<br>
-&nbsp;&nbsp;// Custom color using ARGB<br>
-&nbsp;&nbsp;final customPaint = Paint()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;..color = Color.fromARGB(255, 100, 200, 150); // RGB values<br>
-&nbsp;&nbsp;canvas.drawCircle(Offset(150, 50), 30, customPaint);<br>
-<br>
-&nbsp;&nbsp;// Hex color<br>
-&nbsp;&nbsp;final hexColorPaint = Paint()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;..color = Color(0xFF42A5F5);<br>
-&nbsp;&nbsp;canvas.drawCircle(Offset(200, 50), 30, hexColorPaint);<br>
-}<br>
-                </code>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                            <span class="copy-text">Copy</span>
+                        </button>
+                        <code>
+                                        @override<br>
+                                        void paint(Canvas canvas, Size size) {<br>
+                                        &nbsp;&nbsp;// Solid red circle<br>
+                                        &nbsp;&nbsp;final redPaint = Paint()..color = Colors.red;<br>
+                                        &nbsp;&nbsp;canvas.drawCircle(Offset(50, size.height / 2), 30, redPaint);<br>
+                                        <br>
+                                        &nbsp;&nbsp;// Blue with 50% opacity<br>
+                                        &nbsp;&nbsp;final semiTransparentBluePaint = Paint()<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue.withValues(alpha: 0.5);<br>
+                                        &nbsp;&nbsp;canvas.drawCircle(<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;Offset(100, size.height / 2),<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;30,<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;semiTransparentBluePaint,<br>
+                                        &nbsp;&nbsp;);<br>
+                                        <br>
+                                        &nbsp;&nbsp;// Custom color using ARGB<br>
+                                        &nbsp;&nbsp;final customPaint = Paint()<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;..color = Color.fromARGB(255, 100, 200, 150); // RGB values<br>
+                                        &nbsp;&nbsp;canvas.drawCircle(Offset(150, size.height / 2), 30, customPaint);<br>
+                                        <br>
+                                        &nbsp;&nbsp;// Hex color<br>
+                                        &nbsp;&nbsp;final hexColorPaint = Paint()..color = Color(0xFF42A5F5);<br>
+                                        &nbsp;&nbsp;canvas.drawCircle(Offset(200, size.height / 2), 30, hexColorPaint);<br>
+                                        }<br>
+                                        </code>
+                    </div>
+                </div>
+
+                <div class="property-image">
+                    <img src="../assets/color_property.png" alt="Flutter Paint color property visual example">
+                    <!-- <p class="image-caption">Visual guide to how different <code>Paint.color</code> values affect the
+                        output in the <code>paint()</code> override.</p> -->
+                </div>
             </div>
 
             <hr>
@@ -351,61 +402,71 @@ void paint(Canvas canvas, Size size) {<br>
                 <li>Affects lines, curves, and shape edges</li>
                 <li>Small performance cost when enabled</li>
             </ul>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                            <span class="copy-text">Copy</span>
+                        </button>
+                        <code>
+                        @override<br>
+                        void paint(Canvas canvas, Size size) {<br>
+                        &nbsp;&nbsp;final paint = Paint()<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.red<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 10<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;..isAntiAlias = false;<br>
+                        <br>
+                        &nbsp;&nbsp;// Diagonal line<br>
+                        &nbsp;&nbsp;canvas.drawLine(<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;const Offset(20, 20),<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Offset(size.width - 20, size.height - 20),<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+                        &nbsp;&nbsp;);<br>
+                        <br>
+                        &nbsp;&nbsp;// Circle<br>
+                        &nbsp;&nbsp;canvas.drawCircle(Offset(size.width / 2, size.height / 2), 60, paint);<br>
+                        <br>
+                        &nbsp;&nbsp;final antiAliasPaint = Paint()<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.green<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 10<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;..isAntiAlias = true;<br>
+                        <br>
+                        &nbsp;&nbsp;// Diagonal line<br>
+                        &nbsp;&nbsp;canvas.drawLine(<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Offset(size.width * 0.5, size.height * 1.5),<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Offset(size.width * 1.5, size.height * 1.5),<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;antiAliasPaint,<br>
+                        &nbsp;&nbsp;);<br>
+                        <br>
+                        &nbsp;&nbsp;// Circle<br>
+                        &nbsp;&nbsp;canvas.drawCircle(<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Offset(size.width * 0.5, size.height * 1.5),<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;60,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;antiAliasPaint,<br>
+                        &nbsp;&nbsp;);<br>
+                        }<br>
+                        </code>
 
-            <div class="code-block">
-                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
-                    <span class="copy-text">Copy</span>
-                </button>
-                <code>
-@override<br>
-void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;// Aliased line (jagged, pixelated)<br>
-&nbsp;&nbsp;canvas.drawLine(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(10, 10),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(100, 100),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.black<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..isAntiAlias = false, // Jagged edges<br>
-&nbsp;&nbsp;);<br>
-<br>
-&nbsp;&nbsp;// Anti-aliased line (smooth)<br>
-&nbsp;&nbsp;canvas.drawLine(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(120, 10),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(210, 100),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.black<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..isAntiAlias = true, // Smooth edges (default)<br>
-&nbsp;&nbsp;);<br>
-<br>
-&nbsp;&nbsp;// Circle comparison<br>
-&nbsp;&nbsp;// Aliased circle (pixelated edge)<br>
-&nbsp;&nbsp;canvas.drawCircle(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(50, 150),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;30,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..isAntiAlias = false,<br>
-&nbsp;&nbsp;);<br>
-<br>
-&nbsp;&nbsp;// Anti-aliased circle (smooth edge)<br>
-&nbsp;&nbsp;canvas.drawCircle(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(150, 150),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;30,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..isAntiAlias = true,<br>
-&nbsp;&nbsp;);<br>
-}<br>
-                </code>
+                    </div>
+
+                </div>
+                <div class="property-image">
+                    <img src="../assets/is_anti_alias.png" alt="Flutter Paint color property visual example">
+                    <p class="image-caption">
+                        The top circle is aliased (pixelated), the bottom circle is anti-aliased (smooth).
+                    </p>
+                </div>
             </div>
+
 
             <hr>
 
             <h3><code>invertColors</code></h3>
             <p><strong>Type:</strong> <code>bool invertColors</code></p>
-            <p><strong>Definition:</strong> When <code>true</code>, inverts the colors of everything painted with this
+            <p><strong>Definition:</strong> When <code>true</code>, inverts the colors of everything painted with
+                this
                 Paint. Black becomes white, red becomes cyan, etc.</p>
             <p><strong>What Happens:</strong></p>
             <ul>
@@ -415,49 +476,49 @@ void paint(Canvas canvas, Size size) {<br>
                 <li>Alpha channel is NOT inverted</li>
             </ul>
 
-            <div class="code-block">
-                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
-                    <span class="copy-text">Copy</span>
-                </button>
-                <code>
-@override<br>
-void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;// Normal blue circle<br>
-&nbsp;&nbsp;canvas.drawCircle(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(80, 50),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;40,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..invertColors = false, // Default<br>
-&nbsp;&nbsp;);<br>
-<br>
-&nbsp;&nbsp;// Inverted blue circle (becomes yellow/orange)<br>
-&nbsp;&nbsp;canvas.drawCircle(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(200, 50),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;40,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..invertColors = true,<br>
-&nbsp;&nbsp;);<br>
-<br>
-&nbsp;&nbsp;// Practical use: Dark mode conversion<br>
-&nbsp;&nbsp;final textPaint = Paint()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.black<br>
-&nbsp;&nbsp;&nbsp;&nbsp;..invertColors = true; // Becomes white for dark mode<br>
-<br>
-&nbsp;&nbsp;canvas.drawRect(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(10, 120, 100, 50),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;textPaint,<br>
-&nbsp;&nbsp;);<br>
-}<br>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                            <span class="copy-text">Copy</span>
+                        </button>
+                        <code>
+                @override<br>
+                void paint(Canvas canvas, Size size) {<br>
+                &nbsp;&nbsp;// Normal paint<br>
+                &nbsp;&nbsp;final normalPaint = Paint()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;..invertColors = false;<br>
+                <br>
+                &nbsp;&nbsp;// Inverted paint<br>
+                &nbsp;&nbsp;final invertedPaint = Paint()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;..invertColors = true;<br>
+                <br>
+                &nbsp;&nbsp;final centerY = size.height / 2;<br>
+                <br>
+                &nbsp;&nbsp;// Normal circle<br>
+                &nbsp;&nbsp;canvas.drawCircle(Offset(size.width * 0.35, centerY), 60, normalPaint);<br>
+                <br>
+                &nbsp;&nbsp;// Inverted circle<br>
+                &nbsp;&nbsp;canvas.drawCircle(Offset(size.width * 0.65, centerY), 60, invertedPaint);<br>
+                }<br>
                 </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/invert_colors.png" alt="Flutter Paint invertColors property visual example">
+                    <p class="image-caption">Both of the circles are using blue color, but the right one is inverted.
+                    </p>
+                </div>
             </div>
 
             <hr>
 
             <h3><code>shader</code></h3>
             <p><strong>Type:</strong> <code>Shader? shader</code></p>
-            <p><strong>Definition:</strong> Applies a gradient or pattern fill instead of a solid color. Shaders provide
+            <p><strong>Definition:</strong> Applies a gradient or pattern fill instead of a solid color. Shaders
+                provide
                 advanced color effects like linear gradients, radial gradients, and sweep gradients.</p>
             <p><strong>What Happens:</strong></p>
             <ul>
@@ -551,7 +612,8 @@ void paint(Canvas canvas, Size size) {<br>
 
             <h3><code>strokeCap</code></h3>
             <p><strong>Type:</strong> <code>StrokeCap strokeCap</code></p>
-            <p><strong>Definition:</strong> Controls how the ends of lines (strokes) are drawn. Determines the shape of
+            <p><strong>Definition:</strong> Controls how the ends of lines (strokes) are drawn. Determines the shape
+                of
                 line terminals.</p>
             <p><strong>What Happens:</strong></p>
             <ul>
@@ -564,7 +626,8 @@ void paint(Canvas canvas, Size size) {<br>
             <ul>
                 <li><code>StrokeCap.butt</code> - Flat end, exactly at endpoint (default)</li>
                 <li><code>StrokeCap.round</code> - Rounded semicircular end</li>
-                <li><code>StrokeCap.square</code> - Square end, extends beyond endpoint by <code>strokeWidth/2</code>
+                <li><code>StrokeCap.square</code> - Square end, extends beyond endpoint by
+                    <code>strokeWidth/2</code>
                 </li>
             </ul>
 
@@ -692,7 +755,8 @@ void paint(Canvas canvas, Size size) {<br>
 
             <h3><code>strokeWidth</code></h3>
             <p><strong>Type:</strong> <code>double strokeWidth</code></p>
-            <p><strong>Definition:</strong> The thickness of lines and shape outlines when using stroke style. Measured
+            <p><strong>Definition:</strong> The thickness of lines and shape outlines when using stroke style.
+                Measured
                 in logical pixels.</p>
             <p><strong>What Happens:</strong></p>
             <ul>
@@ -768,14 +832,16 @@ void paint(Canvas canvas, Size size) {<br>
 
             <h3><code>style</code></h3>
             <p><strong>Type:</strong> <code>PaintingStyle style</code></p>
-            <p><strong>Definition:</strong> Determines whether shapes are filled or only outlined (stroked). This is one
+            <p><strong>Definition:</strong> Determines whether shapes are filled or only outlined (stroked). This is
+                one
                 of the most important Paint properties.</p>
             <p><strong>What Happens:</strong></p>
             <ul>
                 <li><code>PaintingStyle.fill</code> (default) - Fills the interior of shapes</li>
                 <li><code>PaintingStyle.stroke</code> - Draws only the outline/border</li>
                 <li>Affects all shape drawing operations</li>
-                <li>Changes how <code>strokeWidth</code>, <code>strokeCap</code>, <code>strokeJoin</code> are applied
+                <li>Changes how <code>strokeWidth</code>, <code>strokeCap</code>, <code>strokeJoin</code> are
+                    applied
                 </li>
             </ul>
 
