@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⬛ What is Rect? - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #5a6c7d;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul,
+        ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+            transform: translateY(-1px);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .highlight-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .success-box {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #e8f0fe;
+            margin: 30px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background-color: #1a73e8;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+
+        .example-images {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .example-item {
+            width: 100%;
+            text-align: center;
+        }
+
+        .example-item img {
+            max-width: 100%;
+            height: auto;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .example-item .image-caption {
+            margin-top: 10px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        @media (max-width: 900px) {
+            .property-layout {
+                flex-direction: column;
+            }
+
+            .property-image {
+                margin-top: -10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>⬛ What is Rect?</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>📚 What is Rect?</h2>
+            <p>
+                <strong>Rect</strong> is a class in Flutter (from <code>dart:ui</code>) that represents an
+                <strong>axis-aligned rectangle</strong> in logical pixels. It describes a region on the canvas using
+                <strong>left</strong>, <strong>top</strong>, <strong>right</strong> and <strong>bottom</strong>
+                coordinates.
+            </p>
+            <p><strong>Think of Rect as:</strong></p>
+            <ul>
+                <li>The <strong>box</strong> your shapes are drawn inside</li>
+                <li>A <strong>bounding box</strong> around circles, paths, or widgets</li>
+                <li>A convenient way to compute <strong>centers, corners, width and height</strong></li>
+                <li>The region used for <strong>clipping, hit‑testing, and layout</strong> in CustomPainter</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>💡 Key Concept:</strong> <strong>Rect</strong> defines <strong>WHERE and HOW BIG</strong> your
+                drawings are. Many Canvas methods (like <code>drawRect</code>, <code>drawArc</code>,
+                <code>drawRRect</code>, gradients' <code>createShader</code>, etc.) use Rects to know the
+                <strong>bounds</strong> of the drawing.
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🏗️ Creating Rects – Essential Constructors</h2>
+
+            <h3><code>Rect.fromLTWH(left, top, width, height)</code></h3>
+            <p><strong>Purpose:</strong> Build a rect from <strong>L</strong>eft, <strong>T</strong>op,
+                <strong>W</strong>idth and <strong>H</strong>eight.
+            </p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;// A 100x60 box starting at (20, 30)<br>
+&nbsp;&nbsp;final rect = Rect.fromLTWH(20, 30, 100, 60);<br>
+<br>
+&nbsp;&nbsp;final paint = Paint()..color = Colors.blue;<br>
+&nbsp;&nbsp;canvas.drawRect(rect, paint);<br>
+}<br>
+                </code>
+            </div>
+
+            <h3><code>Rect.fromLTRB(left, top, right, bottom)</code></h3>
+            <p><strong>Purpose:</strong> Create a rect when you already know all four edges.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+final rect = Rect.fromLTRB(10, 20, 210, 120); // width = 200, height = 100<br>
+                </code>
+            </div>
+
+            <h3><code>Rect.fromCenter</code> and <code>Rect.fromCircle</code></h3>
+
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                            <span class="copy-text">Copy</span>
+                        </button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final center = Offset(size.width / 2, size.height / 2);<br>
+<br>
+&nbsp;&nbsp;// Rect centered at canvas center<br>
+&nbsp;&nbsp;final rectFromCenter = Rect.fromCenter(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;center: center,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;width: 120,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;height: 80,<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;// Bounding box of a circle<br>
+&nbsp;&nbsp;final circleBounds = Rect.fromCircle(center: center, radius: 50);<br>
+<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rectFromCenter,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.green<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3,<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;circleBounds,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.orange.withValues(alpha: 0.2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill,<br>
+&nbsp;&nbsp;);<br>
+}<br>
+                        </code>
+                    </div>
+                </div>
+
+                <div class="property-image">
+                    <img src="../assets/rect_from_center_or_circle.png"
+                        alt="Flutter Rect fromCenter and fromCircle visual example">
+                    <p class="image-caption">Visual guide showing how <code>Rect.fromCenter</code> and
+                        <code>Rect.fromCircle</code> construct rectangles from intuitive parameters.
+                    </p>
+                </div>
+            </div>
+
+            <h3><code>Rect.fromPoints(Offset a, Offset b)</code></h3>
+            <p><strong>Purpose:</strong> Create a rect from any two opposite corners.</p>
+
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                            <span class="copy-text">Copy</span>
+                        </button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;canvas.drawCircle(const Offset(30, 40), 5, Paint()..color = Colors.blue);<br>
+&nbsp;&nbsp;canvas.drawCircle(const Offset(200, 160), 5, Paint()..color = Colors.red);<br>
+<br>
+&nbsp;&nbsp;final rect = Rect.fromPoints(const Offset(30, 40), const Offset(200, 160));<br>
+<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rect,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.green<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3,<br>
+&nbsp;&nbsp;);<br>
+}<br>
+                        </code>
+                    </div>
+                </div>
+
+                <div class="property-image">
+                    <img src="../assets/rect_from_points.png" alt="Flutter Rect fromPoints visual example">
+                    <p class="image-caption">Visual guide showing how <code>Rect.fromPoints</code> creates a rectangle
+                        from two opposite corner points.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📏 Reading Rect Position & Size</h2>
+
+            <h3>Edges: <code>left</code>, <code>top</code>, <code>right</code>, <code>bottom</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+final rect = Rect.fromLTWH(20, 30, 100, 60);<br>
+<br>
+debugPrint('left: ${rect.left}');   // 20.0<br>
+debugPrint('top: ${rect.top}');     // 30.0<br>
+debugPrint('right: ${rect.right}'); // 120.0<br>
+debugPrint('bottom: ${rect.bottom}'); // 90.0<br>
+                </code>
+            </div>
+
+            <h3>Size: <code>width</code>, <code>height</code>, <code>size</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+final rect = Rect.fromLTWH(0, 0, 200, 100);<br>
+<br>
+final w = rect.width;   // 200.0<br>
+final h = rect.height;  // 100.0<br>
+final s = rect.size;    // Size(200, 100)<br>
+                </code>
+            </div>
+
+            <h3>Corners & Center: <code>topLeft</code>, <code>bottomRight</code>, <code>center</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+final rect = Rect.fromLTWH(20, 30, 100, 60);<br>
+<br>
+final center = rect.center;        // Offset(70, 60)<br>
+final tl = rect.topLeft;           // Offset(20, 30)<br>
+final br = rect.bottomRight;       // Offset(120, 90)<br>
+                </code>
+            </div>
+
+            <h3>Size helpers: <code>longestSide</code>, <code>shortestSide</code>, <code>isEmpty</code></h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+final longest = rect.longestSide;   // max(width, height)<br>
+final shortest = rect.shortestSide; // min(width, height)<br>
+final empty = rect.isEmpty;         // width <= 0 or height <= 0<br>
+                </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>✏️ Transforming Rects</h2>
+
+            <h3><code>inflate(double delta)</code> / <code>deflate(double delta)</code></h3>
+            <p><strong>Purpose:</strong> Grow or shrink a rect uniformly on all sides.</p>
+
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                            <span class="copy-text">Copy</span>
+                        </button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final center = Offset(size.width / 2, size.height / 2);<br>
+<br>
+&nbsp;&nbsp;// 1️⃣ Original rectangle (reference)<br>
+&nbsp;&nbsp;final originalRect = Rect.fromCenter(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;center: center,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;width: 200,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;height: 120,<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;// 2️⃣ Inflated rectangle (bigger than original)<br>
+&nbsp;&nbsp;final inflatedRect = originalRect.inflate(20);<br>
+<br>
+&nbsp;&nbsp;// 3️⃣ Deflated rectangle (smaller than original)<br>
+&nbsp;&nbsp;final deflatedRect = originalRect.deflate(20);<br>
+<br>
+&nbsp;&nbsp;// 🔵 Inflated rect (background)<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;inflatedRect,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Paint()..color = Colors.blue.withValues(alpha: 0.15),<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;// ⚪ Original rect (middle reference)<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;originalRect,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.black<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 2,<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;// 🔴 Deflated rect (inside)<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;deflatedRect,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.red<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 2,<br>
+&nbsp;&nbsp;);<br>
+}<br>
+                        </code>
+                    </div>
+                </div>
+
+                <div class="property-image">
+                    <img src="../assets/rect_inflate_deflate.png" alt="Flutter Rect inflate and deflate visual example">
+                    <p class="image-caption">The black rectangle is the original rectangle. The blue rectangle is the
+                        inflated rectangle. The red rectangle is the deflated rectangle. Both the inflated and deflated
+                        are respected to the original rectangle.
+                    </p>
+                </div>
+            </div>
+
+            <h3><code>shift(Offset)</code> / <code>translate(dx, dy)</code></h3>
+            <p><strong>Purpose:</strong> Move the rect without changing its size.</p>
+
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                            <span class="copy-text">Copy</span>
+                        </button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final originalRect = Rect.fromLTWH(50, 100, 100, 80);<br>
+<br>
+&nbsp;&nbsp;// Method 1: shift() - takes an Offset object<br>
+&nbsp;&nbsp;final shiftedRect = originalRect.shift(const Offset(120, 0));<br>
+<br>
+&nbsp;&nbsp;// Method 2: translate() - takes separate dx, dy values<br>
+&nbsp;&nbsp;final translatedRect = originalRect.translate(120, 150);<br>
+<br>
+&nbsp;&nbsp;// Draw all rectangles<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;originalRect,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3,<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;shiftedRect,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.green<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3,<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;translatedRect,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.red<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3,<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;// Labels<br>
+&nbsp;&nbsp;_drawText(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'Original',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;originalRect.topLeft.translate(-5, -20),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Colors.blue,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;_drawText(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'shift(Offset(120, 0))',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;shiftedRect.topLeft.translate(-5, -20),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Colors.green,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;_drawText(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'translate(120, 150)',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;translatedRect.topLeft.translate(-5, -20),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Colors.red,<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;// Info<br>
+&nbsp;&nbsp;_drawText(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'Both methods move rectangles.\nshift() uses Offset, translate() uses dx &amp; dy.',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;const Offset(50, 350),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Colors.black,<br>
+&nbsp;&nbsp;);<br>
+}<br>
+<br>
+void _drawText(Canvas canvas, String text, Offset pos, Color color) {<br>
+&nbsp;&nbsp;final textPainter = TextPainter(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;text: TextSpan(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text: text,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;style: TextStyle(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color: color,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fontSize: 12,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fontWeight: FontWeight.bold,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;textDirection: TextDirection.ltr,<br>
+&nbsp;&nbsp;)..layout();<br>
+&nbsp;&nbsp;textPainter.paint(canvas, pos);<br>
+}<br>
+                        </code>
+                    </div>
+                </div>
+
+                <div class="property-image">
+                    <img src="../assets/rect_shift_translate.png" alt="Flutter Rect shift and translate visual example">
+                    <p class="image-caption">Visual guide showing how <code>shift()</code> and <code>translate()</code>
+                        move rectangles without changing their size.</p>
+                </div>
+            </div>
+
+            <h3><code>overlaps</code> &amp; <code>intersect</code></h3>
+            <p><strong>Purpose:</strong> Work with intersections between two rects.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final a = Rect.fromLTWH(20, 20, 100, 60);<br>
+&nbsp;&nbsp;final b = Rect.fromLTWH(80, 40, 100, 60);<br>
+<br>
+&nbsp;&nbsp;if (a.overlaps(b)) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final intersection = a.intersect(b);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawRect(intersection, Paint()..color = Colors.orange);<br>
+&nbsp;&nbsp;}<br>
+}<br>
+                </code>
+            </div>
+
+            <h3><code>expandToInclude</code> / <code>union</code></h3>
+            <p><strong>Purpose:</strong> Compute the smallest rect that contains both inputs.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+final a = Rect.fromLTWH(20, 20, 60, 60);<br>
+final b = Rect.fromLTWH(120, 50, 40, 40);<br>
+<br>
+final union = a.expandToInclude(b); // same as a.union(b)<br>
+                </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🎯 Hit‑Testing with Rect</h2>
+
+            <h3><code>contains(Offset point)</code></h3>
+            <p><strong>Purpose:</strong> Check if a point lies inside the rect.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final rect = Rect.fromLTWH(40, 40, 120, 80);<br>
+&nbsp;&nbsp;final touch = const Offset(100, 70);<br>
+<br>
+&nbsp;&nbsp;final inside = rect.contains(touch);<br>
+<br>
+&nbsp;&nbsp;canvas.drawRect(rect, Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = inside ? Colors.green.withOpacity(0.3)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;: Colors.red.withOpacity(0.3));<br>
+}<br>
+                </code>
+            </div>
+
+            <h3><code>Rect.lerp(Rect? a, Rect? b, double t)</code></h3>
+            <p><strong>Purpose:</strong> Linearly interpolate between two rects. Very useful in animations.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+final start = Rect.fromLTWH(20, 20, 80, 80);<br>
+final end   = Rect.fromLTWH(120, 80, 160, 160);<br>
+<br>
+final mid = Rect.lerp(start, end, 0.5)!; // halfway rect<br>
+                </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📋 Rect API Reference Table</h2>
+
+            <h3>Properties</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>left</code></td>
+                        <td><code>double</code></td>
+                        <td>X coordinate of the left edge</td>
+                    </tr>
+                    <tr>
+                        <td><code>top</code></td>
+                        <td><code>double</code></td>
+                        <td>Y coordinate of the top edge</td>
+                    </tr>
+                    <tr>
+                        <td><code>right</code></td>
+                        <td><code>double</code></td>
+                        <td>X coordinate of the right edge</td>
+                    </tr>
+                    <tr>
+                        <td><code>bottom</code></td>
+                        <td><code>double</code></td>
+                        <td>Y coordinate of the bottom edge</td>
+                    </tr>
+                    <tr>
+                        <td><code>width</code></td>
+                        <td><code>double</code></td>
+                        <td>Rect width (<code>right - left</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><code>height</code></td>
+                        <td><code>double</code></td>
+                        <td>Rect height (<code>bottom - top</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><code>size</code></td>
+                        <td><code>Size</code></td>
+                        <td>Combined width and height</td>
+                    </tr>
+                    <tr>
+                        <td><code>topLeft</code></td>
+                        <td><code>Offset</code></td>
+                        <td>Corner at (<code>left</code>, <code>top</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><code>topRight</code></td>
+                        <td><code>Offset</code></td>
+                        <td>Corner at (<code>right</code>, <code>top</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><code>bottomLeft</code></td>
+                        <td><code>Offset</code></td>
+                        <td>Corner at (<code>left</code>, <code>bottom</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><code>bottomRight</code></td>
+                        <td><code>Offset</code></td>
+                        <td>Corner at (<code>right</code>, <code>bottom</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><code>center</code></td>
+                        <td><code>Offset</code></td>
+                        <td>Center point of the rect</td>
+                    </tr>
+                    <tr>
+                        <td><code>isEmpty</code></td>
+                        <td><code>bool</code></td>
+                        <td><code>true</code> if width ≤ 0 or height ≤ 0</td>
+                    </tr>
+                    <tr>
+                        <td><code>longestSide</code></td>
+                        <td><code>double</code></td>
+                        <td><code>max(width, height)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>shortestSide</code></td>
+                        <td><code>double</code></td>
+                        <td><code>min(width, height)</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Constructors / Static Members</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Constructor / Static</th>
+                        <th>Parameters</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Rect.fromLTWH</code></td>
+                        <td><code>double left, top, width, height</code></td>
+                        <td>Create rect from left/top and size</td>
+                    </tr>
+                    <tr>
+                        <td><code>Rect.fromLTRB</code></td>
+                        <td><code>double left, top, right, bottom</code></td>
+                        <td>Create rect from all four edges</td>
+                    </tr>
+                    <tr>
+                        <td><code>Rect.fromCircle</code></td>
+                        <td><code>Offset center, double radius</code></td>
+                        <td>Bounding box of a circle</td>
+                    </tr>
+                    <tr>
+                        <td><code>Rect.fromCenter</code></td>
+                        <td><code>Offset center, double width, double height</code></td>
+                        <td>Rect centered at a point</td>
+                    </tr>
+                    <tr>
+                        <td><code>Rect.fromPoints</code></td>
+                        <td><code>Offset a, Offset b</code></td>
+                        <td>Create rect from two opposite corners</td>
+                    </tr>
+                    <tr>
+                        <td><code>Rect.zero</code></td>
+                        <td>–</td>
+                        <td>Rect at (0,0) with zero size</td>
+                    </tr>
+                    <tr>
+                        <td><code>Rect.largest</code></td>
+                        <td>–</td>
+                        <td>Very large rect (effectively "infinite" bounds)</td>
+                    </tr>
+                    <tr>
+                        <td><code>Rect.lerp</code></td>
+                        <td><code>Rect? a, Rect? b, double t</code></td>
+                        <td>Linear interpolation between two rects</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Methods</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Parameters</th>
+                        <th>Return Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>contains(Offset point)</code></td>
+                        <td><code>Offset point</code></td>
+                        <td><code>bool</code></td>
+                        <td>Returns true if point lies inside the rect</td>
+                    </tr>
+                    <tr>
+                        <td><code>overlaps(Rect other)</code></td>
+                        <td><code>Rect other</code></td>
+                        <td><code>bool</code></td>
+                        <td>True if rects have non‑empty intersection</td>
+                    </tr>
+                    <tr>
+                        <td><code>intersect(Rect other)</code></td>
+                        <td><code>Rect other</code></td>
+                        <td><code>Rect</code></td>
+                        <td>Intersection area of two rects</td>
+                    </tr>
+                    <tr>
+                        <td><code>expandToInclude(Rect other)</code></td>
+                        <td><code>Rect other</code></td>
+                        <td><code>Rect</code></td>
+                        <td>Smallest rect containing both</td>
+                    </tr>
+                    <tr>
+                        <td><code>union(Rect other)</code></td>
+                        <td><code>Rect other</code></td>
+                        <td><code>Rect</code></td>
+                        <td>Alias for <code>expandToInclude</code> (in practice)</td>
+                    </tr>
+                    <tr>
+                        <td><code>inflate(double delta)</code></td>
+                        <td><code>double delta</code></td>
+                        <td><code>Rect</code></td>
+                        <td>Grows rect outward by delta on all sides</td>
+                    </tr>
+                    <tr>
+                        <td><code>deflate(double delta)</code></td>
+                        <td><code>double delta</code></td>
+                        <td><code>Rect</code></td>
+                        <td>Shrinks rect inward by delta on all sides</td>
+                    </tr>
+                    <tr>
+                        <td><code>shift(Offset offset)</code></td>
+                        <td><code>Offset offset</code></td>
+                        <td><code>Rect</code></td>
+                        <td>Moves rect by the given offset</td>
+                    </tr>
+                    <tr>
+                        <td><code>translate(double dx, double dy)</code></td>
+                        <td><code>double dx, double dy</code></td>
+                        <td><code>Rect</code></td>
+                        <td>Moves rect by dx/dy</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Operators</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operator</th>
+                        <th>Usage</th>
+                        <th>Return Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>==</code></td>
+                        <td><code>rect1 == rect2</code></td>
+                        <td><code>bool</code></td>
+                        <td>Compares all fields for equality</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="success-box">
+                <strong>✅ Key Takeaway:</strong> <strong>Rect</strong> is your primary tool for describing regions on
+                the
+                canvas. You use it to define bounds, clipping areas, hit‑test regions and layout boxes. Mastering Rect
+                makes it much easier to position and size everything you draw with CustomPainter.
+            </div>
+        </section>
+        <section class="section">
+            <h2>🖼️ Visual Guide</h2>
+            <p>
+                Here is a comprehensive visual guide to the Rect class:
+            </p>
+
+            <div class="example-images">
+                <div class="example-item">
+                    <img src="../assets/rect-infographics.png" alt="Flutter Rect Class Complete Visual Guide">
+                    <p class="image-caption">Complete Visual Guide to Flutter's Rect Class</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">
+        <span>↑</span>
+        <span>Back to top</span>
+    </button>
+
+    <script>
+        // Back to Top Button Functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const backToTopButton = document.getElementById('backToTop');
+
+            if (backToTopButton) {
+                window.addEventListener('scroll', () => {
+                    if (window.pageYOffset > 300) {
+                        backToTopButton.classList.add('show');
+                    } else {
+                        backToTopButton.classList.remove('show');
+                    }
+                });
+
+                backToTopButton.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+
+        // Copy Code Functionality
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const codeElement = codeBlock.querySelector('code');
+
+            if (!codeElement) return;
+
+            let text = codeElement.innerHTML;
+            text = text.replace(/<br\s*\/?>/gi, '\n');
+            text = text.replace(/&nbsp;/g, ' ');
+
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = text;
+            text = tempDiv.textContent || tempDiv.innerText || '';
+
+            navigator.clipboard.writeText(text).then(() => {
+                const copyText = button.querySelector('.copy-text');
+                const originalText = copyText.textContent;
+                copyText.textContent = 'Copied!';
+                button.classList.add('copied');
+
+                setTimeout(() => {
+                    copyText.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy code:', err);
+                alert('Failed to copy code. Please try again.');
+            });
+        }
+    </script>
+</body>
+
+</html>
