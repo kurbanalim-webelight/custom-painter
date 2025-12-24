@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Login Screen Example - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #5a6c7d;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul,
+        ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+            transform: translateY(-1px);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .highlight-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .example-images {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .example-item {
+            width: 100%;
+            text-align: center;
+        }
+
+        .example-item img {
+            max-width: 100%;
+            height: auto;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .example-item .image-caption {
+            margin-top: 10px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>🔐 Login Screen Example</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>📚 Overview</h2>
+            <p>
+                This example demonstrates how to create a beautiful login screen with custom gradient donut shapes in
+                the
+                background using <code>CustomPainter</code>. The example showcases the use of <code>drawDRRect</code>
+                to create donut shapes, <code>SweepGradient</code> for colorful gradients, and
+                <code>MaskFilter.blur</code>
+                for a glowing effect.
+            </p>
+            <p><strong>Key Concepts Demonstrated:</strong></p>
+            <ul>
+                <li>Creating custom background painters with <code>CustomPainter</code></li>
+                <li>Using <code>drawDRRect</code> to create donut/ring shapes</li>
+                <li>Applying <code>SweepGradient</code> for circular gradients</li>
+                <li>Using <code>MaskFilter.blur</code> for glow effects</li>
+                <li>Layering UI elements with <code>Stack</code> and <code>CustomPaint</code></li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>🏗️ Step 1: Project Structure and Imports</h2>
+            <p>First, we need to import the necessary packages and set up the basic structure.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+import 'dart:math' as math;<br>
+<br>
+import 'package:flutter/material.dart';<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Note:</strong> We import <code>dart:math</code> as <code>math</code> to use
+                <code>math.min</code>
+                for calculating responsive sizes. The <code>material.dart</code> package provides all Flutter widgets
+                and
+                CustomPainter classes.
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📱 Step 2: Creating the LoginScreen Widget</h2>
+            <p>The main widget that builds the login screen UI with a Stack layout.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+class LoginScreen extends StatelessWidget {<br>
+&nbsp;&nbsp;const LoginScreen({super.key});<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;Widget build(BuildContext context) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return Scaffold(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;body: Stack(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;children: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Background donut with gradient<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CustomPaint(painter: DonutBackgroundPainter(), size: Size.infinite),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Content<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SafeArea(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;child: Padding(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: const EdgeInsets.all(16),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;child: ConstrainedBox(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;child: Column(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mainAxisAlignment: MainAxisAlignment.spaceBetween,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mainAxisSize: MainAxisSize.max,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;children: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//! icon and text<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Row(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;children: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon(Icons.key, size: 35),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SizedBox(width: 8),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Flexible(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;child: Column(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;crossAxisAlignment: CrossAxisAlignment.start,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;children: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text('Loginnn', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700)),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text('Enter your creds', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//! form<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Column(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;children: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TextField(decoration: InputDecoration(labelText: 'Email')),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SizedBox(height: 16),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TextField(decoration: InputDecoration(labelText: 'Password')),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SizedBox(height: 16),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SizedBox(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width: double.infinity,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;height: 50,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;child: ElevatedButton(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onPressed: () {},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;style: ElevatedButton.styleFrom(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backgroundColor: Colors.blue,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foregroundColor: Colors.white,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;child: Text('Login'),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//! need an account?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Row(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mainAxisAlignment: MainAxisAlignment.center,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;children: [Text('Need an account?'), SizedBox(width: 8), Text('Sign up')],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;}<br>
+}<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Key Points:</strong>
+                <ul>
+                    <li><code>Stack</code> allows us to layer the background painter behind the UI content</li>
+                    <li><code>CustomPaint</code> with <code>Size.infinite</code> makes the painter fill the entire
+                        screen</li>
+                    <li><code>SafeArea</code> ensures content doesn't overlap with system UI (status bar, notches)</li>
+                    <li>The UI is organized in a <code>Column</code> with <code>spaceBetween</code> alignment</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🎨 Step 3: Creating the DonutBackgroundPainter Class</h2>
+            <p>This is the custom painter that draws the gradient donut shapes in the background.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+//! Donut Background Painter<br>
+/// Draws a gradient donut shape in the background<br>
+class DonutBackgroundPainter extends CustomPainter {<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Implementation details in next steps<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;bool shouldRepaint(covariant CustomPainter oldDelegate) => false;<br>
+}<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Note:</strong> <code>shouldRepaint</code> returns <code>false</code> because the background
+                is
+                static and doesn't need to be repainted when the widget rebuilds. This improves performance.
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📍 Step 4: Calculating Donut Positions and Sizes</h2>
+            <p>Define the center positions and radii for both donut shapes.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final circle1 = Offset(size.width, size.height * 0.3);<br>
+&nbsp;&nbsp;final circle2 = Offset(size.width - size.width, size.height * 0.95);<br>
+&nbsp;&nbsp;final outerRadius = math.min(size.width, size.height) * 0.45;<br>
+&nbsp;&nbsp;final innerRadius = outerRadius * 0.4;<br>
+<br>
+&nbsp;&nbsp;// Rest of the implementation...<br>
+}<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Explanation:</strong>
+                <ul>
+                    <li><code>circle1</code> - Position for the first donut (top-right): at full width, 30% down from
+                        top</li>
+                    <li><code>circle2</code> - Position for the second donut (bottom-left): at 0 width (left edge), 95%
+                        down</li>
+                    <li><code>outerRadius</code> - 45% of the smaller screen dimension (responsive sizing)</li>
+                    <li><code>innerRadius</code> - 40% of outer radius (creates the donut hole)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🌈 Step 5: Creating the SweepGradient</h2>
+            <p>Create a circular gradient that transitions through multiple colors.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+// Create gradient<br>
+final gradient = SweepGradient(<br>
+&nbsp;&nbsp;center: Alignment.center,<br>
+&nbsp;&nbsp;colors: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Colors.blue.shade400,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Colors.purple.shade400,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Colors.pink.shade400,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Colors.orange.shade400,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Colors.blue.shade400,<br>
+&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;stops: const [0.0, 0.25, 0.5, 0.75, 1.0],<br>
+);<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Explanation:</strong>
+                <ul>
+                    <li><code>SweepGradient</code> creates a circular gradient that sweeps around a center point</li>
+                    <li>The gradient transitions: Blue → Purple → Pink → Orange → Blue (full circle)</li>
+                    <li><code>stops</code> define where each color appears (0.0 = start, 1.0 = end)</li>
+                    <li>Starting and ending with blue creates a seamless loop</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🖌️ Step 6: Setting Up the Paint Object</h2>
+            <p>Configure the Paint object with gradient shader and blur effect.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+final paint = Paint()<br>
+&nbsp;&nbsp;..shader = gradient.createShader(Rect.fromCircle(center: circle1, radius: outerRadius))<br>
+&nbsp;&nbsp;..style = PaintingStyle.fill<br>
+&nbsp;&nbsp;..maskFilter = const MaskFilter.blur(BlurStyle.solid, 30);<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Explanation:</strong>
+                <ul>
+                    <li><code>shader</code> - Applies the gradient to the paint (bounded by the outer circle)</li>
+                    <li><code>style</code> - <code>PaintingStyle.fill</code> fills the shape</li>
+                    <li><code>maskFilter</code> - Creates a blur effect with 30-pixel radius for a glowing appearance
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🍩 Step 7: Creating RRect Shapes for Donuts</h2>
+            <p>Create rounded rectangles (RRect) for both outer and inner circles of each donut.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+// Draw donut using drawDRRect<br>
+// Create outer RRect (circular by using corner radius = half of size)<br>
+final outerRect = Rect.fromCircle(center: circle1, radius: outerRadius);<br>
+final outerRRect = RRect.fromRectAndRadius(outerRect, Radius.circular(outerRadius));<br>
+<br>
+// Create inner RRect (circular by using corner radius = half of size)<br>
+final innerRect = Rect.fromCircle(center: circle1, radius: innerRadius);<br>
+final innerRRect = RRect.fromRectAndRadius(innerRect, Radius.circular(innerRadius));<br>
+<br>
+final outerRect2 = Rect.fromCircle(center: circle2, radius: outerRadius);<br>
+final outerRRect2 = RRect.fromRectAndRadius(outerRect2, Radius.circular(outerRadius));<br>
+final innerRect2 = Rect.fromCircle(center: circle2, radius: innerRadius);<br>
+final innerRRect2 = RRect.fromRectAndRadius(innerRect2, Radius.circular(innerRadius));<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Explanation:</strong>
+                <ul>
+                    <li>By setting corner radius equal to the radius, we create perfect circles</li>
+                    <li>Each donut needs an outer RRect (large circle) and inner RRect (hole)</li>
+                    <li>We create two sets: one for <code>circle1</code> and one for <code>circle2</code></li>
+                    <li><code>drawDRRect</code> will draw the outer shape and cut out the inner shape</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🎯 Step 8: Drawing the Donut Shapes</h2>
+            <p>Use <code>drawDRRect</code> to draw both donut shapes on the canvas.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+// Draw donut shape using drawDRRect<br>
+canvas.drawDRRect(outerRRect, innerRRect, paint);<br>
+canvas.drawDRRect(outerRRect2, innerRRect2, paint);<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Explanation:</strong>
+                <ul>
+                    <li><code>drawDRRect</code> draws a double rounded rectangle (donut shape)</li>
+                    <li>It draws the outer shape and cuts out the inner shape</li>
+                    <li>Both donuts use the same paint (gradient and blur), creating a consistent glowing effect</li>
+                    <li>The first donut appears at top-right, the second at bottom-left</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📝 Complete Code</h2>
+            <p>Here's the complete code for both the LoginScreen widget and DonutBackgroundPainter:</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+import 'dart:math' as math;<br>
+<br>
+import 'package:flutter/material.dart';<br>
+<br>
+class LoginScreen extends StatelessWidget {<br>
+&nbsp;&nbsp;const LoginScreen({super.key});<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;Widget build(BuildContext context) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return Scaffold(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;body: Stack(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;children: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Background donut with gradient<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CustomPaint(painter: DonutBackgroundPainter(), size: Size.infinite),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Content<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SafeArea(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;child: Padding(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: const EdgeInsets.all(16),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;child: ConstrainedBox(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;child: Column(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mainAxisAlignment: MainAxisAlignment.spaceBetween,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mainAxisSize: MainAxisSize.max,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;children: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//! icon and text<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Row(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;children: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon(Icons.key, size: 35),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SizedBox(width: 8),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Flexible(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;child: Column(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;crossAxisAlignment: CrossAxisAlignment.start,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;children: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text('Loginnn', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700)),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text('Enter your creds', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//! form<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Column(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;children: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TextField(decoration: InputDecoration(labelText: 'Email')),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SizedBox(height: 16),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TextField(decoration: InputDecoration(labelText: 'Password')),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SizedBox(height: 16),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SizedBox(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width: double.infinity,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;height: 50,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;child: ElevatedButton(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onPressed: () {},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;style: ElevatedButton.styleFrom(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backgroundColor: Colors.blue,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foregroundColor: Colors.white,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;child: Text('Login'),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//! need an account?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Row(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mainAxisAlignment: MainAxisAlignment.center,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;children: [Text('Need an account?'), SizedBox(width: 8), Text('Sign up')],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;}<br>
+}<br>
+<br>
+//! Donut Background Painter<br>
+/// Draws a gradient donut shape in the background<br>
+class DonutBackgroundPainter extends CustomPainter {<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final circle1 = Offset(size.width, size.height * 0.3);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final circle2 = Offset(size.width - size.width, size.height * 0.95);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final outerRadius = math.min(size.width, size.height) * 0.45;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final innerRadius = outerRadius * 0.4;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Create gradient<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final gradient = SweepGradient(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;center: Alignment.center,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;colors: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Colors.blue.shade400,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Colors.purple.shade400,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Colors.pink.shade400,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Colors.orange.shade400,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Colors.blue.shade400,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stops: const [0.0, 0.25, 0.5, 0.75, 1.0],<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final paint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..shader = gradient.createShader(Rect.fromCircle(center: circle1, radius: outerRadius))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..maskFilter = const MaskFilter.blur(BlurStyle.solid, 30);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Draw donut using drawDRRect<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Create outer RRect (circular by using corner radius = half of size)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final outerRect = Rect.fromCircle(center: circle1, radius: outerRadius);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final outerRRect = RRect.fromRectAndRadius(outerRect, Radius.circular(outerRadius));<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Create inner RRect (circular by using corner radius = half of size)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final innerRect = Rect.fromCircle(center: circle1, radius: innerRadius);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final innerRRect = RRect.fromRectAndRadius(innerRect, Radius.circular(innerRadius));<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final outerRect2 = Rect.fromCircle(center: circle2, radius: outerRadius);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final outerRRect2 = RRect.fromRectAndRadius(outerRect2, Radius.circular(outerRadius));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final innerRect2 = Rect.fromCircle(center: circle2, radius: innerRadius);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final innerRRect2 = RRect.fromRectAndRadius(innerRect2, Radius.circular(innerRadius));<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Draw donut shape using drawDRRect<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawDRRect(outerRRect, innerRRect, paint);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawDRRect(outerRRect2, innerRRect2, paint);<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;bool shouldRepaint(covariant CustomPainter oldDelegate) => false;<br>
+}<br>
+                </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🖼️ Visual Result</h2>
+            <p>
+                Here's how the login screen looks with the custom gradient donut background:
+            </p>
+
+            <div class="example-images">
+                <div class="example-item">
+                    <img src="../assets/login-example.png" alt="Login Screen with Custom Gradient Donut Background">
+                    <p class="image-caption">Login screen featuring gradient donut shapes created with
+                        <code>drawDRRect</code>,
+                        <code>SweepGradient</code>, and <code>MaskFilter.blur</code> for a modern, glowing background
+                        effect.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">
+        <span>↑</span>
+    </button>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.nextElementSibling;
+            const code = codeBlock.textContent;
+
+            navigator.clipboard.writeText(code).then(() => {
+                button.classList.add('copied');
+                const originalText = button.querySelector('.copy-text').textContent;
+                button.querySelector('.copy-text').textContent = 'Copied!';
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.querySelector('.copy-text').textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        // Back to top button
+        const backToTopButton = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+
+</html>
