@@ -72,6 +72,22 @@
             margin-bottom: 0;
         }
 
+        .toc-section-header {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            border-radius: 4px;
+        }
+
+        .toc-section-header:first-child {
+            margin-top: 0;
+        }
+
         .toc-section ul {
             list-style: none;
             margin-left: 0;
@@ -340,8 +356,9 @@
             <h2>📚 Table of Contents</h2>
 
             <div class="toc-section">
+                <!-- Section 1: Core Classes (Foundation) -->
+                <div class="toc-section-header">1️⃣ Core Classes (Foundation)</div>
                 <ul>
-
                     <li>
                         <a href="basics/what-is-custom-painter.html">
                             <span class="topic-emoji">🎯</span>
@@ -444,7 +461,11 @@
                             </span>
                         </a>
                     </li>
+                </ul>
 
+                <!-- Section 2: Canvas Drawing APIs (Basic Shapes) -->
+                <div class="toc-section-header">2️⃣ Canvas Drawing APIs (Basic Shapes)</div>
+                <ul>
                     <li>
                         <a href="basics/canvas-drawing-apis.html">
                             <span class="topic-emoji">🎨</span>
@@ -470,7 +491,23 @@
                             </span>
                         </a>
                     </li>
+                </ul>
 
+                <!-- Section 3: Path Construction & Manipulation -->
+                <div class="toc-section-header">3️⃣ Path Construction & Manipulation</div>
+                <ul>
+                    <li>
+                        <a href="basics/path-methods-reference.html">
+                            <span class="topic-emoji">📚</span>
+                            <span>
+                                <strong class="topic-text">Path Methods Reference</strong>
+                                <small class="topic-description">
+                                    Complete reference guide for all Path class methods with code examples and detailed
+                                    explanations.
+                                </small>
+                            </span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 
