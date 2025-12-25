@@ -185,6 +185,37 @@
             border-radius: 4px;
         }
 
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+            gap: 20px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
         .example-images {
             display: flex;
             flex-direction: column;
@@ -246,6 +277,16 @@
             background-color: #1557b0;
             transform: translateY(-2px);
         }
+
+        @media (max-width: 900px) {
+            .property-layout {
+                flex-direction: column;
+            }
+
+            .property-image {
+                margin-top: -10px;
+            }
+        }
     </style>
 </head>
 
@@ -277,6 +318,48 @@
                 <li>Using <code>MaskFilter.blur</code> for glow effects</li>
                 <li>Layering UI elements with <code>Stack</code> and <code>CustomPaint</code></li>
             </ul>
+        </section>
+
+        <section class="section">
+            <h2>🖼️ Visual Result</h2>
+            <p>
+                Here's what the final login screen looks like:
+            </p>
+
+            <div class="property-layout">
+                <div class="property-image">
+                    <img src="../assets/login-example.png" alt="Login Screen with Custom Gradient Donut Background">
+                    <p class="image-caption">Beautiful login screen featuring gradient donut shapes with glowing effects
+                        in the background.</p>
+                </div>
+                <div class="property-code">
+                    <h4>🎨 Design Elements:</h4>
+                    <ul>
+                        <li><strong>Top-Right Donut:</strong> Large gradient donut shape positioned at the top-right
+                            corner, created using <code>drawDRRect</code> with a <code>SweepGradient</code> that cycles
+                            through blue, purple, pink, and orange colors</li>
+                        <li><strong>Bottom-Left Donut:</strong> Similar gradient donut shape positioned at the
+                            bottom-left corner, creating visual balance and symmetry</li>
+                        <li><strong>Glow Effect:</strong> Both donuts feature a glowing effect achieved with
+                            <code>MaskFilter.blur</code> with a 30-pixel blur radius, creating a modern, ethereal
+                            appearance
+                        </li>
+                        <li><strong>UI Elements:</strong> Clean login form with email and password fields, login button,
+                            and sign-up link, all layered on top of the custom-painted background using a
+                            <code>Stack</code> widget
+                        </li>
+                        <li><strong>Responsive Design:</strong> The donut sizes are calculated based on screen
+                            dimensions using <code>math.min</code>, ensuring the design looks good on all device sizes
+                        </li>
+                    </ul>
+                    <div class="info-box">
+                        <strong>💡 Design Tip:</strong> The combination of gradient donuts with blur effects creates a
+                        modern, eye-catching background that doesn't distract from the login form. The use of
+                        <code>SweepGradient</code> creates smooth color transitions, while <code>MaskFilter.blur</code>
+                        adds depth and a premium feel to the design.
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section class="section">
@@ -719,24 +802,6 @@ class DonutBackgroundPainter extends CustomPainter {<br>
 &nbsp;&nbsp;bool shouldRepaint(covariant CustomPainter oldDelegate) => false;<br>
 }<br>
                 </code>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>🖼️ Visual Result</h2>
-            <p>
-                Here's how the login screen looks with the custom gradient donut background:
-            </p>
-
-            <div class="example-images">
-                <div class="example-item">
-                    <img src="../assets/login-example.png" alt="Login Screen with Custom Gradient Donut Background">
-                    <p class="image-caption">Login screen featuring gradient donut shapes created with
-                        <code>drawDRRect</code>,
-                        <code>SweepGradient</code>, and <code>MaskFilter.blur</code> for a modern, glowing background
-                        effect.
-                    </p>
-                </div>
             </div>
         </section>
     </div>

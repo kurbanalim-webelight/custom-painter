@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 Background Design Example - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #5a6c7d;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul,
+        ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+            transform: translateY(-1px);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .highlight-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+            gap: 20px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .example-images {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .example-item {
+            width: 100%;
+            text-align: center;
+        }
+
+        .example-item img {
+            max-width: 100%;
+            height: auto;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .example-item .image-caption {
+            margin-top: 10px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 900px) {
+            .property-layout {
+                flex-direction: column;
+            }
+
+            .property-image {
+                margin-top: -10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>🎨 Background Design Example</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>📚 Overview</h2>
+            <p>
+                This example demonstrates how to create a beautiful background design with elastic waves, gradient
+                circles, and rotated triangles using <code>CustomPainter</code> and various Path methods. The example
+                showcases the use of <code>relativeCubicTo</code> to create smooth elastic waves,
+                <code>RadialGradient</code>
+                and <code>LinearGradient</code> for colorful gradients, and canvas transformations for rotating shapes.
+            </p>
+            <p><strong>Key Concepts Demonstrated:</strong></p>
+            <ul>
+                <li>Creating custom background painters with <code>CustomPainter</code></li>
+                <li>Using <code>relativeCubicTo</code> to create elastic wave patterns</li>
+                <li>Applying <code>RadialGradient</code> and <code>LinearGradient</code> for colorful effects</li>
+                <li>Using canvas transformations (<code>save</code>, <code>translate</code>, <code>rotate</code>,
+                    <code>restore</code>)
+                </li>
+                <li>Building complex paths with <code>relativeLineTo</code> and <code>close</code></li>
+                <li>Creating decorative shapes (circles, triangles) with gradients</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>🖼️ Visual Result</h2>
+            <p>
+                Here's what the final background design looks like:
+            </p>
+
+            <div class="property-layout">
+                <div class="property-image">
+                    <img src="../assets/bg-design-example.png"
+                        alt="Flutter Background Design Example with Waves, Circles, and Triangles">
+                    <p class="image-caption">Beautiful background design featuring pink and blue elastic waves, gradient
+                        circles, and a rotated triangle with gradient fill.</p>
+                </div>
+                <div class="property-code">
+                    <h4>🎨 Design Elements:</h4>
+                    <ul>
+                        <li><strong>Top Wave (Pink):</strong> Elastic wave pattern created using
+                            <code>relativeCubicTo</code>
+                            that curves from the top-left, creating a smooth S-shaped curve
+                        </li>
+                        <li><strong>Bottom Wave (Blue):</strong> Similar elastic wave pattern at the bottom, creating
+                            visual balance</li>
+                        <li><strong>Bottom Left Circle:</strong> Large gradient circle with purple-to-pink radial
+                            gradient positioned at the bottom-left corner</li>
+                        <li><strong>Bottom Right Circle:</strong> Smaller gradient circle with a more concentrated
+                            radial
+                            gradient at the bottom-right corner</li>
+                        <li><strong>Center Triangle:</strong> Rotated triangle (90 degrees) with linear gradient from
+                            purple to pink, positioned near the bottom-center</li>
+                    </ul>
+                    <div class="info-box">
+                        <strong>💡 Design Tip:</strong> The combination of elastic waves, gradient circles, and rotated
+                        shapes creates a modern, dynamic background that adds visual interest without being distracting.
+                        The use of relative coordinates makes the design responsive to different screen sizes.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🏗️ Step 1: Project Structure and Imports</h2>
+            <p>First, we need to import the necessary packages and set up the basic structure.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+import 'package:flutter/material.dart';<br>
+                </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📱 Step 2: Creating the BgDesign Widget</h2>
+            <p>The main widget that builds the background design screen.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+class BgDesign extends StatelessWidget {<br>
+&nbsp;&nbsp;const BgDesign({super.key});<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;Widget build(BuildContext context) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return Scaffold(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;body: CustomPaint(painter: BgDesignPainter(), size: Size.infinite),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;}<br>
+}<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Key Points:</strong>
+                <ul>
+                    <li><code>CustomPaint</code> with <code>Size.infinite</code> makes the painter fill the entire
+                        screen</li>
+                    <li>The <code>BgDesignPainter</code> handles all the drawing logic</li>
+                    <li>No additional UI widgets are needed - the entire design is drawn on the canvas</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🎨 Step 3: Creating the BgDesignPainter Class</h2>
+            <p>This is the main painter class that draws all the background elements.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+class BgDesignPainter extends CustomPainter {<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Drawing code will go here<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;bool shouldRepaint(covariant CustomPainter oldDelegate) => false;<br>
+}<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Note:</strong> <code>shouldRepaint</code> returns <code>false</code> because the background
+                is
+                static and doesn't need to be repainted when the widget rebuilds. This improves performance.
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🌊 Step 4: Drawing the Top Pink Wave</h2>
+            <p>Create the first elastic wave at the top of the screen using <code>relativeCubicTo</code>.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+// ! Top wave<br>
+final pinkWavePaint = Paint()<br>
+&nbsp;&nbsp;..color = Colors.pink.shade600<br>
+&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+<br>
+final path = Path();<br>
+<br>
+// Start from top-left<br>
+path.moveTo(0, 0);<br>
+<br>
+// Go down a bit<br>
+path.lineTo(0, size.height * 0.3);<br>
+<br>
+// Elastic wave using relativeCubicTo<br>
+path.relativeCubicTo(<br>
+&nbsp;&nbsp;size.width * 0.25,<br>
+&nbsp;&nbsp;-size.height * 0.15, // control point 1 (relative)<br>
+&nbsp;&nbsp;size.width * 0.75,<br>
+&nbsp;&nbsp;size.height * -0.093, // control point 2 (relative)<br>
+&nbsp;&nbsp;size.width,<br>
+&nbsp;&nbsp;size.width * -0.35, // end point (relative)<br>
+);<br>
+<br>
+// Close shape<br>
+path.lineTo(size.width, 0);<br>
+path.close();<br>
+<br>
+// Draw the path<br>
+canvas.drawPath(path, pinkWavePaint);<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Explanation:</strong>
+                <ul>
+                    <li><code>moveTo(0, 0)</code> - Start at the top-left corner</li>
+                    <li><code>lineTo(0, size.height * 0.3)</code> - Draw a vertical line down to 30% of screen height
+                    </li>
+                    <li><code>relativeCubicTo</code> - Creates an elastic S-curve using relative coordinates. The two
+                        control points create the wave effect</li>
+                    <li><code>lineTo(size.width, 0)</code> - Draw a horizontal line back to the top-right</li>
+                    <li><code>close()</code> - Closes the path to create a filled shape</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🌊 Step 5: Drawing the Bottom Blue Wave</h2>
+            <p>Create the second elastic wave at the bottom of the screen.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+// ! Bottom wave<br>
+final blueWavePaint = Paint()<br>
+&nbsp;&nbsp;..color = Colors.blue<br>
+&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+<br>
+final path2 = Path();<br>
+<br>
+// Start from bottom-left<br>
+path2.moveTo(0, size.height);<br>
+<br>
+// Go up a bit<br>
+path2.lineTo(0, size.height * 0.95);<br>
+<br>
+// Elastic wave using relativeCubicTo<br>
+path2.relativeCubicTo(<br>
+&nbsp;&nbsp;size.width * 0.25,<br>
+&nbsp;&nbsp;-size.height * 0.15, // control point 1 (relative)<br>
+&nbsp;&nbsp;size.width * 0.75,<br>
+&nbsp;&nbsp;size.height * -0.053, // control point 2 (relative)<br>
+&nbsp;&nbsp;size.width,<br>
+&nbsp;&nbsp;size.width * -0.35, // end point (relative)<br>
+);<br>
+<br>
+// Close shape<br>
+path2.lineTo(size.width, size.height);<br>
+path2.close();<br>
+<br>
+// Draw the path<br>
+canvas.drawPath(path2, blueWavePaint);<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Explanation:</strong>
+                <ul>
+                    <li>Similar structure to the top wave, but positioned at the bottom</li>
+                    <li>Uses a new <code>path2</code> to avoid conflicts with the first path</li>
+                    <li>The control points create a mirror effect, balancing the design</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>⭕ Step 6: Drawing the Bottom Left Circle with Radial Gradient</h2>
+            <p>Create a large gradient circle at the bottom-left corner.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+//! Bottom left Circle<br>
+final circlePaint = Paint()<br>
+&nbsp;&nbsp;..shader = RadialGradient(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;colors: [Colors.purple, Colors.pink],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;center: Alignment.bottomLeft,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;radius: 0.8,<br>
+&nbsp;&nbsp;).createShader(Rect.fromCircle(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;center: Offset(size.width * 0.2, size.height * 0.95),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;radius: size.width * 0.18,<br>
+&nbsp;&nbsp;))<br>
+&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+<br>
+canvas.drawCircle(<br>
+&nbsp;&nbsp;Offset(size.width - size.width, size.height),<br>
+&nbsp;&nbsp;size.width * 0.25,<br>
+&nbsp;&nbsp;circlePaint,<br>
+);<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Explanation:</strong>
+                <ul>
+                    <li><code>RadialGradient</code> - Creates a circular gradient that radiates from the center</li>
+                    <li><code>center: Alignment.bottomLeft</code> - Positions the gradient center at bottom-left</li>
+                    <li><code>radius: 0.8</code> - Controls how far the gradient extends</li>
+                    <li><code>createShader</code> - Converts the gradient into a shader that can be used with Paint</li>
+                    <li>The circle is positioned at the bottom-left corner with a radius of 25% of screen width</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>⭕ Step 7: Drawing the Bottom Right Circle</h2>
+            <p>Create a smaller gradient circle at the bottom-right corner.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+//! Bottom right Circle<br>
+final circlePaint2 = Paint()<br>
+&nbsp;&nbsp;..shader = RadialGradient(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;colors: [Colors.purple, Colors.pink],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;center: Alignment.center,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;radius: 0.2,<br>
+&nbsp;&nbsp;).createShader(Rect.fromCircle(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;center: Offset(size.width * 0.2, size.height * 0.95),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;radius: size.width * 0.18,<br>
+&nbsp;&nbsp;))<br>
+&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+<br>
+canvas.drawCircle(<br>
+&nbsp;&nbsp;Offset(size.width, size.height),<br>
+&nbsp;&nbsp;size.width * 0.15,<br>
+&nbsp;&nbsp;circlePaint2,<br>
+);<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Explanation:</strong>
+                <ul>
+                    <li>Similar to the left circle, but smaller (15% vs 25% of screen width)</li>
+                    <li><code>center: Alignment.center</code> - Creates a more concentrated gradient effect</li>
+                    <li><code>radius: 0.2</code> - Smaller radius creates a more focused gradient</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🔺 Step 8: Drawing the Rotated Triangle with Linear Gradient</h2>
+            <p>Create a triangle using <code>relativeLineTo</code> and rotate it using canvas transformations.</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+//! Bottom center Triangle<br>
+final trianglePaint = Paint()<br>
+&nbsp;&nbsp;..shader = LinearGradient(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;colors: [Colors.purple, Colors.pink],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;begin: Alignment.topLeft,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end: Alignment.bottomRight,<br>
+&nbsp;&nbsp;).createShader(Rect.fromCircle(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;center: Offset(size.width * 0.2, size.height * 0.95),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;radius: size.width * 0.18,<br>
+&nbsp;&nbsp;))<br>
+&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+<br>
+final trianglePath = Path();<br>
+<br>
+// Start at center, positioned a bit upwards from the bottom<br>
+final startX = size.width * 0.75;<br>
+final startY = size.height * 0.812; // A bit upwards from bottom<br>
+trianglePath.moveTo(startX, startY);<br>
+<br>
+// Use relativeLineTo to create triangle<br>
+// Move to bottom-right<br>
+trianglePath.relativeLineTo(size.width * 0.12, size.height * 0.06);<br>
+// Move to bottom-left<br>
+trianglePath.relativeLineTo(-size.width * 0.24, 0);<br>
+// Close the path (back to start)<br>
+trianglePath.close();<br>
+<br>
+// Calculate triangle center for rotation<br>
+final triangleCenterX = startX;<br>
+final triangleCenterY = startY + (size.height * 0.06) / 2;<br>
+<br>
+// Rotate triangle 90 degrees (π/2 radians)<br>
+canvas.save();<br>
+canvas.translate(triangleCenterX, triangleCenterY);<br>
+canvas.rotate(-3.14159 / 2); // 90 degrees in radians<br>
+canvas.translate(-triangleCenterX, -triangleCenterY);<br>
+canvas.drawPath(trianglePath, trianglePaint);<br>
+canvas.restore();<br>
+                </code>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Explanation:</strong>
+                <ul>
+                    <li><code>LinearGradient</code> - Creates a linear gradient from top-left to bottom-right</li>
+                    <li><code>relativeLineTo</code> - Draws lines relative to the current point, making it easy to build
+                        shapes</li>
+                    <li><code>close()</code> - Closes the triangle path</li>
+                    <li><code>canvas.save()</code> - Saves the current canvas state</li>
+                    <li><code>canvas.translate()</code> - Moves the origin to the triangle center</li>
+                    <li><code>canvas.rotate()</code> - Rotates the canvas by -90 degrees (π/2 radians)</li>
+                    <li><code>canvas.restore()</code> - Restores the canvas state, undoing the transformations</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📝 Complete Code</h2>
+            <p>Here's the complete code for the background design example:</p>
+
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+import 'package:flutter/material.dart';<br>
+<br>
+class BgDesign extends StatelessWidget {<br>
+&nbsp;&nbsp;const BgDesign({super.key});<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;Widget build(BuildContext context) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return Scaffold(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;body: CustomPaint(painter: BgDesignPainter(), size: Size.infinite),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;}<br>
+}<br>
+<br>
+class BgDesignPainter extends CustomPainter {<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// ! Top wave<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final pinkWavePaint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.pink.shade600<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final path = Path();<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Start from top-left<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path.moveTo(0, 0);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Go down a bit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path.lineTo(0, size.height * 0.3);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Elastic wave using relativeCubicTo<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path.relativeCubicTo(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.width * 0.25,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-size.height * 0.15, // control point 1 (relative)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.width * 0.75,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.height * -0.093, // control point 2 (relative)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.width,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.width * -0.35, // end point (relative)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Close shape<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path.lineTo(size.width, 0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path.close();<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Draw the path first<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawPath(path, pinkWavePaint);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// ! Bottom wave<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final blueWavePaint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final path2 = Path();<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Start from top-left<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path2.moveTo(0, size.height);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Go down a bit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path2.lineTo(0, size.height * 0.95);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Elastic wave using relativeCubicTo<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path2.relativeCubicTo(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.width * 0.25,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-size.height * 0.15, // control point 1 (relative)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.width * 0.75,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.height * -0.053, // control point 2 (relative)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.width,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.width * -0.35, // end point (relative)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Close shape<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path2.lineTo(size.width, size.height);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path2.close();<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Draw the path first<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawPath(path2, blueWavePaint);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;//! Bottom left Circle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final circlePaint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..shader = RadialGradient(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;colors: [Colors.purple, Colors.pink],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;center: Alignment.bottomLeft,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;radius: 0.8,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;).createShader(Rect.fromCircle(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;center: Offset(size.width * 0.2, size.height * 0.95),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;radius: size.width * 0.18,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawCircle(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Offset(size.width - size.width, size.height),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.width * 0.25,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;circlePaint,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;//! Bottom right Circle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final circlePaint2 = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..shader = RadialGradient(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;colors: [Colors.purple, Colors.pink],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;center: Alignment.center,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;radius: 0.2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;).createShader(Rect.fromCircle(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;center: Offset(size.width * 0.2, size.height * 0.95),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;radius: size.width * 0.18,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawCircle(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Offset(size.width, size.height),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.width * 0.15,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;circlePaint2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;//! Bottom center Triangle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final trianglePaint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..shader = LinearGradient(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;colors: [Colors.purple, Colors.pink],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begin: Alignment.topLeft,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end: Alignment.bottomRight,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;).createShader(Rect.fromCircle(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;center: Offset(size.width * 0.2, size.height * 0.95),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;radius: size.width * 0.18,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final trianglePath = Path();<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Start at center, positioned a bit upwards from the bottom<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final startX = size.width * 0.75;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final startY = size.height * 0.812; // A bit upwards from bottom<br>
+&nbsp;&nbsp;&nbsp;&nbsp;trianglePath.moveTo(startX, startY);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Use relativeLineTo to create triangle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Move to bottom-right<br>
+&nbsp;&nbsp;&nbsp;&nbsp;trianglePath.relativeLineTo(size.width * 0.12, size.height * 0.06);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Move to bottom-left<br>
+&nbsp;&nbsp;&nbsp;&nbsp;trianglePath.relativeLineTo(-size.width * 0.24, 0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Close the path (back to start)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;trianglePath.close();<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Calculate triangle center for rotation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final triangleCenterX = startX;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final triangleCenterY = startY + (size.height * 0.06) / 2;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Rotate triangle 90 degrees (π/2 radians)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.translate(triangleCenterX, triangleCenterY);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.rotate(-3.14159 / 2); // 90 degrees in radians<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.translate(-triangleCenterX, -triangleCenterY);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawPath(trianglePath, trianglePaint);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.restore();<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;bool shouldRepaint(covariant CustomPainter oldDelegate) => false;<br>
+}<br>
+                </code>
+            </div>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">
+        <span>↑</span>
+    </button>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.nextElementSibling;
+            const code = codeBlock.textContent;
+
+            navigator.clipboard.writeText(code).then(() => {
+                button.classList.add('copied');
+                const originalText = button.querySelector('.copy-text').textContent;
+                button.querySelector('.copy-text').textContent = 'Copied!';
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.querySelector('.copy-text').textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        // Back to top button
+        const backToTopButton = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -273,7 +273,88 @@
             transform: translateY(-2px);
         }
 
+        .demo-link-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 25px 30px;
+            margin: 30px 0;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .demo-link-container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(102, 126, 234, 0.4);
+        }
+
+        .demo-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .demo-link-content {
+            flex: 1;
+        }
+
+        .demo-link-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demo-link-title::before {
+            content: '🎨';
+            font-size: 1.2em;
+        }
+
+        .demo-link-description {
+            font-size: 1em;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .demo-link-arrow {
+            font-size: 1.8em;
+            margin-left: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .demo-link:hover .demo-link-arrow {
+            transform: translateX(8px);
+        }
+
         @media (max-width: 900px) {
+            .demo-link-container {
+                padding: 20px;
+            }
+
+            .demo-link {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .demo-link-arrow {
+                margin-left: 0;
+                margin-top: 15px;
+                align-self: flex-end;
+            }
+
+            .demo-link-title {
+                font-size: 1.2em;
+            }
+
+            .demo-link-description {
+                font-size: 0.95em;
+            }
+
             .property-layout {
                 flex-direction: column;
             }
@@ -800,6 +881,32 @@ void paint(Canvas canvas, Size size) {<br>
                         the wave pattern is created with weight 0.707 for smooth circular arcs. The shape is filled with
                         semi-transparent blue and outlined with a solid blue stroke.</p>
                 </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📱 Example Screen</h2>
+            <p>
+                See a complete, real-world example of how Path methods are used together to create beautiful background
+                designs:
+            </p>
+
+            <div class="demo-link-container">
+                <a href="../examples/background-design-example.html" class="demo-link">
+                    <div class="demo-link-content">
+                        <div class="demo-link-title">Background Design Example</div>
+                        <div class="demo-link-description">
+                            Step-by-step walkthrough of creating a beautiful background design with elastic waves,
+                            gradient
+                            circles, and rotated triangles using Path methods. Learn how to combine
+                            <code>relativeCubicTo</code>,
+                            <code>RadialGradient</code>, <code>LinearGradient</code>, and canvas transformations to
+                            create
+                            modern, dynamic background effects.
+                        </div>
+                    </div>
+                    <div class="demo-link-arrow">→</div>
+                </a>
             </div>
         </section>
 
