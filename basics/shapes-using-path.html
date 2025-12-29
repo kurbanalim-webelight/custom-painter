@@ -331,6 +331,35 @@
             transform: translateX(8px);
         }
 
+        .example-images {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .example-item {
+            width: 100%;
+            text-align: center;
+        }
+
+        .example-item img {
+            max-width: 100%;
+            height: auto;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .example-item .image-caption {
+            margin-top: 10px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
         @media (max-width: 900px) {
             .demo-link-container {
                 padding: 20px;
@@ -378,6 +407,228 @@
 
 
         <section class="section">
+            <h2>📚 Overview</h2>
+            <p>
+                This page provides a comprehensive reference for methods that add predefined shapes to Flutter's
+                <code>Path</code>
+                class. These methods allow you to quickly add common geometric shapes (rectangles, ovals, polygons) to
+                your paths
+                without manually drawing them with lines and curves.
+            </p>
+            <p><strong>Adding Shapes to Path Methods:</strong></p>
+            <ul>
+                <li><strong>addRect:</strong> Add rectangles to paths for creating rectangular shapes</li>
+                <li><strong>addOval:</strong> Add ovals and ellipses (including circles) to paths</li>
+                <li><strong>addRRect:</strong> Add rounded rectangles with customizable corner radii</li>
+                <li><strong>addPolygon:</strong> Add polygons from a list of points (stars, triangles, etc.)</li>
+                <li><strong>addPath:</strong> Combine multiple paths together to create complex shapes</li>
+            </ul>
+            <div class="info-box">
+                <strong>💡 Key Concept:</strong> These methods add shapes as closed contours to your path. You can
+                combine multiple
+                shapes in a single path, apply transformations, and use them with <code>canvas.drawPath()</code> to
+                render complex
+                graphics efficiently.
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>❓ Why Use Path.addRect() When I Can Use canvas.drawRect()?</h2>
+            <p>
+                <strong>This is an excellent, fundamental question</strong> — you've reached the point where Canvas vs
+                Path
+                actually matters.
+            </p>
+            <div class="highlight-box">
+                <strong>🎯 Short Answer:</strong><br>
+                <strong>Canvas draws shapes.</strong><br>
+                <strong>Path describes shapes.</strong>
+            </div>
+            <p>
+                Path lets you treat multiple shapes as <strong>ONE logical shape</strong>. That single idea unlocks
+                everything
+                below.
+            </p>
+
+            <h3>1️⃣ One Paint, One Draw Call (Performance & Consistency)</h3>
+            <p><strong>❌ Without Path (multiple draw calls):</strong></p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+canvas.drawRect(rect1, paint);<br>
+canvas.drawRect(rect2, paint);<br>
+canvas.drawRect(rect3, paint);<br>
+// Multiple GPU calls, harder to manage combined effects, repeated logic
+                </code>
+            </div>
+
+            <p><strong>✅ With Path (single draw call):</strong></p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+path.addRect(rect1);<br>
+path.addRect(rect2);<br>
+path.addRect(rect3);<br>
+canvas.drawPath(path, paint);<br>
+// ✔ Faster, ✔ Cleaner, ✔ Consistent rendering
+                </code>
+            </div>
+            <p><strong>Important:</strong> Flutter batches paths more efficiently than separate primitives.</p>
+
+            <h3>2️⃣ Boolean Shape Operations (IMPOSSIBLE with canvas.drawRect)</h3>
+            <p>Path supports holes, cut-outs, unions, and intersections.</p>
+            <p><strong>🔥 Example: "Punch a hole"</strong></p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final path = Path();<br>
+&nbsp;&nbsp;final paint = Paint()..color = Colors.blue;<br>
+<br>
+&nbsp;&nbsp;// Create a rectangle with a hole<br>
+&nbsp;&nbsp;path.addRect(Rect.fromLTWH(50, 50, 200, 200));<br>
+&nbsp;&nbsp;path.addOval(Rect.fromCircle(center: Offset(150, 150), radius: 50));<br>
+&nbsp;&nbsp;path.fillType = PathFillType.evenOdd; // Creates the hole<br>
+<br>
+&nbsp;&nbsp;canvas.drawPath(path, paint);<br>
+}<br>
+                </code>
+            </div>
+            <p><strong>❌ You CANNOT do this with drawRect alone.</strong></p>
+
+            <h3>3️⃣ Complex Shapes = Combination of Simple Shapes</h3>
+            <p>When you combine multiple shapes in a path:</p>
+            <ul>
+                <li>They become a single compound shape</li>
+                <li>Unified fill, stroke, clipping, and animation</li>
+            </ul>
+            <p><strong>Real-world examples:</strong></p>
+            <ul>
+                <li>Bar chart (multiple bars = one shape)</li>
+                <li>Histogram</li>
+                <li>Grid blocks</li>
+                <li>Skeleton loaders</li>
+            </ul>
+
+            <!-- <h3>4️⃣ Clipping (Path is KING here)</h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+canvas.clipPath(path);<br>
+canvas.drawImage(image, Offset.zero, paint);<br>
+// You can clip any drawing using a path
+                </code>
+            </div>
+            <p><strong>❌ drawRect cannot clip anything.</strong></p>
+
+            <h3>5️⃣ Hit Testing (Path.contains)</h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+if (path.contains(touchPoint)) {<br>
+&nbsp;&nbsp;// User touched ANY rect in the group<br>
+}
+                </code>
+            </div>
+            <p><strong>This is HUGE.</strong> With drawRect, you'd need to manually check each rect.</p>
+
+            <h3>6️⃣ Stroke Continuity (Very Important Visually)</h3>
+            <p><strong>With Path:</strong></p>
+            <ul>
+                <li>Stroke joins correctly</li>
+                <li>No overlaps</li>
+                <li>No doubled edges</li>
+            </ul>
+            <p><strong>With multiple drawRect:</strong></p>
+            <ul>
+                <li>Overlapping strokes</li>
+                <li>Visual artifacts</li>
+            </ul>
+
+            <h3>7️⃣ Animations (Path can MORPH)</h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+final animatedPath = Path.lerp(pathA, pathB, t)!;<br>
+// You can animate between shapes, morph geometry, build liquid effects
+                </code>
+            </div>
+            <p><strong>❌ You cannot morph individual drawRect calls.</strong></p> -->
+
+            <h3>4️⃣ Transforms Apply to EVERYTHING at Once</h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+canvas.save();<br>
+canvas.translate(50, 50);<br>
+canvas.drawPath(path, paint);<br>
+canvas.restore();<br>
+// All shapes move together
+                </code>
+            </div>
+            <p>Without Path, you must translate each rect manually.</p>
+
+            <h3>🧠 When SHOULD you use canvas.drawRect()?</h3>
+            <p>Use <code>drawRect</code> when:</p>
+            <ul>
+                <li>Single shape</li>
+                <li>Static</li>
+                <li>No interaction</li>
+                <li>No clipping</li>
+                <li>No animation</li>
+                <li>No boolean logic</li>
+            </ul>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                    <span class="copy-text">Copy</span>
+                </button>
+                <code>
+// Perfectly fine for simple cases<br>
+canvas.drawRect(Rect.fromLTWH(0, 0, 100, 100), paint);
+                </code>
+            </div>
+
+            <h3>🧠 When SHOULD you use Path.addRect()?</h3>
+            <p>Use Path when:</p>
+            <ul>
+                <li>Multiple shapes act as one</li>
+                <li>You need holes or cut-outs</li>
+                <li>You need clipping</li>
+                <li>You need hit-testing</li>
+                <li>You need animation</li>
+                <li>You want clean strokes</li>
+                <li>You want scalable geometry</li>
+            </ul>
+
+            <div class="highlight-box">
+                <strong>🔥 Real-world Analogy:</strong><br>
+                <code>canvas.drawRect()</code> → drawing individual bricks<br>
+                <code>Path</code> → designing the entire building blueprint<br>
+            </div>
+
+            <div class="success-box">
+                <strong>✅ Final Rule of Thumb (Memorize This):</strong><br>
+                <strong>If a shape is part of a system → use Path</strong><br>
+                <strong>If a shape stands alone → use Canvas</strong>
+            </div>
+        </section>
+
+        <section class="section">
             <h2>🔷 Adding Predefined Shapes to Paths</h2>
 
             <h3><code>addRect(Rect rect)</code></h3>
@@ -392,29 +643,33 @@
                             <span class="copy-text">Copy</span>
                         </button>
                         <code>
-@override<br>
-void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;final path = Path();<br>
-&nbsp;&nbsp;final paint = Paint()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
-&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+class AddRectExamplePainter extends CustomPainter {<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final paint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
 <br>
-&nbsp;&nbsp;// Add multiple rectangles to the path<br>
-&nbsp;&nbsp;path.addRect(Rect.fromLTWH(50, 50, 100, 80));<br>
-&nbsp;&nbsp;path.addRect(Rect.fromLTWH(200, 50, 100, 80));<br>
-&nbsp;&nbsp;path.addRect(Rect.fromLTWH(125, 150, 100, 80));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final path = Path();<br>
 <br>
-&nbsp;&nbsp;canvas.drawPath(path, paint);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Add first rectangle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path.addRect(Rect.fromLTWH(40, 40, 100, 80));<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Add second rectangle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path.addRect(Rect.fromLTWH(180, 40, 100, 80));<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Add third rectangle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path.addRect(Rect.fromLTWH(110, 150, 100, 80));<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Draw all rectangles at once<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawPath(path, paint);<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;bool shouldRepaint(covariant CustomPainter oldDelegate) => false;<br>
 }<br>
                         </code>
                     </div>
-                </div>
-
-                <div class="property-image">
-                    <img src="../assets/path_add_rect.png" alt="Flutter Path addRect visual example">
-                    <p class="image-caption">Visual guide showing how <code>addRect()</code> adds rectangles to the
-                        path.
-                    </p>
                 </div>
             </div>
 
@@ -433,25 +688,67 @@ void paint(Canvas canvas, Size size) {<br>
                         <code>
 @override<br>
 void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final strokePaint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3;<br>
+<br>
+&nbsp;&nbsp;final fillPaint = Paint()..style = PaintingStyle.fill;<br>
+<br>
+&nbsp;&nbsp;// Example: Decorative wave border using relativeConicTo<br>
 &nbsp;&nbsp;final path = Path();<br>
-&nbsp;&nbsp;final paint = Paint()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
-&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+&nbsp;&nbsp;final startY = size.height / 2;<br>
+&nbsp;&nbsp;final startX = 50.0;<br>
 <br>
-&nbsp;&nbsp;// Add an oval (circle when width == height)<br>
-&nbsp;&nbsp;path.addOval(Rect.fromLTWH(50, 50, 100, 100));<br>
+&nbsp;&nbsp;path.moveTo(startX, startY);<br>
 <br>
-&nbsp;&nbsp;// Add an ellipse<br>
-&nbsp;&nbsp;path.addOval(Rect.fromLTWH(200, 50, 150, 80));<br>
+&nbsp;&nbsp;// Create a wave pattern using relativeConicTo<br>
+&nbsp;&nbsp;// Each curve is drawn relative to the previous position<br>
+&nbsp;&nbsp;const segmentWidth = 70.0;<br>
+&nbsp;&nbsp;const waveHeight = 50.0;<br>
+&nbsp;&nbsp;const numWaves = 2;<br>
 <br>
-&nbsp;&nbsp;canvas.drawPath(path, paint);<br>
+&nbsp;&nbsp;for (int i = 0; i &lt; numWaves; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Upward curve (peak)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path.relativeConicTo(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segmentWidth / 2, // control point x (relative)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-waveHeight, // control point y (relative) - up<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segmentWidth, // end point x (relative)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0, // end point y (relative) - back to center<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.707, // weight for smooth circular arc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Downward curve (valley)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path.relativeConicTo(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segmentWidth / 2, // control point x (relative)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;waveHeight, // control point y (relative) - down<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segmentWidth, // end point x (relative)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0, // end point y (relative) - back to center<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.707, // weight for smooth circular arc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;// Close the path to create a filled shape<br>
+&nbsp;&nbsp;path.lineTo(startX + (numWaves * segmentWidth * 2), size.height);<br>
+&nbsp;&nbsp;path.lineTo(startX, size.height);<br>
+&nbsp;&nbsp;path.close();<br>
+<br>
+&nbsp;&nbsp;// Draw filled wave<br>
+&nbsp;&nbsp;fillPaint.color = Colors.blue.withValues(alpha: 0.3);<br>
+&nbsp;&nbsp;canvas.drawPath(path, fillPaint);<br>
+<br>
+&nbsp;&nbsp;// Draw stroke<br>
+&nbsp;&nbsp;strokePaint.color = Colors.blue;<br>
+&nbsp;&nbsp;canvas.drawPath(path, strokePaint);<br>
+<br>
+&nbsp;&nbsp;// Draw start point marker<br>
+&nbsp;&nbsp;canvas.drawCircle(Offset(startX, startY), 6, Paint()..color = Colors.green);<br>
 }<br>
                         </code>
                     </div>
                 </div>
 
                 <div class="property-image">
-                    <img src="../assets/path_add_oval.png" alt="Flutter Path addOval visual example">
+                    <img src="../assets/add-oval-using-path.png" alt="Flutter Path addOval visual example">
                     <p class="image-caption">Visual guide showing how <code>addOval()</code> adds ovals and ellipses to
                         the path.</p>
                 </div>
@@ -471,13 +768,25 @@ void paint(Canvas canvas, Size size) {<br>
                         <code>
 @override<br>
 void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;final path = Path();<br>
-&nbsp;&nbsp;final paint = Paint()..color = Colors.blue;<br>
+&nbsp;&nbsp;final paint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
 <br>
-&nbsp;&nbsp;path.addRRect(RRect.fromRectAndRadius(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(50, 50, 100, 80),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Radius.circular(10),<br>
-&nbsp;&nbsp;));<br>
+&nbsp;&nbsp;final path = Path();<br>
+<br>
+&nbsp;&nbsp;path.addRRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;RRect.fromRectAndRadius(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(40, 40, 120, 80),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const Radius.circular(16),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;path.addRRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;RRect.fromRectAndRadius(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(200, 40, 120, 80),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const Radius.circular(16),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;);<br>
 <br>
 &nbsp;&nbsp;canvas.drawPath(path, paint);<br>
 }<br>
@@ -486,7 +795,7 @@ void paint(Canvas canvas, Size size) {<br>
                 </div>
 
                 <div class="property-image">
-                    <img src="../assets/path_add_rrect.png" alt="Flutter Path addRRect visual example">
+                    <img src="../assets/add-rrect-using-path.png" alt="Flutter Path addRRect visual example">
                     <p class="image-caption">Visual guide showing how <code>addRRect()</code> adds rounded rectangles to
                         the path.</p>
                 </div>
@@ -508,27 +817,79 @@ void paint(Canvas canvas, Size size) {<br>
                         <code>
 @override<br>
 void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;final path = Path();<br>
-&nbsp;&nbsp;final paint = Paint()..color = Colors.blue;<br>
+&nbsp;&nbsp;final strokePaint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3;<br>
 <br>
-&nbsp;&nbsp;path.addPolygon([<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(50, 50),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(150, 50),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(150, 150),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(50, 150),<br>
-&nbsp;&nbsp;], true); // true = close the polygon<br>
+&nbsp;&nbsp;final fillPaint = Paint()..style = PaintingStyle.fill;<br>
 <br>
-&nbsp;&nbsp;canvas.drawPath(path, paint);<br>
+&nbsp;&nbsp;// ================================<br>
+&nbsp;&nbsp;// 1️⃣ Triangle (Top Left)<br>
+&nbsp;&nbsp;// ================================<br>
+&nbsp;&nbsp;final trianglePath = Path();<br>
+&nbsp;&nbsp;trianglePath.addPolygon(const [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Offset(80, 40),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Offset(40, 140),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Offset(120, 140),<br>
+&nbsp;&nbsp;], false);<br>
+&nbsp;&nbsp;canvas.drawPath(trianglePath, fillPaint..color = Colors.blue);<br>
+<br>
+&nbsp;&nbsp;// ================================<br>
+&nbsp;&nbsp;// 2️⃣ Pentagon (Center Left)<br>
+&nbsp;&nbsp;// ================================<br>
+&nbsp;&nbsp;final pentagonPath = Path();<br>
+&nbsp;&nbsp;final pentagonCenter = Offset(100, size.height / 2);<br>
+&nbsp;&nbsp;const pentagonRadius = 60.0;<br>
+&nbsp;&nbsp;final pentagonPoints = &lt;Offset&gt;[];<br>
+<br>
+&nbsp;&nbsp;for (int i = 0; i &lt; 5; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final angle = (i * 2 * math.pi / 5) - math.pi / 2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pentagonPoints.add(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Offset(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pentagonCenter.dx + pentagonRadius * math.cos(angle),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pentagonCenter.dy + pentagonRadius * math.sin(angle),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;pentagonPath.addPolygon(pentagonPoints, true);<br>
+&nbsp;&nbsp;canvas.drawPath(pentagonPath, strokePaint..color = Colors.purple);<br>
+<br>
+&nbsp;&nbsp;// ================================<br>
+&nbsp;&nbsp;// 4️⃣ Star Polygon (Center Right)<br>
+&nbsp;&nbsp;// ================================<br>
+&nbsp;&nbsp;final starPath = Path();<br>
+&nbsp;&nbsp;final starCenter = Offset(size.width - 100, size.height / 2);<br>
+&nbsp;&nbsp;const outerRadius = 60.0;<br>
+&nbsp;&nbsp;const innerRadius = 30.0;<br>
+&nbsp;&nbsp;final starPoints = &lt;Offset&gt;[];<br>
+<br>
+&nbsp;&nbsp;for (int i = 0; i &lt; 10; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final angle = (i * math.pi / 5) - math.pi / 2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final radius = i.isEven ? outerRadius : innerRadius;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;starPoints.add(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Offset(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;starCenter.dx + radius * math.cos(angle),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;starCenter.dy + radius * math.sin(angle),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;starPath.addPolygon(starPoints, true);<br>
+&nbsp;&nbsp;canvas.drawPath(starPath, fillPaint..color = Colors.orange);<br>
 }<br>
                         </code>
                     </div>
                 </div>
 
                 <div class="property-image">
-                    <img src="../assets/path_add_polygon.png" alt="Flutter Path addPolygon visual example">
+                    <img src="../assets/add-polygon-using-path.png" alt="Flutter Path addPolygon visual example">
                     <p class="image-caption">Visual guide showing how <code>addPolygon()</code> creates polygons from a
                         list
-                        of points.</p>
+                        of points. The example demonstrates a filled blue triangle, a stroked purple pentagon, and a
+                        filled
+                        orange star polygon.</p>
                 </div>
             </div>
 
@@ -546,280 +907,43 @@ void paint(Canvas canvas, Size size) {<br>
                         <code>
 @override<br>
 void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;// Create a base path<br>
-&nbsp;&nbsp;final basePath = Path();<br>
-&nbsp;&nbsp;basePath.addRect(Rect.fromLTWH(0, 0, 50, 50));<br>
+&nbsp;&nbsp;final paint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.red<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
 <br>
-&nbsp;&nbsp;// Create a combined path<br>
-&nbsp;&nbsp;final combinedPath = Path();<br>
-&nbsp;&nbsp;combinedPath.addPath(basePath, Offset(50, 50));<br>
-&nbsp;&nbsp;combinedPath.addPath(basePath, Offset(150, 50));<br>
-&nbsp;&nbsp;combinedPath.addPath(basePath, Offset(100, 150));<br>
+&nbsp;&nbsp;// Step 1: Create ONE dot<br>
+&nbsp;&nbsp;final dotPath = Path()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..addOval(Rect.fromCircle(center: Offset.zero, radius: 6));<br>
 <br>
-&nbsp;&nbsp;canvas.drawPath(combinedPath, Paint()..color = Colors.blue);<br>
+&nbsp;&nbsp;// Step 2: Create a combined path<br>
+&nbsp;&nbsp;final dots = Path();<br>
+<br>
+&nbsp;&nbsp;// Step 3: Reuse the same dot at different positions<br>
+&nbsp;&nbsp;dots.addPath(dotPath, const Offset(80, 50));<br>
+&nbsp;&nbsp;dots.addPath(dotPath, const Offset(100, 50));<br>
+&nbsp;&nbsp;dots.addPath(dotPath, const Offset(120, 50));<br>
+<br>
+&nbsp;&nbsp;// Step 4: Draw all dots at once<br>
+&nbsp;&nbsp;canvas.drawPath(dots, paint);<br>
 }<br>
                         </code>
                     </div>
                 </div>
 
                 <div class="property-image">
-                    <img src="../assets/path_add_path.png" alt="Flutter Path addPath visual example">
-                    <p class="image-caption">Visual guide showing how <code>addPath()</code> combines multiple paths
-                        together.</p>
+                    <img src="../assets/add-path-using-path.png" alt="Flutter Path addPath visual example">
+                    <p class="image-caption">Visual guide showing how <code>addPath()</code> reuses a single path (dot)
+                        at multiple positions, creating three red dots arranged horizontally. This demonstrates the
+                        power
+                        of path reuse for creating patterns.</p>
                 </div>
             </div>
         </section>
-
-        <!-- <section class="section">
-            <h2>🔧 Path Operations</h2>
-
-            <h3><code>close()</code></h3>
-            <p><strong>Purpose:</strong> Close the current contour by drawing a line from the current point back to the
-                starting point.</p>
-            <p><strong>Common uses:</strong> Closing polygons, creating filled shapes, ensuring paths are complete.</p>
-
-            <div class="property-layout">
-                <div class="property-code">
-                    <div class="code-block">
-                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
-                            <span class="copy-text">Copy</span>
-                        </button>
-                        <code>
-@override<br>
-void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;final path = Path();<br>
-&nbsp;&nbsp;final paint = Paint()..color = Colors.blue;<br>
-<br>
-&nbsp;&nbsp;path.moveTo(50, 50);<br>
-&nbsp;&nbsp;path.lineTo(150, 50);<br>
-&nbsp;&nbsp;path.lineTo(150, 150);<br>
-&nbsp;&nbsp;path.lineTo(50, 150);<br>
-&nbsp;&nbsp;path.close(); // Closes back to (50, 50)<br>
-<br>
-&nbsp;&nbsp;canvas.drawPath(path, paint);<br>
-}<br>
-                        </code>
-                    </div>
-                </div>
-
-                <div class="property-image">
-                    <img src="../assets/path_close.png" alt="Flutter Path close visual example">
-                    <p class="image-caption">Visual guide showing how <code>close()</code> connects the last point back
-                        to the starting point.</p>
-                </div>
-            </div>
-
-            <h3><code>reset()</code></h3>
-            <p><strong>Purpose:</strong> Clear all path data, resetting it to an empty path.</p>
-            <p><strong>Common uses:</strong> Reusing path objects, clearing paths before rebuilding, memory
-                management.</p>
-
-            <div class="property-layout">
-                <div class="property-code">
-                    <div class="code-block">
-                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
-                            <span class="copy-text">Copy</span>
-                        </button>
-                        <code>
-@override<br>
-void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;final path = Path();<br>
-<br>
-&nbsp;&nbsp;path.moveTo(50, 50);<br>
-&nbsp;&nbsp;path.lineTo(100, 100);<br>
-&nbsp;&nbsp;// Path now has a line<br>
-<br>
-&nbsp;&nbsp;path.reset(); // Path is now empty<br>
-<br>
-&nbsp;&nbsp;// Start fresh<br>
-&nbsp;&nbsp;path.addRect(Rect.fromLTWH(0, 0, 100, 100));<br>
-<br>
-&nbsp;&nbsp;canvas.drawPath(path, Paint()..color = Colors.blue);<br>
-}<br>
-                        </code>
-                    </div>
-                </div>
-
-                <div class="property-image">
-                    <img src="../assets/path_reset.png" alt="Flutter Path reset visual example">
-                    <p class="image-caption">Visual guide showing how <code>reset()</code> clears the path, allowing you
-                        to start fresh.</p>
-                </div>
-            </div>
-
-            <h3><code>shift(Offset offset)</code></h3>
-            <p><strong>Purpose:</strong> Move the entire path by the given offset.</p>
-            <p><strong>Common uses:</strong> Repositioning paths, creating patterns, translating shapes.</p>
-
-            <div class="property-layout">
-                <div class="property-code">
-                    <div class="code-block">
-                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
-                            <span class="copy-text">Copy</span>
-                        </button>
-                        <code>
-@override<br>
-void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;final path = Path();<br>
-&nbsp;&nbsp;path.addRect(Rect.fromLTWH(0, 0, 50, 50));<br>
-<br>
-&nbsp;&nbsp;// Move path 100 pixels right, 100 pixels down<br>
-&nbsp;&nbsp;path.shift(Offset(100, 100));<br>
-<br>
-&nbsp;&nbsp;canvas.drawPath(path, Paint()..color = Colors.blue);<br>
-}<br>
-                        </code>
-                    </div>
-                </div>
-
-                <div class="property-image">
-                    <img src="../assets/path_shift.png" alt="Flutter Path shift visual example">
-                    <p class="image-caption">Visual guide showing how <code>shift()</code> moves the entire path by the
-                        specified offset.</p>
-                </div>
-            </div>
-
-            <h3><code>transform(Matrix4 matrix)</code></h3>
-            <p><strong>Purpose:</strong> Apply a matrix transformation to the path (rotate, scale, translate, skew).</p>
-            <p><strong>Common uses:</strong> Rotating paths, scaling paths, applying complex transformations, creating
-                transformed copies.</p>
-
-            <div class="property-layout">
-                <div class="property-code">
-                    <div class="code-block">
-                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
-                            <span class="copy-text">Copy</span>
-                        </button>
-                        <code>
-@override<br>
-void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;final path = Path();<br>
-&nbsp;&nbsp;path.addRect(Rect.fromLTWH(0, 0, 50, 50));<br>
-<br>
-&nbsp;&nbsp;// Create transformation matrix (rotate 45 degrees)<br>
-&nbsp;&nbsp;final matrix = Matrix4.identity()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;..translate(100.0, 100.0) // Move to center<br>
-&nbsp;&nbsp;&nbsp;&nbsp;..rotateZ(0.785); // 45 degrees<br>
-<br>
-&nbsp;&nbsp;path.transform(matrix.storage);<br>
-<br>
-&nbsp;&nbsp;canvas.drawPath(path, Paint()..color = Colors.blue);<br>
-}<br>
-                        </code>
-                    </div>
-                </div>
-
-                <div class="property-image">
-                    <img src="../assets/path_transform.png" alt="Flutter Path transform visual example">
-                    <p class="image-caption">Visual guide showing how <code>transform()</code> applies matrix
-                        transformations to paths (rotation, scaling, translation).</p>
-                </div>
-            </div>
-
-            <h3><code>contains(Offset point)</code></h3>
-            <p><strong>Purpose:</strong> Check if a point is inside the path (hit testing).</p>
-            <p><strong>Common uses:</strong> Hit testing, interactive shapes, detecting taps/clicks, collision
-                detection.
-            </p>
-
-            <div class="property-layout">
-                <div class="property-code">
-                    <div class="code-block">
-                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
-                            <span class="copy-text">Copy</span>
-                        </button>
-                        <code>
-@override<br>
-void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;final path = Path();<br>
-&nbsp;&nbsp;path.addRect(Rect.fromLTWH(50, 50, 100, 100));<br>
-<br>
-&nbsp;&nbsp;final point = Offset(75, 75);<br>
-&nbsp;&nbsp;if (path.contains(point)) {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;// Point is inside the path<br>
-&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawPath(path, Paint()..color = Colors.green);<br>
-&nbsp;&nbsp;} else {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawPath(path, Paint()..color = Colors.red);<br>
-&nbsp;&nbsp;}<br>
-}<br>
-                        </code>
-                    </div>
-                </div>
-
-                <div class="property-image">
-                    <img src="../assets/path_contains.png" alt="Flutter Path contains visual example">
-                    <p class="image-caption">Visual guide showing how <code>contains()</code> checks if a point is
-                        inside
-                        the path for hit testing.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>📏 Path Metrics</h2>
-
-            <h3><code>computeMetrics()</code></h3>
-            <p><strong>Purpose:</strong> Get measurements of path segments. Returns a <code>PathMetrics</code> object
-                that provides information about the path's length, contours, and segments.</p>
-            <p><strong>Common uses:</strong> Measuring path length, animating along paths, calculating distances,
-                analyzing path structure.</p>
-
-            <div class="property-layout">
-                <div class="property-code">
-                    <div class="code-block">
-                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
-                            <span class="copy-text">Copy</span>
-                        </button>
-                        <code>
-@override<br>
-void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;final path = Path();<br>
-&nbsp;&nbsp;path.addRect(Rect.fromLTWH(50, 50, 100, 100));<br>
-<br>
-&nbsp;&nbsp;// Get path metrics<br>
-&nbsp;&nbsp;final metrics = path.computeMetrics();<br>
-&nbsp;&nbsp;final metric = metrics.first;<br>
-<br>
-&nbsp;&nbsp;// Get path length<br>
-&nbsp;&nbsp;final length = metric.length;<br>
-<br>
-&nbsp;&nbsp;// Get point at specific distance along path<br>
-&nbsp;&nbsp;final tangent = metric.getTangentForOffset(length / 2);<br>
-&nbsp;&nbsp;if (tangent != null) {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;final point = tangent.position;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;// Use point for drawing or calculations<br>
-&nbsp;&nbsp;}<br>
-<br>
-&nbsp;&nbsp;canvas.drawPath(path, Paint()..color = Colors.blue);<br>
-}<br>
-                        </code>
-                    </div>
-                </div>
-
-                <div class="property-image">
-                    <img src="../assets/path_compute_metrics.png" alt="Flutter Path computeMetrics visual example">
-                    <p class="image-caption">Visual guide showing how <code>computeMetrics()</code> provides path
-                        measurements and allows accessing points along the path.</p>
-                </div>
-            </div>
-
-            <div class="info-box">
-                <strong>💡 Key Points:</strong>
-                <ul>
-                    <li><code>computeMetrics()</code> returns an iterable of <code>PathMetric</code> objects</li>
-                    <li>Each <code>PathMetric</code> represents one contour in the path</li>
-                    <li>Use <code>metric.length</code> to get the total length of the contour</li>
-                    <li>Use <code>getTangentForOffset()</code> to get position and direction at a specific distance
-                    </li>
-                    <li>Useful for path animations and measurements</li>
-                </ul>
-            </div>
-        </section> -->
 
         <section class="section">
             <h2>📋 Complete Path Methods Reference</h2>
 
-            <h3>Adding Shapes to Path</h3>
+            <h3>Adding Predefined Shapes to Path</h3>
             <table>
                 <thead>
                     <tr>
@@ -832,112 +956,49 @@ void paint(Canvas canvas, Size size) {<br>
                     <tr>
                         <td><code>addRect(Rect rect)</code></td>
                         <td><code>Rect rect</code></td>
-                        <td>Add rectangle to path</td>
+                        <td>Adds a rectangle to the path as a closed contour. The rectangle is defined by a Rect object
+                            specifying position and size.</td>
                     </tr>
                     <tr>
                         <td><code>addOval(Rect rect)</code></td>
                         <td><code>Rect rect</code></td>
-                        <td>Add oval/ellipse to path</td>
+                        <td>Adds an oval (ellipse) to the path. The rect parameter defines the bounding box of the oval.
+                            When width equals height, creates a circle.</td>
                     </tr>
                     <tr>
                         <td><code>addRRect(RRect rrect)</code></td>
                         <td><code>RRect rrect</code></td>
-                        <td>Add rounded rectangle to path</td>
+                        <td>Adds a rounded rectangle to the path. The rrect parameter includes corner radius information
+                            for creating modern UI shapes.</td>
                     </tr>
                     <tr>
                         <td><code>addPolygon(List&lt;Offset&gt; points, bool close)</code></td>
-                        <td><code>List&lt;Offset&gt;, bool</code></td>
-                        <td>Add polygon from points</td>
+                        <td><code>List&lt;Offset&gt; points, bool close</code></td>
+                        <td>Adds a polygon from a list of points. If close is true, connects the last point to the
+                            first, creating a closed shape.</td>
                     </tr>
                     <tr>
                         <td><code>addPath(Path path, Offset offset)</code></td>
-                        <td><code>Path, Offset</code></td>
-                        <td>Add another path to this path</td>
+                        <td><code>Path path, Offset offset</code></td>
+                        <td>Adds another path to this path, optionally offset by the given offset. Useful for combining
+                            multiple paths or creating patterns.</td>
                     </tr>
                 </tbody>
             </table>
+        </section>
+        <section class="section">
+            <h2>🖼️ Visual Guide</h2>
+            <p>
+                Here is a comprehensive visual guide to Canvas Drawing APIs:
+            </p>
 
-            <!-- <h3>Path Operations</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Method</th>
-                        <th>Parameters</th>
-                        <th>Return Type</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>reset()</code></td>
-                        <td>–</td>
-                        <td><code>void</code></td>
-                        <td>Clear all path data</td>
-                    </tr>
-                    <tr>
-                        <td><code>shift(Offset offset)</code></td>
-                        <td><code>Offset offset</code></td>
-                        <td><code>void</code></td>
-                        <td>Move path by offset</td>
-                    </tr>
-                    <tr>
-                        <td><code>transform(Matrix4 matrix)</code></td>
-                        <td><code>Matrix4 matrix</code></td>
-                        <td><code>void</code></td>
-                        <td>Apply matrix transformation</td>
-                    </tr>
-                    <tr>
-                        <td><code>contains(Offset point)</code></td>
-                        <td><code>Offset point</code></td>
-                        <td><code>bool</code></td>
-                        <td>Check if point is inside path</td>
-                    </tr>
-                    <tr>
-                        <td><code>getBounds()</code></td>
-                        <td>–</td>
-                        <td><code>Rect</code></td>
-                        <td>Get bounding rectangle of path</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Path Metrics</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Method</th>
-                        <th>Parameters</th>
-                        <th>Return Type</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>computeMetrics()</code></td>
-                        <td>–</td>
-                        <td><code>PathMetrics</code></td>
-                        <td>Get path measurements</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Properties</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>fillType</code></td>
-                        <td><code>PathFillType</code></td>
-                        <td>How to fill the path (winding or even-odd)</td>
-                    </tr>
-                </tbody>
-            </table> -->
+            <div class="example-images">
+                <div class="example-item">
+                    <img src="../assets/shapes-using-path-infographics.png"
+                        alt="Flutter Canvas Drawing APIs Complete Visual Guide">
+                    <p class="image-caption">Complete Visual Guide to Flutter's Canvas Drawing APIs</p>
+                </div>
+            </div>
         </section>
     </div>
 
