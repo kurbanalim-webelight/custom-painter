@@ -486,31 +486,7 @@ void paint(Canvas canvas, Size size) {<br>
 &nbsp;&nbsp;&nbsp;&nbsp;);<br>
 &nbsp;&nbsp;canvas.drawPath(path4, strokePaint..color = Colors.orange);<br>
 <br>
-&nbsp;&nbsp;// 5️⃣ Path - Bottom Left (Red) - Star shape<br>
-&nbsp;&nbsp;final centerX = 100.0;<br>
-&nbsp;&nbsp;final centerY = size.height - 150.0;<br>
-&nbsp;&nbsp;final outerRadius = 50.0;<br>
-&nbsp;&nbsp;final innerRadius = 25.0;<br>
-&nbsp;&nbsp;final path5 = Path();<br>
-&nbsp;&nbsp;for (int i = 0; i < 5; i++) {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;final angle = (i * 4 * math.pi / 5) - math.pi / 2;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;final x = centerX + outerRadius * math.cos(angle);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;final y = centerY + outerRadius * math.sin(angle);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;if (i == 0) {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path5.moveTo(x, y);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;} else {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path5.lineTo(x, y);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;}<br>
-&nbsp;&nbsp;&nbsp;&nbsp;final innerAngle = angle + 2 * math.pi / 5;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;final innerX = centerX + innerRadius * math.cos(innerAngle);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;final innerY = centerY + innerRadius * math.sin(innerAngle);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;path5.lineTo(innerX, innerY);<br>
-&nbsp;&nbsp;}<br>
-&nbsp;&nbsp;path5.close();<br>
-&nbsp;&nbsp;canvas.drawPath(path5, fillPaint..color = Colors.red.withValues(alpha: 0.6));<br>
-&nbsp;&nbsp;canvas.drawPath(path5, strokePaint..color = Colors.red);<br>
-<br>
-&nbsp;&nbsp;// 6️⃣ Path - Bottom Right (Teal) - Complex path with arc<br>
+&nbsp;&nbsp;// 5️⃣ Path - Bottom Right (Teal) - Complex path with arc<br>
 &nbsp;&nbsp;final path6 = Path()<br>
 &nbsp;&nbsp;&nbsp;&nbsp;..moveTo(size.width - 200, size.height - 200)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;..lineTo(size.width - 100, size.height - 200)<br>
@@ -534,191 +510,150 @@ void paint(Canvas canvas, Size size) {<br>
             </div>
 
             <h3><code>drawPoints(PointMode pointMode, List&lt;Offset&gt; points, Paint paint)</code></h3>
-            <p><strong>Purpose:</strong> Efficiently draws multiple points, lines, or polygons in one call.</p>
-            <p><strong>Parameters:</strong></p>
-            <ul>
-                <li><code>pointMode</code> - How to interpret points:
-                    <ul>
-                        <li><code>PointMode.points</code> - Draw individual points (dots)</li>
-                        <li><code>PointMode.lines</code> - Draw lines between consecutive points</li>
-                        <li><code>PointMode.polygon</code> - Draw a closed polygon</li>
-                    </ul>
-                </li>
-                <li><code>points</code> - List of points to draw</li>
-                <li><code>paint</code> - Paint object defining point/line style</li>
-            </ul>
-            <p><strong>Common uses:</strong> Scatter plots, line charts, polygons, particle effects, efficient batch
-                drawing.</p>
 
+            <p>
+                <strong>Canvas.drawPoints</strong> is used to draw <strong>multiple point-based shapes efficiently in a
+                    single draw
+                    call</strong>.
+                Instead of drawing each dot or line segment individually, Flutter batches them together, making this
+                method ideal
+                for markers, graphs, paths, and visual indicators.
+            </p>
+
+            <div class="code-block">
+                <code>
+            canvas.drawPoints(PointMode pointMode, List&lt;Offset&gt; points, Paint paint);
+                </code>
+            </div>
+
+            <h4>What each parameter means</h4>
+
+            <h4>1️⃣ <code>PointMode pointMode</code></h4>
+            <p>
+                Defines <strong>how Flutter should interpret the list of points</strong>.
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mode</th>
+                        <th>Meaning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>PointMode.points</code></td>
+                        <td>Draws each <code>Offset</code> as an individual dot</td>
+                    </tr>
+                    <tr>
+                        <td><code>PointMode.lines</code></td>
+                        <td>Draws independent line segments using pairs of points</td>
+                    </tr>
+                    <tr>
+                        <td><code>PointMode.polygon</code></td>
+                        <td>Draws a connected polyline through all points</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Important behavior:</strong></p>
+            <ul>
+                <li><code>PointMode.points</code> → every offset is rendered as a dot</li>
+                <li><code>PointMode.lines</code> → every <strong>two offsets</strong> form one line segment</li>
+                <li><code>PointMode.polygon</code> → all offsets are connected in sequence</li>
+            </ul>
+
+            <h4>2️⃣ <code>List&lt;Offset&gt; points</code></h4>
+            <p>
+                A list of coordinates in <strong>canvas space</strong>.
+                How these points are rendered depends entirely on the selected <code>PointMode</code>.
+            </p>
+
+            <h4>3️⃣ <code>Paint paint</code></h4>
+            <p>
+                Controls the visual appearance of the points or lines.
+            </p>
+
+            <div class="info-box">
+                <strong>⚠️ Important:</strong>
+                <code>PaintingStyle.stroke</code> is required.
+                <code>PaintingStyle.fill</code> is ignored by <code>drawPoints</code>.
+            </div>
+
+            <h4>📌 Example</h4>
             <div class="property-layout">
                 <div class="property-code">
                     <div class="code-block">
-                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
-                            <span class="copy-text">Copy</span>
-                        </button>
                         <code>
-@override<br>
-void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;final paint = Paint()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 4<br>
-&nbsp;&nbsp;&nbsp;&nbsp;..strokeCap = StrokeCap.round;<br>
-<br>
-&nbsp;&nbsp;// 1️⃣ Points - Top Left (Blue) - PointMode.points - Individual points<br>
-&nbsp;&nbsp;final points1 = [<br>
-&nbsp;&nbsp;&nbsp;&nbsp;const Offset(50, 50),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;const Offset(100, 50),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;const Offset(150, 50),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;const Offset(100, 100),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;const Offset(50, 100),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;const Offset(150, 100),<br>
-&nbsp;&nbsp;];<br>
-&nbsp;&nbsp;canvas.drawPoints(ui.PointMode.points, points1, paint..color = Colors.blue);<br>
-<br>
-&nbsp;&nbsp;// 2️⃣ Points - Top Right (Green) - PointMode.lines - Connected lines<br>
-&nbsp;&nbsp;final points2 = [<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(size.width - 200, 50),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(size.width - 150, 100),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(size.width - 100, 50),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(size.width - 50, 100),<br>
-&nbsp;&nbsp;];<br>
-&nbsp;&nbsp;canvas.drawPoints(ui.PointMode.lines, points2, paint..color = Colors.green);<br>
-<br>
-&nbsp;&nbsp;// 3️⃣ Points - Center Left (Purple) - PointMode.polygon - Closed polygon<br>
-&nbsp;&nbsp;final points3 = [<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(50, size.height / 2 - 60),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(100, size.height / 2 - 100),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(150, size.height / 2 - 60),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(150, size.height / 2 + 40),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Offset(50, size.height / 2 + 40),<br>
-&nbsp;&nbsp;];<br>
-&nbsp;&nbsp;canvas.drawPoints(ui.PointMode.polygon, points3, paint..color = Colors.purple);<br>
-<br>
-&nbsp;&nbsp;// 4️⃣ Points - Center Right (Orange) - PointMode.points with different sizes<br>
-&nbsp;&nbsp;final centerX = size.width - 125.0;<br>
-&nbsp;&nbsp;final centerY = size.height / 2;<br>
-&nbsp;&nbsp;final points4 = &lt;Offset&gt;[];<br>
-&nbsp;&nbsp;for (int i = 0; i &lt; 8; i++) {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;final angle = (i * 2 * math.pi / 8) - math.pi / 2;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;final radius = 40.0;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;points4.add(Offset(centerX + radius * math.cos(angle), centerY + radius * math.sin(angle)));<br>
-&nbsp;&nbsp;}<br>
-&nbsp;&nbsp;canvas.drawPoints(ui.PointMode.points, points4, paint..color = Colors.orange);<br>
-<br>
-&nbsp;&nbsp;// 5️⃣ Points - Bottom Left (Red) - PointMode.lines creating a wave<br>
-&nbsp;&nbsp;final points5 = &lt;Offset&gt;[];<br>
-&nbsp;&nbsp;final startX = 50.0;<br>
-&nbsp;&nbsp;final startY = size.height - 150.0;<br>
-&nbsp;&nbsp;for (int i = 0; i &lt;= 20; i++) {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;final x = startX + (i * 6.0);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;final y = startY + 30 * math.sin(i * 0.5);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;points5.add(Offset(x, y));<br>
-&nbsp;&nbsp;}<br>
-&nbsp;&nbsp;canvas.drawPoints(ui.PointMode.lines, points5, paint..color = Colors.red);<br>
-<br>
-&nbsp;&nbsp;// 6️⃣ Points - Bottom Right (Teal) - PointMode.polygon creating a star<br>
-&nbsp;&nbsp;final centerX2 = size.width - 125.0;<br>
-&nbsp;&nbsp;final centerY2 = size.height - 150.0;<br>
-&nbsp;&nbsp;final outerRadius = 50.0;<br>
-&nbsp;&nbsp;final innerRadius = 25.0;<br>
-&nbsp;&nbsp;final points6 = &lt;Offset&gt;[];<br>
-&nbsp;&nbsp;for (int i = 0; i &lt; 10; i++) {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;final angle = (i * math.pi / 5) - math.pi / 2;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;final radius = i.isEven ? outerRadius : innerRadius;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;points6.add(Offset(centerX2 + radius * math.cos(angle), centerY2 + radius * math.sin(angle)));<br>
-&nbsp;&nbsp;}<br>
-&nbsp;&nbsp;canvas.drawPoints(ui.PointMode.polygon, points6, paint..color = Colors.teal);<br>
-}<br>
-                        </code>
+            @override<br>
+            void paint(Canvas canvas, Size size) {<br>
+            &nbsp;&nbsp;// 🔴 POINTS MODE (individual dots)<br>
+            &nbsp;&nbsp;final pointPaint = Paint()<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.red<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 10<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..strokeCap = StrokeCap.round<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke;<br>
+            <br>
+            &nbsp;&nbsp;final dotPoints = [<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(60, 60),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(100, 80),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(140, 60),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(180, 90),<br>
+            &nbsp;&nbsp;];<br>
+            <br>
+            &nbsp;&nbsp;canvas.drawPoints(ui.PointMode.points, dotPoints, pointPaint);<br>
+            <br>
+            &nbsp;&nbsp;// 🔵 LINES MODE (independent segments)<br>
+            &nbsp;&nbsp;final linePaint = Paint()<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 4<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke;<br>
+            <br>
+            &nbsp;&nbsp;final linePoints = [<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(40, 150),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(120, 150),<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(160, 130),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(220, 180),<br>
+            &nbsp;&nbsp;];<br>
+            <br>
+            &nbsp;&nbsp;canvas.drawPoints(ui.PointMode.lines, linePoints, linePaint);<br>
+            <br>
+            &nbsp;&nbsp;// 🟢 POLYGON MODE (connected polyline)<br>
+            &nbsp;&nbsp;final polygonPaint = Paint()<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.green<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke;<br>
+            <br>
+            &nbsp;&nbsp;final polygonPoints = [<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Offset(80, 260),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Offset(140, 230),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Offset(200, 260),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Offset(170, 300),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Offset(110, 300),<br>
+            &nbsp;&nbsp;];<br>
+            <br>
+            &nbsp;&nbsp;canvas.drawPoints(ui.PointMode.polygon, polygonPoints, polygonPaint);<br>
+            }<br>
+                </code>
+
                     </div>
                 </div>
-
                 <div class="property-image">
-                    <img src="../assets/points.png" alt="Flutter Canvas drawPoints visual example">
-                    <p class="image-caption">Visual guide showing how <code>drawPoints()</code> draws points, lines, and
-                        polygons based on PointMode. Examples include individual points (blue grid, orange circle),
-                        connected lines (green segments, red wave), and closed polygons (purple house, teal star).</p>
+                    <img src="../assets/points.png" alt="Flutter Canvas drawPath visual example">
+                    <p class="image-caption">Visual guide showing how <code>drawPath()</code> draws custom shapes
+                        defined by Path objects. Examples include simple polygons (blue square), filled shapes
+                        (green
+                        triangle), curves (purple quadratic, orange cubic), complex shapes (red star), and paths
+                        with
+                        arcs (teal).</p>
                 </div>
             </div>
+
         </section>
 
         <section class="section">
             <h2>🖼️ Other Drawing Methods</h2>
-
-            <h3><code>drawImageRect(Image image, Rect src, Rect dst, Paint paint)</code></h3>
-            <p><strong>Purpose:</strong> Draws a portion of an image (defined by source rectangle) scaled to fit a
-                destination rectangle on the canvas.</p>
-            <p><strong>Parameters:</strong></p>
-            <ul>
-                <li><code>image</code> - The Image object to draw (loaded from assets, network, or memory)</li>
-                <li><code>src</code> - Source rectangle defining which portion of the image to draw (in image
-                    coordinates)</li>
-                <li><code>dst</code> - Destination rectangle defining where and how large to draw the image (in canvas
-                    coordinates)</li>
-                <li><code>paint</code> - Paint object (optional, can be null) for color filtering or blending</li>
-            </ul>
-            <p><strong>Common uses:</strong> Scaling images, cropping images, fitting images while maintaining aspect
-                ratio, displaying sprites from sprite sheets.</p>
-
-            <div class="code-block">
-                <button class="copy-button" onclick="copyCode(this)" title="Copy code">
-                    <span class="copy-text">Copy</span>
-                </button>
-                <code>
-final ui.Image image;<br>
-<br>
-ImageCP(this.image);<br>
-<br>
-@override<br>
-void paint(Canvas canvas, Size size) {<br>
-&nbsp;&nbsp;final paint = Paint();<br>
-<br>
-&nbsp;&nbsp;// Calculate aspect ratios<br>
-&nbsp;&nbsp;final imageAspectRatio = image.width / image.height;<br>
-&nbsp;&nbsp;final canvasAspectRatio = size.width / size.height;<br>
-<br>
-&nbsp;&nbsp;// Calculate destination rectangle to fit image while maintaining aspect ratio<br>
-&nbsp;&nbsp;double dstWidth, dstHeight;<br>
-&nbsp;&nbsp;double dstX, dstY;<br>
-<br>
-&nbsp;&nbsp;if (imageAspectRatio &gt; canvasAspectRatio) {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;// Image is wider - fit to width<br>
-&nbsp;&nbsp;&nbsp;&nbsp;dstWidth = size.width;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;dstHeight = size.width / imageAspectRatio;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;dstX = 0;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;dstY = (size.height - dstHeight) / 2;<br>
-&nbsp;&nbsp;} else {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;// Image is taller - fit to height<br>
-&nbsp;&nbsp;&nbsp;&nbsp;dstHeight = size.height;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;dstWidth = size.height * imageAspectRatio;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;dstX = (size.width - dstWidth) / 2;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;dstY = 0;<br>
-&nbsp;&nbsp;}<br>
-<br>
-&nbsp;&nbsp;// Source rectangle (entire image)<br>
-&nbsp;&nbsp;final srcRect = Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble());<br>
-&nbsp;&nbsp;// Destination rectangle (fitted and centered)<br>
-&nbsp;&nbsp;final dstRect = Rect.fromLTWH(dstX, dstY, dstWidth, dstHeight);<br>
-<br>
-&nbsp;&nbsp;// Use drawImageRect() to scale the image while maintaining aspect ratio<br>
-&nbsp;&nbsp;canvas.drawImageRect(image, srcRect, dstRect, paint);<br>
-}<br>
-                </code>
-            </div>
-
-            <div class="info-box">
-                <strong>💡 Important Notes:</strong>
-                <ul>
-                    <li>Images must be loaded asynchronously before drawing</li>
-                    <li><code>src</code> rectangle defines which part of the image to use (use full image rect to draw
-                        entire image)</li>
-                    <li><code>dst</code> rectangle defines where and how large to draw (can scale, crop, or transform)
-                    </li>
-                    <li>This method is ideal for scaling images while maintaining aspect ratio</li>
-                    <li>Always dispose images after use to free memory</li>
-                    <li>For better performance with multiple images, consider using <code>drawAtlas()</code></li>
-                </ul>
-            </div>
-
             <h3><code>drawParagraph(Paragraph paragraph, Offset offset)</code></h3>
             <p><strong>Purpose:</strong> Draws text on the canvas using a Paragraph object.</p>
             <p><strong>Parameters:</strong></p>
