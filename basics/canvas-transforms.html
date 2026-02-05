@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔄 Canvas Transforms (Shape Positioning) - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #5a6c7d;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul,
+        ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .highlight-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .success-box {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background-color: #1a73e8;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        @media (max-width: 900px) {
+            .property-layout {
+                flex-direction: column;
+            }
+
+            .property-image {
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>🔄 Canvas Transforms (Shape Positioning)</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>Overview</h2>
+            <p>
+                In Flutter’s <code>Canvas</code>, transforms control <strong>where</strong> and
+                <strong>how</strong> your shapes are drawn. Instead of changing every <code>Offset</code> by hand,
+                you change the canvas itself (its origin, rotation, scale, skew) and then draw in simple local
+                coordinates.
+            </p>
+            <p>
+                We usually use transforms when we want to draw the <strong>same shape</strong> in many positions,
+                rotate something around a point (like a clock hand), resize shapes cleanly, or give a slanted / 3D feel.
+                Once you understand these basic ideas, building custom UI becomes much easier.
+            </p>
+            <div class="info-box">
+                <strong>📖 Simple learning order:</strong> We will go step‑by‑step:
+                <strong>save</strong> → <strong>restore</strong> → <strong>saveLayer</strong> →
+                <strong>translate</strong>
+                → <strong>rotate</strong> → <strong>scale</strong> → <strong>skew</strong> → <strong>transform</strong>.
+                Each topic only uses what we have already covered.
+            </div>
+        </section>
+
+        <!-- 1. save (no dependency) -->
+        <section class="section">
+            <h2 id="save">1️⃣ <code>save()</code> — Save canvas state</h2>
+            <p><strong>Depends on:</strong> Nothing. This is the base concept.</p>
+            <p><strong>In simple words:</strong> <code>save()</code> takes a snapshot of the current canvas state
+                (all transforms and clips) and puts it on an internal stack. It does not draw anything by itself.
+            </p>
+            <h4>Why we use it</h4>
+            <p>
+                Many times we want to <strong>temporarily</strong> move, rotate or scale the canvas for one shape,
+                and then go back to normal for the next shape. <code>save()</code> lets us safely change the canvas,
+                knowing we can return to the old state later using <code>restore()</code>.
+            </p>
+            <h4>Common use cases</h4>
+            <ul>
+                <li>Draw one element with special transforms, then come back to normal coordinates for the rest.</li>
+                <li>Group a few drawing commands together under one transform.</li>
+                <li>Prepare for nested transforms in complex UIs (like gauge, speedometer, charts, etc.).</li>
+            </ul>
+            <h4>When it is needed</h4>
+            <p>
+                Whenever you use <code>translate</code>, <code>rotate</code>, <code>scale</code>, <code>skew</code> or
+                <code>transform</code> only for a small part of drawing, you should surround that part with
+                <code>save()</code> and <code>restore()</code>. This keeps your transforms clean and local.
+            </p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                <code>canvas.save();   // Push current state (e.g. identity) onto stack</code>
+            </div>
+        </section>
+
+        <!-- 2. restore (depends on save) -->
+        <section class="section">
+            <h2 id="restore">2️⃣ <code>restore()</code> — Restore canvas state</h2>
+            <p><strong>Depends on:</strong> <a href="#save"><code>save()</code></a> — we can only restore something
+                that we have saved earlier.</p>
+            <p><strong>In simple words:</strong> <code>restore()</code> removes the last saved state from the stack
+                and puts the canvas back to that exact state (same transforms and clips).</p>
+            <h4>Why we use it</h4>
+            <p>
+                It is the “undo” partner of <code>save()</code>. After we finish drawing with some temporary transforms,
+                <code>restore()</code> brings the canvas back so that the next drawing code is not affected.
+            </p>
+            <h4>Common use cases</h4>
+            <ul>
+                <li>After drawing a rotated or scaled widget, come back to the original coordinate system.</li>
+                <li>Handle nested groups: <code>save() → transform → draw → restore()</code> for each group.</li>
+            </ul>
+            <h4>When it is needed</h4>
+            <p>
+                Call <code>restore()</code> every time you have called <code>save()</code> and your special drawing
+                is finished. This keeps transforms predictable and avoids strange behaviour later in the
+                <code>paint()</code> method.
+            </p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                <code>canvas.restore();   // Pop state; transform/clip back to previous</code>
+            </div>
+            <div class="info-box">
+                <strong>⚠️ Important:</strong> Call <code>restore()</code> the same number of times as
+                <code>save()</code> (e.g. one restore per save). Mismatched save/restore can cause wrong transforms or
+                runtime errors.
+            </div>
+        </section>
+
+        <!-- 3. saveLayer (depends on save + restore) -->
+        <section class="section">
+            <h2 id="saveLayer">3️⃣ <code>saveLayer(Rect? bounds, Paint paint)</code> — Save layer</h2>
+            <p><strong>Depends on:</strong> <a href="#save"><code>save()</code></a> and
+                <a href="#restore"><code>restore()</code></a> — it also uses the same stack idea.
+            </p>
+            <p><strong>In simple words:</strong> <code>saveLayer()</code> creates a temporary “offscreen canvas”
+                (a new layer). Everything you draw goes into that layer. When you later call <code>restore()</code>,
+                Flutter draws that whole layer back on the main canvas using the given <code>Paint</code>
+                (for opacity, blend modes, etc.).
+            </p>
+            <h4>Why we use it</h4>
+            <p>
+                Sometimes we want to apply one opacity, one blend mode or one effect (like blur) to a
+                <strong>group</strong>
+                of drawings as a whole, not to each shape separately. <code>saveLayer()</code> allows this type of
+                grouped effect.
+            </p>
+            <h4>Common use cases</h4>
+            <ul>
+                <li>Fade or blend an entire card, chart, or icon group.</li>
+                <li>Apply blur / color filters to everything inside one region.</li>
+            </ul>
+            <h4>When it is needed</h4>
+            <p>
+                Use <code>saveLayer()</code> when you really need group‑level effects. It is more expensive than a
+                normal <code>save()</code>, so in performance‑sensitive screens we should use it carefully.
+            </p>
+        </section>
+
+        <!-- 4. translate (depends on save/restore for typical use) -->
+        <section class="section">
+            <h2 id="translate">4️⃣ <code>translate(double dx, double dy)</code> — Move canvas origin</h2>
+            <p><strong>Depends on:</strong> <a href="#save"><code>save()</code></a> /
+                <a href="#restore"><code>restore()</code></a> — normally we wrap translate between save / restore.
+            </p>
+            <p><strong>In simple words:</strong> <code>translate()</code> shifts the canvas origin by
+                <code>dx</code> in the x‑direction and <code>dy</code> in the y‑direction. After this, when you draw
+                at <code>(0, 0)</code>, it will actually appear at the new origin on the screen.
+            </p>
+            <h4>Why we use it</h4>
+            <p>
+                Instead of adding big offsets to every <code>Rect</code> and <code>Offset</code>, we design shapes
+                around <code>(0, 0)</code> and then move the whole coordinate system to where we want to place them.
+                This keeps the maths small and uniform.
+            </p>
+            <h4>Common use cases</h4>
+            <ul>
+                <li>Center a shape: translate to the centre, draw around <code>(0, 0)</code>.</li>
+                <li>Draw the same icon or marker at many positions in a grid.</li>
+                <li>Build complex drawings (for example, body parts of a character) part‑by‑part.</li>
+            </ul>
+            <h4>When it is needed</h4>
+            <p>
+                Use <code>translate()</code> whenever you want one drawing function that works in local coordinates
+                and you want to reuse it in multiple places on the canvas.
+            </p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                <code>
+canvas.save();<br>
+canvas.translate(100, 50);   // New origin at (100, 50)<br>
+// Draw at (0,0) here → appears at (100, 50) on canvas<br>
+canvas.restore();
+                </code>
+            </div>
+
+            <h4>📌 Example</h4>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final paint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue;<br>
+<br>
+&nbsp;&nbsp;// Without translate: rect at (50, 50)<br>
+&nbsp;&nbsp;canvas.drawRect(Rect.fromLTWH(50, 50, 60, 40), paint);<br>
+<br>
+&nbsp;&nbsp;// With translate: draw at (0,0) but appears at (100, 150)<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(100, 150);<br>
+&nbsp;&nbsp;paint.color = Colors.green;<br>
+&nbsp;&nbsp;canvas.drawRect(Rect.fromLTWH(0, 0, 60, 40), paint);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+<br>
+&nbsp;&nbsp;// Another translate: appears at (200, 100)<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(200, 100);<br>
+&nbsp;&nbsp;paint.color = Colors.orange;<br>
+&nbsp;&nbsp;canvas.drawRect(Rect.fromLTWH(0, 0, 60, 40), paint);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+}
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/translate.png" alt="Flutter Canvas translate visual example">
+                    <p class="image-caption">Visual guide showing how <code>translate()</code> moves the canvas origin.
+                        The blue rectangle is drawn at absolute coordinates (50, 50), while the green and orange
+                        rectangles are drawn at (0, 0) in their translated coordinate systems, appearing at (100, 150)
+                        and (200, 100) respectively.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. rotate (depends on translate for pivot) -->
+        <section class="section">
+            <h2 id="rotate">5️⃣ <code>rotate(double radians)</code> — Rotate canvas</h2>
+            <p><strong>Depends on:</strong> <a href="#translate"><code>translate()</code></a> — to rotate around a
+                specific point (like centre), we first translate to that point and then rotate.</p>
+            <p><strong>In simple words:</strong> <code>rotate()</code> turns the whole coordinate system by the given
+                angle (in radians) around the current origin. Positive values mean anti‑clockwise rotation.</p>
+            <h4>Why we use it</h4>
+            <p>
+                Calculating rotated coordinates for every point by hand is painful. With <code>rotate()</code>, we draw
+                the shape in its natural straight position, and the canvas takes care of turning it.
+            </p>
+            <h4>Common use cases</h4>
+            <ul>
+                <li>Clock hands, gauges, spinners and progress dials.</li>
+                <li>Cards or tiles that tilt slightly for animation / interaction.</li>
+                <li>Any element that must spin or rotate around a fixed pivot.</li>
+            </ul>
+            <h4>When it is needed</h4>
+            <p>
+                Whenever angle comes from animation, time, or some data (for example progress percentage),
+                <code>rotate()</code> is the right tool. Combine <code>translate()</code> + <code>rotate()</code>
+                to rotate around the correct pivot.
+            </p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                <code>
+canvas.save();<br>
+canvas.translate(cx, cy);      // Pivot at (cx, cy)<br>
+canvas.rotate(angleInRadians); // e.g. pi/4 for 45°<br>
+// Draw shape around (0,0) → it appears rotated at (cx, cy)<br>
+canvas.restore();
+                </code>
+            </div>
+
+            <h4>📌 Example</h4>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final paint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue;<br>
+<br>
+&nbsp;&nbsp;final centerX = size.width / 2;<br>
+&nbsp;&nbsp;final centerY = size.height / 2;<br>
+&nbsp;&nbsp;const rectSize = 60.0;<br>
+<br>
+&nbsp;&nbsp;// Original rectangle (no rotation)<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromCenter(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;center: Offset(centerX, 100),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width: rectSize,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;height: rectSize,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;// Rotated 45 degrees around center<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(centerX, centerY);<br>
+&nbsp;&nbsp;canvas.rotate(3.14159 / 4); // 45 degrees<br>
+&nbsp;&nbsp;paint.color = Colors.green;<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromCenter(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;center: Offset.zero,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width: rectSize,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;height: rectSize,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+<br>
+&nbsp;&nbsp;// Rotated 90 degrees around center<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(centerX, centerY + 120);<br>
+&nbsp;&nbsp;canvas.rotate(3.14159 / 2); // 90 degrees<br>
+&nbsp;&nbsp;paint.color = Colors.orange;<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromCenter(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;center: Offset.zero,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width: rectSize,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;height: rectSize,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+}
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/rotate.png" alt="Flutter Canvas rotate visual example">
+                    <p class="image-caption">Visual guide showing how <code>rotate()</code> rotates shapes around a
+                        pivot point. The blue rectangle shows the original orientation, the green rectangle is rotated
+                        45° around the center, and the orange rectangle is rotated 90° around its center point.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. scale (often used with translate for center) -->
+        <section class="section">
+            <h2 id="scale">6️⃣ <code>scale(double sx, [double? sy])</code> — Scale canvas</h2>
+            <p><strong>Depends on:</strong> <a href="#translate"><code>translate()</code></a> — to scale around a
+                meaningful point (usually centre), we first translate to that point.</p>
+            <p><strong>In simple words:</strong> <code>scale()</code> multiplies all distances. <code>sx</code> controls
+                width (x‑axis), <code>sy</code> controls height (y‑axis). If <code>sy</code> is not given, it uses the
+                same value as <code>sx</code> (uniform scale).</p>
+            <h4>Why we use it</h4>
+            <p>
+                One shape definition should work for small, medium and large sizes. With <code>scale()</code>, we can
+                zoom in / out or mirror shapes without touching the original drawing code.
+            </p>
+            <h4>Common use cases</h4>
+            <ul>
+                <li>Zoom effects in charts, maps or images.</li>
+                <li>Same icon or symbol in different sizes across the app.</li>
+                <li>Flip horizontally or vertically using negative scale values.</li>
+            </ul>
+            <h4>When it is needed</h4>
+            <p>
+                Whenever size comes from layout, screen size or animation, <code>scale()</code> lets you adapt easily.
+                Combine it with <code>translate()</code> to scale around a specific point like the centre of a widget.
+            </p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                <code>
+canvas.save();<br>
+canvas.translate(center.dx, center.dy);<br>
+canvas.scale(2.0);             // 2x uniform scale<br>
+canvas.scale(-1, 1);           // flip horizontally (optional)<br>
+// Draw around (0,0) → scaled/flipped around center<br>
+canvas.restore();
+                </code>
+            </div>
+
+            <h4>📌 Example</h4>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final paint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue;<br>
+<br>
+&nbsp;&nbsp;const baseSize = 50.0;<br>
+<br>
+&nbsp;&nbsp;// Original size rectangle<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(50, 50, baseSize, baseSize),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;// Scaled 2x (uniform)<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(150, 75);<br>
+&nbsp;&nbsp;canvas.scale(2.0);<br>
+&nbsp;&nbsp;paint.color = Colors.green;<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(0, 0, baseSize, baseSize),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+<br>
+&nbsp;&nbsp;// Scaled 0.5x (uniform - smaller)<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(300, 75);<br>
+&nbsp;&nbsp;canvas.scale(0.5);<br>
+&nbsp;&nbsp;paint.color = Colors.orange;<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(0, 0, baseSize, baseSize),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+<br>
+&nbsp;&nbsp;// Flipped horizontally (scale -1, 1)<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(400, 75);<br>
+&nbsp;&nbsp;canvas.scale(-1, 1);<br>
+&nbsp;&nbsp;paint.color = Colors.purple;<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(-baseSize, 0, baseSize, baseSize),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+<br>
+&nbsp;&nbsp;// Non-uniform scale (different x and y)<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(150, 200);<br>
+&nbsp;&nbsp;canvas.scale(1.5, 0.8);<br>
+&nbsp;&nbsp;paint.color = Colors.red;<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(0, 0, baseSize, baseSize),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+}
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/scale.png" alt="Flutter Canvas scale visual example">
+                    <p class="image-caption">Visual guide showing how <code>scale()</code> changes shape sizes. The blue
+                        rectangle is the original size, green is scaled 2x (larger), orange is scaled 0.5x (smaller),
+                        purple is flipped horizontally using negative scale, and red shows non-uniform scaling (1.5x
+                        width, 0.8x height).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. skew (no dependency on other transforms; often used with save/restore) -->
+        <section class="section">
+            <h2 id="skew">7️⃣ <code>skew(double sx, double sy)</code> — Skew/shear canvas</h2>
+            <p><strong>Depends on:</strong> <a href="#save"><code>save()</code></a> /
+                <a href="#restore"><code>restore()</code></a> — we usually skew only a small part of the drawing.
+            </p>
+            <p><strong>In simple words:</strong> <code>skew()</code> slants the coordinate system. With <code>sx</code>
+                we slant in the x‑direction (horizontal shear). With <code>sy</code> we slant in the y‑direction
+                (vertical shear). Rectangles turn into parallelograms.</p>
+            <h4>Why we use it</h4>
+            <p>
+                It is an easy way to get italic / leaning shapes or a simple fake‑3D feel, without manually creating
+                skewed paths.
+            </p>
+            <h4>Common use cases</h4>
+            <ul>
+                <li>Italic‑style text or slanted panels.</li>
+                <li>Shadows or reflections that are slightly pushed to one side.</li>
+                <li>Isometric / dashboard tiles that look like they are tilted.</li>
+            </ul>
+            <h4>When it is needed</h4>
+            <p>
+                Whenever you want a slanted or oblique look from normal shapes, use <code>skew()</code> around the
+                small portion of drawing that needs this effect.
+            </p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                <code>
+canvas.save();<br>
+canvas.skew(0.3, 0);   // Horizontal shear (e.g. italic)<br>
+// Draw rect/text → appears skewed<br>
+canvas.restore();
+                </code>
+            </div>
+
+            <h4>📌 Example</h4>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final paint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue;<br>
+<br>
+&nbsp;&nbsp;const rectSize = 60.0;<br>
+<br>
+&nbsp;&nbsp;// Original rectangle (no skew)<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(50, 50, rectSize, rectSize),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;// Horizontal skew (sx = 0.3, sy = 0) - italic effect<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(150, 50);<br>
+&nbsp;&nbsp;canvas.skew(0.3, 0);<br>
+&nbsp;&nbsp;paint.color = Colors.green;<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(0, 0, rectSize, rectSize),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+<br>
+&nbsp;&nbsp;// Vertical skew (sx = 0, sy = 0.3)<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(300, 50);<br>
+&nbsp;&nbsp;canvas.skew(0, 0.3);<br>
+&nbsp;&nbsp;paint.color = Colors.orange;<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(0, 0, rectSize, rectSize),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+<br>
+&nbsp;&nbsp;// Both horizontal and vertical skew<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(150, 200);<br>
+&nbsp;&nbsp;canvas.skew(0.2, 0.2);<br>
+&nbsp;&nbsp;paint.color = Colors.purple;<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(0, 0, rectSize, rectSize),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+<br>
+&nbsp;&nbsp;// Stronger horizontal skew (italic text effect)<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(50, 200);<br>
+&nbsp;&nbsp;canvas.skew(0.5, 0);<br>
+&nbsp;&nbsp;paint.color = Colors.red;<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(0, 0, rectSize, rectSize),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+}
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/skew.png" alt="Flutter Canvas skew visual example">
+                    <p class="image-caption">Visual guide showing how <code>skew()</code> shears shapes. The blue
+                        rectangle is the original (no skew), green shows horizontal skew (italic effect), orange shows
+                        vertical skew, purple shows both horizontal and vertical skew, and red demonstrates a stronger
+                        horizontal skew creating a parallelogram effect.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. transform (depends on understanding translate/rotate/scale/skew) -->
+        <section class="section">
+            <h2 id="transform">8️⃣ <code>transform(Float64List matrix4)</code> — Apply matrix transformation</h2>
+            <p><strong>Depends on:</strong> <a href="#translate"><code>translate()</code></a>,
+                <a href="#rotate"><code>rotate()</code></a>, <a href="#scale"><code>scale()</code></a>,
+                <a href="#skew"><code>skew()</code></a> — this method is the “all‑in‑one” version of those ideas.
+            </p>
+            <p><strong>In simple words:</strong> <code>transform()</code> applies a full 4×4 matrix to the canvas.
+                That matrix can include any combination of translation, rotation, scaling and skewing in one go.</p>
+            <h4>Why we use it</h4>
+            <p>
+                Sometimes we already have a <code>Matrix4</code> (for example from a widget, controller or animation),
+                or the math for our transform is easier to express as a matrix. In those cases, we directly pass the
+                matrix to the canvas instead of calling multiple <code>translate / rotate / scale / skew</code> methods.
+            </p>
+            <h4>Common use cases</h4>
+            <ul>
+                <li>Reusing a <code>Matrix4</code> created elsewhere in the UI.</li>
+                <li>Advanced 2D / 3D‑style transforms, including perspective.</li>
+                <li>Sharing one complex transform between different drawing or layout pieces.</li>
+            </ul>
+            <h4>When it is needed</h4>
+            <p>
+                Use <code>transform()</code> when a matrix is already available or when you need many combined
+                operations as a single step. It gives maximum control, but for day‑to‑day work
+                <code>translate / rotate / scale / skew</code> are usually easier to read.
+            </p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                <code>
+final matrix = Matrix4.identity()..translate(50.0, 20.0)..rotateZ(0.5);<br>
+canvas.transform(matrix.storage);<br>
+// Draw — transform applied
+                </code>
+            </div>
+
+            <h4>📌 Example</h4>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final paint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue;<br>
+<br>
+&nbsp;&nbsp;const rectSize = 60.0;<br>
+<br>
+&nbsp;&nbsp;// Original rectangle (no transform)<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(50, 50, rectSize, rectSize),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;// Transform: translate + rotate combined<br>
+&nbsp;&nbsp;final matrix1 = Matrix4.identity()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..translate(150.0, 50.0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..rotateZ(3.14159 / 4); // 45 degrees<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.transform(matrix1.storage);<br>
+&nbsp;&nbsp;paint.color = Colors.green;<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(0, 0, rectSize, rectSize),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+<br>
+&nbsp;&nbsp;// Transform: translate + scale + rotate<br>
+&nbsp;&nbsp;final matrix2 = Matrix4.identity()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..translate(300.0, 50.0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..scale(1.5)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..rotateZ(3.14159 / 6); // 30 degrees<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.transform(matrix2.storage);<br>
+&nbsp;&nbsp;paint.color = Colors.orange;<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(0, 0, rectSize, rectSize),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+<br>
+&nbsp;&nbsp;// Transform: complex combination (translate + rotate + scale + skew)<br>
+&nbsp;&nbsp;final matrix3 = Matrix4.identity()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..translate(150.0, 200.0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..rotateZ(3.14159 / 3) // 60 degrees<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..scale(1.2, 0.8) // non-uniform scale<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..setEntry(0, 1, 0.2); // skew entry<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.transform(matrix3.storage);<br>
+&nbsp;&nbsp;paint.color = Colors.purple;<br>
+&nbsp;&nbsp;canvas.drawRect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rect.fromLTWH(0, 0, rectSize, rectSize),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+}
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/transform-demo.png" alt="Flutter Canvas transform visual example">
+                    <p class="image-caption">Visual guide showing how <code>transform()</code> applies matrix
+                        transformations. The blue rectangle is the original, green shows translate + rotate combined in
+                        one matrix, orange shows translate + scale + rotate, and purple demonstrates a complex transform
+                        combining translate, rotate, non-uniform scale, and skew in a single matrix operation.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Example: Transforms in action (side-by-side code + demo) - only for topics that show UI change -->
+        <section class="section">
+            <h2>Example: Transforms in action (code + demo)</h2>
+            <p>
+                The topics that produce a <strong>visible UI change</strong> are <code>translate</code>,
+                <code>rotate</code>, <code>scale</code>, and <code>skew</code>. Below is a single CustomPainter that
+                uses <code>save()</code> / <code>restore()</code> with each transform so you can see the result side by
+                side with the code.
+            </p>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final paint = Paint()..style = PaintingStyle.stroke..strokeWidth = 3;<br>
+&nbsp;&nbsp;const w = 50.0;<br>
+&nbsp;&nbsp;const h = 40.0;<br>
+<br>
+&nbsp;&nbsp;// 1) TRANSLATE — rect appears at (80, 60)<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(80, 60);<br>
+&nbsp;&nbsp;paint.color = Colors.blue;<br>
+&nbsp;&nbsp;canvas.drawRect(Rect.fromLTWH(0, 0, w, h), paint);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+<br>
+&nbsp;&nbsp;// 2) ROTATE — rect rotated 45° around center<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(size.width * 0.5, 120);<br>
+&nbsp;&nbsp;canvas.rotate(3.14159 / 4);<br>
+&nbsp;&nbsp;paint.color = Colors.green;<br>
+&nbsp;&nbsp;canvas.drawRect(Rect.fromCenter(center: Offset.zero, width: w, height: h), paint);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+<br>
+&nbsp;&nbsp;// 3) SCALE — rect 2x at center<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(80, 220);<br>
+&nbsp;&nbsp;canvas.scale(2.0);<br>
+&nbsp;&nbsp;paint.color = Colors.red;<br>
+&nbsp;&nbsp;canvas.drawRect(Rect.fromLTWH(0, 0, w, h), paint);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+<br>
+&nbsp;&nbsp;// 4) SKEW — parallelogram (italic effect)<br>
+&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;canvas.translate(80, 320);<br>
+&nbsp;&nbsp;canvas.skew(0.3, 0);<br>
+&nbsp;&nbsp;paint.color = Colors.orange;<br>
+&nbsp;&nbsp;canvas.drawRect(Rect.fromLTWH(0, 0, w, h), paint);<br>
+&nbsp;&nbsp;canvas.restore();<br>
+}<br>
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/canvas_transforms.png"
+                        alt="Flutter Canvas transforms demo: translate, rotate, scale, skew">
+                    <p class="image-caption">Demo: same rectangle drawn with <code>translate</code> (blue),
+                        <code>rotate</code> (green), <code>scale</code> (red), and <code>skew</code> (orange). Run the
+                        code in a Flutter app to see this UI.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Order & best practices -->
+        <section class="section">
+            <h2>Order of operations & best practices</h2>
+            <p>
+                Transforms are applied in the <strong>same order</strong> in which you call them. The final result
+                depends on this order. For example, to rotate around a point, we first move the origin to that point,
+                then rotate:
+            </p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                <code>
+canvas.save();<br>
+canvas.translate(pivot.dx, pivot.dy);  // 1. Move origin to pivot<br>
+canvas.rotate(angle);                  // 2. Rotate around pivot<br>
+canvas.translate(-width/2, -height/2); // 3. Center the shape (optional)<br>
+// draw shape in local 0..width, 0..height<br>
+canvas.restore();
+                </code>
+            </div>
+            <ul>
+                <li>Always pair <code>save()</code> with <code>restore()</code> around temporary transforms.</li>
+                <li>Common pattern: <code>save() → translate → rotate / scale / skew → draw → restore()</code>.</li>
+                <li>Use <code>saveLayer()</code> only when you really need group opacity / blending, as it is heavier.
+                </li>
+            </ul>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.nextElementSibling;
+            const code = codeBlock.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                button.classList.add('copied');
+                const orig = button.textContent;
+                button.textContent = 'Copied!';
+                setTimeout(() => { button.classList.remove('copied'); button.textContent = orig; }, 2000);
+            });
+        }
+        const backToTopButton = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTopButton.classList.toggle('show', window.pageYOffset > 300);
+        });
+        backToTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
+</body>
+
+</html>
