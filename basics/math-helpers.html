@@ -173,7 +173,7 @@
         }
 
         .property-image img {
-            max-width: 100%;
+            max-width: 70%;
             height: auto;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -235,7 +235,8 @@
             <h2>Math helpers in Flutter</h2>
             <p>Flutter provides a few math helpers that are useful in CustomPainter — for example to smoothly change a
                 value over time (animations) or to blend between two numbers. The one we cover here is
-                <strong>lerpDouble</strong>.</p>
+                <strong>lerpDouble</strong>.
+            </p>
         </section>
 
         <section class="section">
@@ -244,7 +245,8 @@
             <p><strong>Purpose:</strong> It does <strong>linear interpolation</strong> between two numbers
                 <code>a</code> and <code>b</code>. The third argument <code>t</code> is a value usually between 0 and 1.
                 When <code>t = 0</code>, you get <code>a</code>; when <code>t = 1</code>, you get <code>b</code>; and
-                for values in between you get a value between <code>a</code> and <code>b</code>.</p>
+                for values in between you get a value between <code>a</code> and <code>b</code>.
+            </p>
             <p><strong>In simple words:</strong> Think of it as “mix two numbers.” For example, if you want to move
                 something from x = 50 to x = 200, you can use <code>lerpDouble(50, 200, t)</code>. When <code>t</code>
                 goes from 0 to 1, the result goes from 50 to 200. So it is very handy for animations and smooth
@@ -290,7 +292,8 @@ void paint(Canvas canvas, Size size) {<br>
                 <div class="property-image">
                     <img src="../assets/lerp-double.png" alt="lerpDouble example: value between a and b">
                     <p class="image-caption">As <code>t</code> goes from 0 to 1, the blue circle moves from
-                        <code>a</code> to <code>b</code>. Here <code>t = 0.4</code> so the circle is 40% of the way.</p>
+                        <code>a</code> to <code>b</code>. Here <code>t = 0.4</code> so the circle is 40% of the way.
+                    </p>
                 </div>
             </div>
         </section>
