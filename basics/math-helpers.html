@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔢 Math Helpers - lerpDouble - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+            gap: 20px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+        }
+
+        @media (max-width: 900px) {
+            .property-layout {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>🔢 Math Helpers</h1>
+        </div>
+    </header>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>Math helpers in Flutter</h2>
+            <p>Flutter provides a few math helpers that are useful in CustomPainter — for example to smoothly change a
+                value over time (animations) or to blend between two numbers. The one we cover here is
+                <strong>lerpDouble</strong>.</p>
+        </section>
+
+        <section class="section">
+            <h2 id="lerpdouble">lerpDouble</h2>
+            <p><strong>Signature:</strong> <code>double? lerpDouble(num? a, num? b, double t)</code></p>
+            <p><strong>Purpose:</strong> It does <strong>linear interpolation</strong> between two numbers
+                <code>a</code> and <code>b</code>. The third argument <code>t</code> is a value usually between 0 and 1.
+                When <code>t = 0</code>, you get <code>a</code>; when <code>t = 1</code>, you get <code>b</code>; and
+                for values in between you get a value between <code>a</code> and <code>b</code>.</p>
+            <p><strong>In simple words:</strong> Think of it as “mix two numbers.” For example, if you want to move
+                something from x = 50 to x = 200, you can use <code>lerpDouble(50, 200, t)</code>. When <code>t</code>
+                goes from 0 to 1, the result goes from 50 to 200. So it is very handy for animations and smooth
+                transitions.</p>
+            <p><strong>Formula:</strong> <code>a + (b - a) * t</code>. So when <code>t = 0.5</code> you get the middle
+                value.</p>
+            <div class="info-box">
+                <strong>💡 Where to find it:</strong> <code>lerpDouble</code> is in the <code>dart:ui</code> library. So
+                you can use it as <code>ui.lerpDouble(0, 100, 0.3)</code> if you have
+                <code>import 'dart:ui' as ui;</code>. There is also <code>lerp</code> in the material or rendering
+                library for other types.
+            </div>
+
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">Copy</button>
+                        <code>
+import 'dart:ui' as ui;<br>
+<br>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;// Example: t from 0 to 1 (e.g. from animation)<br>
+&nbsp;&nbsp;const a = 50.0;<br>
+&nbsp;&nbsp;const b = 250.0;<br>
+&nbsp;&nbsp;final t = 0.4; // 40% between a and b<br>
+&nbsp;&nbsp;final x = ui.lerpDouble(a, b, t)!; // 50 + (250-50)*0.4 = 130<br>
+<br>
+&nbsp;&nbsp;// Draw a circle that moves from left to right as t changes<br>
+&nbsp;&nbsp;final center = Offset(x, size.height / 2);<br>
+&nbsp;&nbsp;canvas.drawCircle(center, 25, Paint()..color = Colors.blue);<br>
+<br>
+&nbsp;&nbsp;// Optional: draw line from a to b to show the range<br>
+&nbsp;&nbsp;canvas.drawLine(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Offset(a, size.height / 2),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Offset(b, size.height / 2),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Paint()..color = Colors.grey..strokeWidth = 1,<br>
+&nbsp;&nbsp;);<br>
+}<br>
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/lerp-double.png" alt="lerpDouble example: value between a and b">
+                    <p class="image-caption">As <code>t</code> goes from 0 to 1, the blue circle moves from
+                        <code>a</code> to <code>b</code>. Here <code>t = 0.4</code> so the circle is 40% of the way.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    <button id="backToTop" class="back-to-top" title="Back to top">↑ Back to top</button>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btn = document.getElementById('backToTop');
+            if (btn) {
+                window.addEventListener('scroll', () => { btn.classList.toggle('show', window.pageYOffset > 300); });
+                btn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+            }
+        });
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const codeElement = codeBlock.querySelector('code');
+            if (!codeElement) return;
+            let text = codeElement.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/&nbsp;/g, ' ');
+            const tempDiv = document.createElement('div'); tempDiv.innerHTML = text;
+            text = tempDiv.textContent || tempDiv.innerText || '';
+            navigator.clipboard.writeText(text).then(() => {
+                const orig = button.textContent; button.textContent = 'Copied!';
+                setTimeout(() => { button.textContent = orig; }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>

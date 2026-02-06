@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📐 Core Geometry Classes - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .topic-links {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 0;
+        }
+
+        .topic-links li {
+            margin-bottom: 12px;
+        }
+
+        .topic-links a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            display: inline-block;
+            border-radius: 4px;
+            background: #e8f0fe;
+            transition: all 0.2s;
+        }
+
+        .topic-links a:hover {
+            background: #1a73e8;
+            color: white;
+        }
+
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+            gap: 20px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+        }
+
+        @media (max-width: 900px) {
+            .property-layout {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>📐 Core Geometry Classes</h1>
+        </div>
+    </header>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>What are Core Geometry Classes?</h2>
+            <p>In Flutter’s CustomPainter, a few classes from <code>dart:ui</code> define positions, sizes, and shapes.
+                Here we list the main ones and link you to their detailed pages. Below that, we explain
+                <strong>Radius</strong> with code and an example.
+            </p>
+            <h3>Links to topics</h3>
+            <ul class="topic-links">
+                <li><a href="what-is-offset.html">📍 Offset</a> — A 2D point (x, y). Used for positions on the canvas.
+                </li>
+                <li><a href="what-is-canvas-and-size.html">📋 Size</a> — Width and height. You get it from the canvas in
+                    <code>paint(Canvas canvas, Size size)</code>.
+                </li>
+                <li><a href="what-is-rect.html">⬛ Rect</a> — Axis-aligned rectangle (left, top, right, bottom). Used for
+                    bounds and drawing areas.</li>
+                <li><a href="what-is-rrect.html">🔲 RRect</a> — Rounded rectangle. Same as Rect but with corner radii.
+                </li>
+
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2 id="radius">⭕ What is Radius?</h2>
+            <p><strong>Radius</strong> in Flutter is used to define how much a corner is rounded. You will see it in
+                <code>RRect</code> (rounded rectangles), <code>BorderRadius</code>, and in path methods like
+                <code>arcToPoint(..., radius: Radius.circular(20))</code>.
+            </p>
+            <p><strong>In simple words:</strong> Think of it like the “roundness” of a corner — bigger radius means more
+                round, smaller means sharper. You can use the same radius for all corners or different ones for each
+                corner.</p>
+            <p>Two common constructors:</p>
+            <ul>
+                <li><code>Radius.circular(r)</code> — same radius in both X and Y. Gives a circular arc at the corner.
+                </li>
+                <li><code>Radius.elliptical(x, y)</code> — different horizontal (x) and vertical (y) radii. Gives an
+                    elliptical arc.</li>
+            </ul>
+            <div class="info-box">
+                <strong>💡 Tip:</strong> For <code>RRect</code> and paths, you pass <code>Radius.circular(20)</code> or
+                <code>Radius.elliptical(30, 10)</code> to control how rounded the corners are.
+            </div>
+
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">Copy</button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final paint = Paint()..color = Colors.blue..style = PaintingStyle.stroke..strokeWidth = 3;<br>
+<br>
+&nbsp;&nbsp;// Same radius on all corners (circular)<br>
+&nbsp;&nbsp;final rect1 = Rect.fromLTWH(40, 40, 120, 80);<br>
+&nbsp;&nbsp;final rrect1 = RRect.fromRectAndRadius(rect1, const Radius.circular(20));<br>
+&nbsp;&nbsp;canvas.drawRRect(rrect1, paint);<br>
+<br>
+&nbsp;&nbsp;// Elliptical radius (wider horizontally than vertically)<br>
+&nbsp;&nbsp;final rect2 = Rect.fromLTWH(200, 40, 120, 80);<br>
+&nbsp;&nbsp;final rrect2 = RRect.fromRectAndCorners(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rect2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;topLeft: const Radius.elliptical(35, 15),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;topRight: const Radius.elliptical(35, 15),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bottomLeft: const Radius.elliptical(35, 15),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bottomRight: const Radius.elliptical(35, 15),<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.drawRRect(rrect2, paint);<br>
+}<br>
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/rrect.png"
+                        alt="Rounded rectangles using Radius — circular and elliptical corners">
+                    <p class="image-caption">Rounded rectangles drawn with <code>Radius.circular</code> and
+                        <code>Radius.elliptical</code>. The shape of the corner depends on the radius you give.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+    <button id="backToTop" class="back-to-top" title="Back to top">↑ Back to top</button>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btn = document.getElementById('backToTop');
+            if (btn) {
+                window.addEventListener('scroll', () => { btn.classList.toggle('show', window.pageYOffset > 300); });
+                btn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+            }
+        });
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const codeElement = codeBlock.querySelector('code');
+            if (!codeElement) return;
+            let text = codeElement.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/&nbsp;/g, ' ');
+            const tempDiv = document.createElement('div'); tempDiv.innerHTML = text;
+            text = tempDiv.textContent || tempDiv.innerText || '';
+            navigator.clipboard.writeText(text).then(() => {
+                const orig = button.textContent; button.textContent = 'Copied!';
+                setTimeout(() => { button.textContent = orig; }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔲 What is RRect? - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .topic-links a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .topic-links a:hover {
+            text-decoration: underline;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>🔲 What is RRect?</h1>
+        </div>
+    </header>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>📚 What is RRect?</h2>
+            <p><strong>RRect</strong> stands for <strong>Rounded Rectangle</strong>. It is a class in Flutter (from
+                <code>dart:ui</code>) that describes a rectangle whose corners are rounded. So it is like a normal
+                <code>Rect</code>, but with a <strong>Radius</strong> (or different radii per corner) so that the
+                corners are drawn as arcs instead of sharp corners.</p>
+            <p><strong>In simple words:</strong> When you want a box with rounded corners — like a card or a button —
+                you use RRect. You define the same bounds as a Rect, plus how much each corner is rounded.</p>
+            <p><strong>Where it is used:</strong></p>
+            <ul>
+                <li><code>canvas.drawRRect(rrect, paint)</code> — to draw a rounded rectangle on the canvas.</li>
+                <li><code>canvas.drawDRRect(outer, inner, paint)</code> — to draw a “hole” (inner rounded rect cut from
+                    an outer one).</li>
+                <li>Path methods like <code>path.addRRect(rrect)</code> to add a rounded rectangle to a path.</li>
+            </ul>
+            <div class="info-box">
+                <strong>💡 Key concept:</strong> You often create an RRect from a <code>Rect</code> and a
+                <code>Radius</code>, e.g. <code>RRect.fromRectAndRadius(rect, Radius.circular(20))</code>. For different
+                corners use <code>RRect.fromRectAndCorners(rect, topLeft: ..., topRight: ..., ...)</code>.
+            </div>
+            <h3>See also</h3>
+            <ul class="topic-links">
+                <li><a href="primitive-shapes.html">Primitive Shapes</a> — <code>drawRRect</code> and
+                    <code>drawDRRect</code> are explained there with code and examples.</li>
+                <li><a href="core-geometry-classes.html#radius">Radius</a> — How corner roundness is defined (e.g.
+                    <code>Radius.circular</code>, <code>Radius.elliptical</code>).</li>
+                <li><a href="what-is-rect.html">Rect</a> — The base rectangle; RRect is built from a Rect plus radii.
+                </li>
+            </ul>
+        </section>
+    </div>
+    <button id="backToTop" class="back-to-top" title="Back to top">↑ Back to top</button>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btn = document.getElementById('backToTop');
+            if (btn) {
+                window.addEventListener('scroll', () => { btn.classList.toggle('show', window.pageYOffset > 300); });
+                btn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+            }
+        });
+    </script>
+</body>
+
+</html>
