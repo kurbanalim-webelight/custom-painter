@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⬡ Regular Polygons - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        h3:first-of-type {
+            margin-top: 0;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #5a6c7d;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            color: #495057;
+            line-height: 1.7;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+            margin: 16px 0;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+            gap: 20px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>⬡ Regular Polygons</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>What is a regular polygon?</h2>
+            <p>
+                A <strong>regular polygon</strong> is a shape where all sides are equal and all corners are at the same
+                distance from the centre. For example: triangle (3 sides), square (4), pentagon (5), hexagon (6),
+                octagon (8). If we place the centre at a point and imagine a circle around it, all the <strong>corners
+                    of the polygon lie on that circle</strong>. So we can find each corner using one simple idea: turn
+                by a
+                fixed angle and place a point on the circle.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Triangle, Pentagon, Hexagon, Octagon</h2>
+            <p>
+                Same idea for all of them: we decide the <strong>number of sides</strong> (3 = triangle, 5 = pentagon,
+                6 = hexagon, 8 = octagon). We divide the full circle (360°) by that number to get the <strong>angle
+                    between one corner and the next</strong>. Then we put one point at each of those angles on a circle
+                of
+                given radius, and join them with lines to get the polygon.
+            </p>
+            <ul>
+                <li><strong>Triangle</strong> — 3 sides → angle step = 360° ÷ 3 = 120°</li>
+                <li><strong>Pentagon</strong> — 5 sides → angle step = 360° ÷ 5 = 72°</li>
+                <li><strong>Hexagon</strong> — 6 sides → angle step = 360° ÷ 6 = 60°</li>
+                <li><strong>Octagon</strong> — 8 sides → angle step = 360° ÷ 8 = 45°</li>
+            </ul>
+            <p>
+                So the rule is: <strong>angle step = 360° ÷ number of sides</strong>. We use this same formula for any
+                regular polygon.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Using angle math: 360° ÷ sides</h2>
+            <p>
+                In code we work in <strong>radians</strong>, not degrees. Full circle = 2π radians (same as 360°). So
+                the angle between two neighbouring corners is:
+            </p>
+            <p>
+                <code>angleStep = (2 * pi) / sides</code>
+            </p>
+            <p>
+                For the first corner we start at some angle (e.g. 0 or -π/2 if we want the top point first). Then for
+                corner 0 we use angle 0, for corner 1 we use angleStep, for corner 2 we use 2 * angleStep, and so on.
+                So for corner <code>i</code>: <strong>angle = i * angleStep</strong> (plus the start angle if you added
+                one).
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Finding each point: cos and sin</h2>
+            <p>
+                Once we have the angle for a corner, we need to convert “angle on a circle” into x and y. We use:
+            </p>
+            <p>
+                <strong><code>Offset(centerX + radius * cos(angle), centerY + radius * sin(angle))</code></strong>
+            </p>
+            <p>
+                Here, <code>centerX</code> and <code>centerY</code> are the centre of the polygon, and
+                <code>radius</code>
+                is the distance from centre to any corner (the circle on which all corners lie). <code>cos(angle)</code>
+                gives how far the point is in the horizontal direction from the centre, and <code>sin(angle)</code> in
+                the
+                vertical direction. So we get the exact position of that corner. We do this for each corner (0 to
+                sides-1), put them in a <code>Path</code>, and close the path to get the polygon.
+            </p>
+            <div class="info-box">
+                <strong>💡 In short:</strong> For each corner <code>i</code>, angle = <code>i * (2π / sides)</code>,
+                then point = <code>Offset(centerX + radius * cos(angle), centerY + radius * sin(angle))</code>. Join
+                the points in order and close the path — that’s your regular polygon.
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Example code</h2>
+            <p>
+                Below is a small example: a helper that builds a <code>Path</code> for any regular polygon given centre,
+                radius and number of sides. You can use 3 for triangle, 5 for pentagon, 6 for hexagon, 8 for octagon.
+            </p>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <code>
+                        @override<br>
+                        &nbsp;&nbsp;void&nbsp;paint(Canvas&nbsp;canvas,&nbsp;Size&nbsp;size)&nbsp;{<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;final&nbsp;paint&nbsp;=&nbsp;Paint()<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style&nbsp;=&nbsp;PaintingStyle.stroke<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth&nbsp;=&nbsp;3<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color&nbsp;=&nbsp;Colors.blue;<br>
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;regularPolygonPath({<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;required&nbsp;Offset&nbsp;center,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;required&nbsp;double&nbsp;radius,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;required&nbsp;int&nbsp;sides,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;startAngle&nbsp;=&nbsp;-math.pi&nbsp;/&nbsp;2,&nbsp;//&nbsp;top&nbsp;point&nbsp;first<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;})&nbsp;{<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;final&nbsp;path&nbsp;=&nbsp;Path();<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;final&nbsp;angleStep&nbsp;=&nbsp;(2&nbsp;*&nbsp;math.pi)&nbsp;/&nbsp;sides;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(var&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;=&nbsp;sides;&nbsp;i++)&nbsp;{<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;final&nbsp;angle&nbsp;=&nbsp;startAngle&nbsp;+&nbsp;i&nbsp;*&nbsp;angleStep;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;final&nbsp;x&nbsp;=&nbsp;center.dx&nbsp;+&nbsp;radius&nbsp;*&nbsp;math.cos(angle);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;final&nbsp;y&nbsp;=&nbsp;center.dy&nbsp;+&nbsp;radius&nbsp;*&nbsp;math.sin(angle);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(i&nbsp;==&nbsp;0)&nbsp;{<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path.moveTo(x,&nbsp;y);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path.lineTo(x,&nbsp;y);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path.close();<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;path;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Usage:&nbsp;triangle,&nbsp;pentagon,&nbsp;hexagon,&nbsp;octagon<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;canvas.drawPath(<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;regularPolygonPath(<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;center:&nbsp;Offset(size.width&nbsp;/&nbsp;2,&nbsp;size.height&nbsp;/&nbsp;2),<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;radius:&nbsp;50,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sides:&nbsp;8,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;);<br>
+                        &nbsp;&nbsp;}<br>
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/polygon.gif" alt="Flutter Path close visual example">
+                    <p class="image-caption">Regular Polygons (gif)</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
+    <script>
+        function copyCode(btn) {
+            var block = btn.parentElement, code = block.querySelector('code');
+            if (!code) return;
+            var t = code.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/&nbsp;/g, ' ');
+            var d = document.createElement('div'); d.innerHTML = t; t = (d.textContent || d.innerText || '').trim();
+            navigator.clipboard.writeText(t).then(function () {
+                btn.classList.add('copied'); var o = btn.textContent; btn.textContent = 'Copied!';
+                setTimeout(function () { btn.classList.remove('copied'); btn.textContent = o; }, 2000);
+            });
+        }
+        var b = document.getElementById('backToTop');
+        window.addEventListener('scroll', function () { b.classList.toggle('show', window.pageYOffset > 300); });
+        b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    </script>
+</body>
+
+</html>
