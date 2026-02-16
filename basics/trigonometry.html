@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📐 Trigonometry - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        h3:first-of-type {
+            margin-top: 0;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #5a6c7d;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            color: #495057;
+            line-height: 1.7;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+            margin: 16px 0;
+            min-height: 120px;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .formula-block {
+            background-color: #f8f9fa;
+            padding: 14px 18px;
+            border-left: 4px solid #1a73e8;
+            margin: 12px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            color: #2c3e50;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+            gap: 24px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .screenshot-placeholder {
+            min-height: 280px;
+            background-color: #e9ecef;
+            border: 2px dashed #adb5bd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 1em;
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .example-images {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .example-item {
+            width: 100%;
+            text-align: center;
+        }
+
+        .example-item img {
+            max-width: 100%;
+            height: auto;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .example-item .image-caption {
+            margin-top: 10px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 900px) {
+            .property-layout {
+                flex-direction: column;
+            }
+
+            .property-image {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>📐 Trigonometry</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>Explanation</h2>
+            <p>
+                <strong>Trigonometry</strong> is essential for placing and moving points around circles and for periodic
+                motion in CustomPainter. When you draw polygons, stars, arcs, or waves, you often need a point on a
+                circle at a given angle — that is exactly what <strong>sine</strong> and <strong>cosine</strong>
+                provide.
+            </p>
+            <p>
+                In Flutter, the canvas uses a coordinate system where <em>x</em> increases to the right and <em>y</em>
+                increases downward. For a circle centered at <code>(cx, cy)</code> with radius <code>r</code>, the point
+                at angle <code>θ</code> (in <strong>radians</strong>) is:
+            </p>
+            <ul>
+                <li><strong>x</strong> = center + radius × cos(θ)</li>
+                <li><strong>y</strong> = center + radius × sin(θ)</li>
+            </ul>
+            <p>
+                Use <code>dart:math</code> for <code>sin</code>, <code>cos</code>, and <code>pi</code>. Angles in the
+                Flutter canvas are typically measured in <strong>radians</strong>; 0 radians points to the right (3
+                o'clock), and increasing the angle goes counter-clockwise (e.g. π/2 is up, π is left). Trigonometry in
+                CustomPainter is used for circular layouts (polygons, stars), arcs, and wave-like motion.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Formulas</h2>
+            <h3>sin, cos for circular positioning</h3>
+            <p>To place a point on a circle (or to step around a circle for polygons/stars):</p>
+            <div class="formula-block">x = cx + r × cos(θ) &nbsp;&nbsp;, &nbsp;&nbsp; y = cy + r × sin(θ)</div>
+            <p>Here <code>cx, cy</code> is the center, <code>r</code> is the radius, and <code>θ</code> is the angle in
+                radians.</p>
+
+            <h3>Radians conversion</h3>
+            <p>Flutter and <code>dart:math</code> use <strong>radians</strong>, not degrees. Convert degrees to radians
+                with:</p>
+            <div class="formula-block">radians = degrees × π / 180</div>
+            <p>In Dart: <code>final radians = degrees * math.pi / 180;</code></p>
+        </section>
+
+        <section class="section">
+            <h2>Visual Demo</h2>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final centerX = size.width / 2;<br>
+&nbsp;&nbsp;final centerY = size.height / 2;<br>
+&nbsp;&nbsp;const radius = 120.0;<br>
+&nbsp;&nbsp;const numPoints = 8;<br>
+<br>
+&nbsp;&nbsp;final center = Offset(centerX, centerY);<br>
+<br>
+&nbsp;&nbsp;// ---- Center point ----<br>
+&nbsp;&nbsp;final centerPaint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+&nbsp;&nbsp;canvas.drawCircle(center, 10, centerPaint);<br>
+<br>
+&nbsp;&nbsp;// ---- Radius line (from center to first point) ----<br>
+&nbsp;&nbsp;// Convert 0° to radians: degrees * pi / 180<br>
+&nbsp;&nbsp;const angleRad = 0 * pi / 180;<br>
+&nbsp;&nbsp;final radiusEnd = Offset(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;centerX + radius * cos(angleRad),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;centerY + radius * sin(angleRad),<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;final radiusPaint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.grey<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke;<br>
+&nbsp;&nbsp;canvas.drawLine(center, radiusEnd, radiusPaint);<br>
+<br>
+&nbsp;&nbsp;// ---- Circle outline (optional visual) ----<br>
+&nbsp;&nbsp;final circlePaint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue.withValues(alpha: 0.2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 1;<br>
+&nbsp;&nbsp;canvas.drawCircle(center, radius, circlePaint);<br>
+<br>
+&nbsp;&nbsp;// ---- Evenly spaced points on circle ----<br>
+&nbsp;&nbsp;// Angle for each point: 360° / n → in radians: 2*pi / n<br>
+&nbsp;&nbsp;// Point k is at angle: k * (2*pi / n)<br>
+&nbsp;&nbsp;// x = centerX + radius * cos(angle), y = centerY + radius * sin(angle)<br>
+&nbsp;&nbsp;final pointPositions = &lt;Offset&gt;[];<br>
+&nbsp;&nbsp;for (var k = 0; k &lt; numPoints; k++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final angle = k * (2 * pi / numPoints);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final x = centerX + radius * cos(angle);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final y = centerY + radius * sin(angle);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pointPositions.add(Offset(x, y));<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;final pointPaint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.orange<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+&nbsp;&nbsp;for (final p in pointPositions) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawCircle(p, 8, pointPaint);<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;// ---- Regular polygon (connect consecutive points) ----<br>
+&nbsp;&nbsp;final polygonPath = Path()..moveTo(pointPositions[0].dx, pointPositions[0].dy);<br>
+&nbsp;&nbsp;for (var i = 1; i &lt; pointPositions.length; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;polygonPath.lineTo(pointPositions[i].dx, pointPositions[i].dy);<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;polygonPath.close();<br>
+&nbsp;&nbsp;final polygonPaint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.green.withValues(alpha: 0.3)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+&nbsp;&nbsp;canvas.drawPath(polygonPath, polygonPaint);<br>
+&nbsp;&nbsp;final polygonStroke = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.green<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 2;<br>
+&nbsp;&nbsp;canvas.drawPath(polygonPath, polygonStroke);<br>
+}<br>
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/trigonometry.png"
+                        alt="Trigonometry demo: octagon with center point, radius line, circle outline, and vertices using sin/cos">
+                    <p class="image-caption">Trigonometry demo: center point (blue), radius line (grey), circle outline
+                        (faint blue), evenly spaced points (orange) using <code>cos</code>/<code>sin</code>, and regular
+                        octagon (green fill and stroke).</p>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <h2>🖼️ Visual Guide</h2>
+            <p>
+                Here is a comprehensive visual guide to the Path class:
+            </p>
+
+            <div class="example-images">
+                <div class="example-item">
+                    <img src="../assets/trigonometry-infographics.png" alt="Flutter Path Class Complete Visual Guide">
+                    <p class="image-caption">Complete Visual Guide to Flutter's Path Class</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
+    <script>
+        var b = document.getElementById('backToTop');
+        if (b) { window.addEventListener('scroll', function () { b.classList.toggle('show', window.pageYOffset > 300); }); b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); }); }
+    </script>
+</body>
+
+</html>
