@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 Paint Properties (Shape Styling) - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #5a6c7d;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .highlight-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>🎨 Paint Properties (Shape Styling)</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>Overview</h2>
+            <p>
+                This page is a quick guide to <strong>how shapes look</strong> on the canvas using the
+                <code>Paint</code> object. It focuses on styling – colour, borders, smoothness, gradients and
+                advanced effects.
+            </p>
+            <div class="info-box">
+                <strong>📌 Note:</strong> All basic Paint properties are already explained in detail on the
+                <strong><a href="what-is-paint.html">What is Paint?</a></strong> page. Here we will just
+                remind you of them and then go a bit deeper into the advanced styling options
+                <code>blendMode</code> and <code>maskFilter</code>.
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Basic styling properties (already covered)</h2>
+            <p>These properties are part of everyday drawing and are fully documented in
+                <a href="what-is-paint.html"><code>what-is-paint.html</code></a>:
+            </p>
+            <ul>
+                <li>
+                    <strong><code>color</code> – Shape colour:</strong>
+                    controls the solid colour of fills and strokes.
+                    See full examples on the <a href="what-is-paint.html">Paint basics page</a>.
+                </li>
+                <li>
+                    <strong><code>style</code> – Fill or stroke:</strong>
+                    chooses between <code>PaintingStyle.fill</code> (filled shapes) and
+                    <code>PaintingStyle.stroke</code> (outline only). Explained with diagrams on the
+                    <a href="what-is-paint.html">Paint page</a>.
+                </li>
+                <li>
+                    <strong><code>strokeWidth</code> – Line thickness:</strong>
+                    sets how thick the stroke border is when using <code>PaintingStyle.stroke</code>.
+                </li>
+                <li>
+                    <strong><code>strokeCap</code> – Line end style:</strong>
+                    controls how line ends look (round, square, or flat).
+                </li>
+                <li>
+                    <strong><code>strokeJoin</code> – Corner style:</strong>
+                    defines how corners between two strokes are drawn (miter, round, bevel).
+                </li>
+                <li>
+                    <strong><code>isAntiAlias</code> – Smooth edges:</strong>
+                    decides whether edges are smooth (true) or jagged but a bit faster (false).
+                </li>
+                <li>
+                    <strong><code>shader</code> – Gradients:</strong>
+                    replaces solid colour with gradients like linear, radial and sweep. Full gradient examples are in
+                    <a href="what-is-paint.html">What is Paint?</a>.
+                </li>
+            </ul>
+            <div class="highlight-box">
+                <strong>💡 Tip:</strong> For day‑to‑day UI work, most styling can be done with just
+                <code>color</code>, <code>style</code>, <code>strokeWidth</code> and <code>shader</code>.
+                When you want more advanced control on how shapes mix with the background or glow/blur,
+                move to <strong>Advanced Styling</strong> below.
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>✨ Advanced Styling</h2>
+
+            <h3><code>blendMode</code> — How shape blends with background</h3>
+            <p><strong>Type:</strong> <code>BlendMode blendMode</code></p>
+            <p>
+                <strong>In simple words:</strong> <code>blendMode</code> controls how the colour from your shape
+                mixes with the colour that is already on the canvas (background or other shapes).
+            </p>
+            <h4>Why we use it</h4>
+            <p>
+                Normally, new drawings simply cover what is behind them (default
+                <code>BlendMode.srcOver</code>). With other blend modes we can create
+                <strong>lighting, highlight, darken, multiply and overlay effects</strong> like in photo‑editing
+                tools.
+            </p>
+            <h4>Common use cases</h4>
+            <ul>
+                <li>Darkening or tinting a background without changing the original image.</li>
+                <li>Special visual effects like additive light (<code>BlendMode.plus</code>) or multiply shading
+                    (<code>BlendMode.multiply</code>).</li>
+            </ul>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <code>
+                                    GridView.builder(<br>
+                                    &nbsp;&nbsp;padding:&nbsp;const&nbsp;EdgeInsets.all(12),<br>
+                                    &nbsp;&nbsp;gridDelegate:&nbsp;const&nbsp;SliverGridDelegateWithFixedCrossAxisCount(<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;crossAxisCount:&nbsp;2,<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;crossAxisSpacing:&nbsp;12,<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;mainAxisSpacing:&nbsp;12,<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;childAspectRatio:&nbsp;1,<br>
+                                    &nbsp;&nbsp;),<br>
+                                    &nbsp;&nbsp;itemCount:&nbsp;modes.length,<br>
+                                    &nbsp;&nbsp;itemBuilder:&nbsp;(_, index)&nbsp;{<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;CustomPaint(<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;painter:&nbsp;BlendModePropertyCP(<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;blendMode:&nbsp;modes[index],<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;);<br>
+                                    &nbsp;&nbsp;},<br>
+                                    ),<br>
+                                    <br>
+                                    class&nbsp;BlendModePropertyCP&nbsp;extends&nbsp;CustomPainter&nbsp;{<br>
+                                    &nbsp;&nbsp;final&nbsp;BlendMode&nbsp;blendMode;<br>
+                                    <br>
+                                    &nbsp;&nbsp;BlendModePropertyCP({required&nbsp;this.blendMode});<br>
+                                    <br>
+                                    &nbsp;&nbsp;@override<br>
+                                    &nbsp;&nbsp;void&nbsp;paint(Canvas&nbsp;canvas,&nbsp;Size&nbsp;size)&nbsp;{<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;final&nbsp;rect&nbsp;=&nbsp;Rect.fromLTWH(0,&nbsp;0,&nbsp;size.width,&nbsp;size.height);<br>
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;final&nbsp;bgPaint&nbsp;=&nbsp;Paint()..color&nbsp;=&nbsp;Colors.blue;<br>
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;final&nbsp;srcPaint&nbsp;=&nbsp;Paint()<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color&nbsp;=&nbsp;Colors.yellow<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..blendMode&nbsp;=&nbsp;blendMode;<br>
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;canvas.saveLayer(rect,&nbsp;Paint());<br>
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;canvas.drawRect(rect,&nbsp;bgPaint);<br>
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;canvas.drawCircle(<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.center(Offset.zero),<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.shortestSide&nbsp;*&nbsp;0.3,<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;srcPaint,<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;);<br>
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;canvas.restore();<br>
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;canvas.drawRect(<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rect,<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Paint()<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style&nbsp;=&nbsp;PaintingStyle.stroke<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color&nbsp;=&nbsp;Colors.black26,<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;);<br>
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;final&nbsp;textPainter&nbsp;=&nbsp;TextPainter(<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text:&nbsp;TextSpan(<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text:&nbsp;blendMode.name,<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;style:&nbsp;const&nbsp;TextStyle(<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color:&nbsp;Colors.white,<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fontSize:&nbsp;12,<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fontWeight:&nbsp;FontWeight.w600,<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;textDirection:&nbsp;TextDirection.ltr,<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;)..layout(maxWidth:&nbsp;size.width&nbsp;-&nbsp;8);<br>
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;textPainter.paint(canvas,&nbsp;const&nbsp;Offset(6,&nbsp;6));<br>
+                                    &nbsp;&nbsp;}<br>
+                                    <br>
+                                    &nbsp;&nbsp;@override<br>
+                                    &nbsp;&nbsp;bool&nbsp;shouldRepaint(covariant&nbsp;BlendModePropertyCP&nbsp;oldDelegate)&nbsp;{<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;oldDelegate.blendMode&nbsp;!=&nbsp;blendMode;<br>
+                                    &nbsp;&nbsp;}<br>
+                                    }<br>
+                                    </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/blend_mode.gif" alt="Flutter Paint strokeWidth property visual example">
+                    <p class="image-caption">
+                        This GIF demonstrates how different <code>BlendMode</code> settings change the way two shapes
+                        (the yellow circle and the background rectangle) visually interact in Flutter. Notice how, as
+                        the <code>blendMode</code> changes, the circle blends with the background in different
+                        ways—sometimes creating a glow, darkening, or showing color overlap—helping you achieve various
+                        compositing effects in your custom painting. (gif)
+                    </p>
+                </div>
+            </div>
+
+            <p>
+                Here, the circle does not just sit on top. Because of <code>BlendMode.plus</code>, it makes the
+                area under it look brighter, giving a light or glow effect.
+            </p>
+
+            <h3><code>maskFilter</code> — Blur / glow around shapes</h3>
+            <p><strong>Type:</strong> <code>MaskFilter? maskFilter</code></p>
+            <p>
+                <strong>In simple words:</strong> <code>maskFilter</code> adds a <strong>blur</strong> to the edges
+                of what you draw. This is useful for soft glows, shadows or fuzzy borders.
+            </p>
+            <h4>Why we use it</h4>
+            <p>
+                Normal shapes have sharp edges. With <code>maskFilter</code> we can soften those edges and create
+                subtle depth, glow or focus effects, without manually drawing multiple layers.
+            </p>
+            <h4>Common use cases</h4>
+            <ul>
+                <li>Soft glows behind icons or important UI elements.</li>
+                <li>Light blur on shapes to separate them from the background.</li>
+                <li>Highlighting selected areas in charts or custom controls.</li>
+            </ul>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <code>
+                    @override<br>
+                    void paint(Canvas canvas, Size size) {<br>
+                    &nbsp;&nbsp;final center = size.center(Offset.zero);<br>
+                    <br>
+                    &nbsp;&nbsp;// Base circle<br>
+                    &nbsp;&nbsp;final basePaint = Paint()<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.deepPurple<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+                    &nbsp;&nbsp;canvas.drawCircle(center, 40, basePaint);<br>
+                    <br>
+                    &nbsp;&nbsp;// Glow around circle using maskFilter blur<br>
+                    &nbsp;&nbsp;final glowPaint = Paint()<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.deepPurple.withValues(alpha: 0.6)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;..maskFilter = MaskFilter.blur(BlurStyle.normal, 15);<br>
+                    <br>
+                    &nbsp;&nbsp;canvas.drawCircle(center, 60, glowPaint);<br>
+                    }<br>
+                                    </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/mask_filter.png" alt="Flutter Paint style property visual example">
+                    <p class="image-caption">
+                        Adds a soft blur or glow to the edges of shapes. The clear circle is drawn first. Then, the
+                        larger blurred circle is drawn behind, creating the appearance of a gentle glow that spreads
+                        beyond the edges. Perfect for making elements stand out or adding focus/highlight effects.
+                    </p>
+                </div>
+            </div>
+            <p>
+                The smaller circle is the main shape, and the larger blurred circle acts like a soft glow
+                behind it. By changing blur style and radius, you can tune the effect.
+            </p>
+
+            <div class="highlight-box">
+                <strong>✅ Summary:</strong>
+                Use <code>blendMode</code> when you want your drawing to
+                <strong>mix colours</strong> with what is already on the canvas. Use
+                <code>maskFilter</code> when you want to <strong>soften edges</strong> and create glow or blur
+                around shapes. Combined with the basic properties from
+                <a href="what-is-paint.html">What is Paint?</a>, you can style almost any custom UI you imagine.
+            </div>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.nextElementSibling;
+            const code = codeBlock.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                button.classList.add('copied');
+                const orig = button.textContent;
+                button.textContent = 'Copied!';
+                setTimeout(() => { button.classList.remove('copied'); button.textContent = orig; }, 2000);
+            });
+        }
+
+        const backToTopButton = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTopButton.classList.toggle('show', window.pageYOffset > 300);
+        });
+        backToTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 Canvas Drawing APIs - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #5a6c7d;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul,
+        ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+            transform: translateY(-1px);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .highlight-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .success-box {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #e8f0fe;
+            margin: 30px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background-color: #1a73e8;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+
+        .example-images {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .demo-link-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 25px 30px;
+            margin: 30px 0;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .demo-link-container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(102, 126, 234, 0.4);
+        }
+
+        .demo-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .demo-link-content {
+            flex: 1;
+        }
+
+        .demo-link-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demo-link-title::before {
+            content: '🎨';
+            font-size: 1.2em;
+        }
+
+        .demo-link-description {
+            font-size: 1em;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .demo-link-arrow {
+            font-size: 1.8em;
+            margin-left: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .demo-link:hover .demo-link-arrow {
+            transform: translateX(8px);
+        }
+
+        .example-item {
+            width: 100%;
+            text-align: center;
+        }
+
+        .example-item img {
+            max-width: 70%;
+            height: auto;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .example-item .image-caption {
+            margin-top: 10px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        @media (max-width: 900px) {
+            .demo-link-container {
+                padding: 20px;
+            }
+
+            .demo-link {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .demo-link-arrow {
+                margin-left: 0;
+                margin-top: 15px;
+                align-self: flex-end;
+            }
+
+            .demo-link-title {
+                font-size: 1.2em;
+            }
+
+            .demo-link-description {
+                font-size: 0.95em;
+            }
+
+            .property-layout {
+                flex-direction: column;
+            }
+
+            .property-image {
+                margin-top: -10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>🎨 Canvas Drawing APIs</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+
+
+        <section class="section">
+            <h2>🔶 Complex Shapes</h2>
+
+            <h3><code>drawPath(Path path, Paint paint)</code></h3>
+            <p><strong>Purpose:</strong> Draws a custom shape defined by a Path object.</p>
+            <p><strong>Parameters:</strong></p>
+            <ul>
+                <li><code>path</code> - Path object defining the custom shape</li>
+                <li><code>paint</code> - Paint object defining path style</li>
+            </ul>
+            <p><strong>Common uses:</strong> Custom polygons, curves, wave shapes, freehand drawing, signatures, complex
+                graphics.</p>
+
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                            <span class="copy-text">Copy</span>
+                        </button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final strokePaint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3;<br>
+<br>
+&nbsp;&nbsp;final fillPaint = Paint()..style = PaintingStyle.fill;<br>
+<br>
+&nbsp;&nbsp;// 1️⃣ Path - Top Left (Blue) - Simple line path<br>
+&nbsp;&nbsp;final path1 = Path()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..moveTo(50, 50)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..lineTo(150, 50)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..lineTo(150, 150)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..lineTo(50, 150)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..close();<br>
+&nbsp;&nbsp;canvas.drawPath(path1, strokePaint..color = Colors.blue);<br>
+<br>
+&nbsp;&nbsp;// 2️⃣ Path - Top Right (Green) - Triangle with fill<br>
+&nbsp;&nbsp;final path2 = Path()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..moveTo(size.width - 100, 50)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..lineTo(size.width - 50, 150)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..lineTo(size.width - 150, 150)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..close();<br>
+&nbsp;&nbsp;canvas.drawPath(path2, fillPaint..color = Colors.green.withValues(alpha: 0.5));<br>
+&nbsp;&nbsp;canvas.drawPath(path2, strokePaint..color = Colors.green);<br>
+<br>
+&nbsp;&nbsp;// 3️⃣ Path - Center Left (Purple) - Quadratic Bezier curve<br>
+&nbsp;&nbsp;final path3 = Path()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..moveTo(50, size.height / 2 - 50)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..quadraticBezierTo(100, size.height / 2 - 100, 150, size.height / 2 - 50);<br>
+&nbsp;&nbsp;canvas.drawPath(path3, strokePaint..color = Colors.purple);<br>
+<br>
+&nbsp;&nbsp;// 4️⃣ Path - Center Right (Orange) - Cubic Bezier curve<br>
+&nbsp;&nbsp;final path4 = Path()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..moveTo(size.width - 200, size.height / 2 - 50)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..cubicTo(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.width - 150,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.height / 2 - 100,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.width - 100,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.height / 2 + 50,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.width - 50,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size.height / 2 - 50,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;canvas.drawPath(path4, strokePaint..color = Colors.orange);<br>
+<br>
+&nbsp;&nbsp;// 5️⃣ Path - Bottom Right (Teal) - Complex path with arc<br>
+&nbsp;&nbsp;final path6 = Path()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..moveTo(size.width - 200, size.height - 200)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..lineTo(size.width - 100, size.height - 200)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..arcToPoint(Offset(size.width - 100, size.height - 100), radius: const Radius.circular(50), clockwise: false)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..lineTo(size.width - 200, size.height - 100)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..close();<br>
+&nbsp;&nbsp;canvas.drawPath(path6, fillPaint..color = Colors.teal.withValues(alpha: 0.5));<br>
+&nbsp;&nbsp;canvas.drawPath(path6, strokePaint..color = Colors.teal);<br>
+}<br>
+                        </code>
+                    </div>
+                </div>
+
+                <div class="property-image">
+                    <img src="../assets/path.png" alt="Flutter Canvas drawPath visual example">
+                    <p class="image-caption">Visual guide showing how <code>drawPath()</code> draws custom shapes
+                        defined by Path objects. Examples include simple polygons (blue square), filled shapes (green
+                        triangle), curves (purple quadratic, orange cubic), complex shapes (red star), and paths with
+                        arcs (teal).</p>
+                </div>
+            </div>
+
+            <h3><code>drawPoints(PointMode pointMode, List&lt;Offset&gt; points, Paint paint)</code></h3>
+
+            <p>
+                <strong>Canvas.drawPoints</strong> is used to draw <strong>multiple point-based shapes efficiently in a
+                    single draw
+                    call</strong>.
+                Instead of drawing each dot or line segment individually, Flutter batches them together, making this
+                method ideal
+                for markers, graphs, paths, and visual indicators.
+            </p>
+
+            <div class="code-block">
+                <code>
+            canvas.drawPoints(PointMode pointMode, List&lt;Offset&gt; points, Paint paint);
+                </code>
+            </div>
+
+            <h4>What each parameter means</h4>
+
+            <h4>1️⃣ <code>PointMode pointMode</code></h4>
+            <p>
+                Defines <strong>how Flutter should interpret the list of points</strong>.
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mode</th>
+                        <th>Meaning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>PointMode.points</code></td>
+                        <td>Draws each <code>Offset</code> as an individual dot</td>
+                    </tr>
+                    <tr>
+                        <td><code>PointMode.lines</code></td>
+                        <td>Draws independent line segments using pairs of points</td>
+                    </tr>
+                    <tr>
+                        <td><code>PointMode.polygon</code></td>
+                        <td>Draws a connected polyline through all points</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Important behavior:</strong></p>
+            <ul>
+                <li><code>PointMode.points</code> → every offset is rendered as a dot</li>
+                <li><code>PointMode.lines</code> → every <strong>two offsets</strong> form one line segment</li>
+                <li><code>PointMode.polygon</code> → all offsets are connected in sequence</li>
+            </ul>
+
+            <h4>2️⃣ <code>List&lt;Offset&gt; points</code></h4>
+            <p>
+                A list of coordinates in <strong>canvas space</strong>.
+                How these points are rendered depends entirely on the selected <code>PointMode</code>.
+            </p>
+
+            <h4>3️⃣ <code>Paint paint</code></h4>
+            <p>
+                Controls the visual appearance of the points or lines.
+            </p>
+
+            <div class="info-box">
+                <strong>⚠️ Important:</strong>
+                <code>PaintingStyle.stroke</code> is required.
+                <code>PaintingStyle.fill</code> is ignored by <code>drawPoints</code>.
+            </div>
+
+            <h4>📌 Example</h4>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <code>
+            @override<br>
+            void paint(Canvas canvas, Size size) {<br>
+            &nbsp;&nbsp;// 🔴 POINTS MODE (individual dots)<br>
+            &nbsp;&nbsp;final pointPaint = Paint()<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.red<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 10<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..strokeCap = StrokeCap.round<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke;<br>
+            <br>
+            &nbsp;&nbsp;final dotPoints = [<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(60, 60),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(100, 80),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(140, 60),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(180, 90),<br>
+            &nbsp;&nbsp;];<br>
+            <br>
+            &nbsp;&nbsp;canvas.drawPoints(ui.PointMode.points, dotPoints, pointPaint);<br>
+            <br>
+            &nbsp;&nbsp;// 🔵 LINES MODE (independent segments)<br>
+            &nbsp;&nbsp;final linePaint = Paint()<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 4<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke;<br>
+            <br>
+            &nbsp;&nbsp;final linePoints = [<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(40, 150),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(120, 150),<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(160, 130),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const Offset(220, 180),<br>
+            &nbsp;&nbsp;];<br>
+            <br>
+            &nbsp;&nbsp;canvas.drawPoints(ui.PointMode.lines, linePoints, linePaint);<br>
+            <br>
+            &nbsp;&nbsp;// 🟢 POLYGON MODE (connected polyline)<br>
+            &nbsp;&nbsp;final polygonPaint = Paint()<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.green<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke;<br>
+            <br>
+            &nbsp;&nbsp;final polygonPoints = [<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Offset(80, 260),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Offset(140, 230),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Offset(200, 260),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Offset(170, 300),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Offset(110, 300),<br>
+            &nbsp;&nbsp;];<br>
+            <br>
+            &nbsp;&nbsp;canvas.drawPoints(ui.PointMode.polygon, polygonPoints, polygonPaint);<br>
+            }<br>
+                </code>
+
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/points.png" alt="Flutter Canvas drawPath visual example">
+                    <p class="image-caption">Visual guide showing how <code>drawPath()</code> draws custom shapes
+                        defined by Path objects. Examples include simple polygons (blue square), filled shapes
+                        (green
+                        triangle), curves (purple quadratic, orange cubic), complex shapes (red star), and paths
+                        with
+                        arcs (teal).</p>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="section">
+            <h2>🖼️ Other Drawing Methods</h2>
+            <h3><code>drawParagraph(Paragraph paragraph, Offset offset)</code></h3>
+            <p><strong>Purpose:</strong> Draws text on the canvas using a <code>Paragraph</code> object built with
+                <code>ParagraphBuilder</code>. Supports wrapping, styling, and precise positioning.
+            </p>
+            <p><strong>Parameters:</strong></p>
+            <ul>
+                <li><code>paragraph</code> — A laid-out <code>Paragraph</code> (you must call
+                    <code>paragraph.layout(ParagraphConstraints(...))</code> before drawing).
+                </li>
+                <li><code>offset</code> — Position where the text is drawn (top-left of the paragraph).</li>
+            </ul>
+            <p><strong>Common uses:</strong> Custom text rendering, labels, annotations, dynamic text overlays,
+                formatted multi-line text with emojis.</p>
+
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)" title="Copy code">
+                            <span class="copy-text">Copy</span>
+                        </button>
+                        <code>
+class ParagraphPainter extends CustomPainter {<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// 1️⃣ Create a ParagraphStyle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final paragraphStyle = ui.ParagraphStyle(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;textAlign: TextAlign.left,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fontSize: 18,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maxLines: 3,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// 2️⃣ Create a TextStyle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final textStyle = ui.TextStyle(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color: Colors.black,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fontWeight: FontWeight.w500,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// 3️⃣ Create ParagraphBuilder<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final builder = ui.ParagraphBuilder(paragraphStyle)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..pushStyle(textStyle)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..addText(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Hello Canvas 👋\n'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'This text is drawn using drawParagraph.\n'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'It supports wrapping and styling.',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// 4️⃣ Build the paragraph<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final paragraph = builder.build();<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// 5️⃣ Layout the paragraph (VERY IMPORTANT)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paragraph.layout(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ui.ParagraphConstraints(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width: size.width - 40,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// 6️⃣ Draw it on canvas<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawParagraph(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;paragraph,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const Offset(20, 40),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;bool shouldRepaint(covariant CustomPainter oldDelegate) => false;<br>
+}<br>
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/draw-paragraph.png"
+                        alt="Flutter Canvas drawParagraph example: multi-line text with emoji and wrapping">
+                    <p class="image-caption">Output of <code>drawParagraph</code>: multi-line text with emoji (👋),
+                        wrapping based on <code>ParagraphConstraints(width: size.width - 40)</code>, and positioning at
+                        <code>Offset(20, 40)</code>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section class="section">
+            <h2>📋 Complete Canvas Drawing API Reference - Complex Shapes</h2>
+
+
+
+            <h3>Complex Shapes</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Parameters</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>drawPath(Path path, Paint paint)</code></td>
+                        <td><code>Path path, Paint paint</code></td>
+                        <td>Draws a custom shape defined by a Path</td>
+                    </tr>
+                    <tr>
+                        <td><code>drawPoints(PointMode pointMode, List&lt;Offset&gt; points, Paint paint)</code></td>
+                        <td><code>PointMode, List&lt;Offset&gt;, Paint</code></td>
+                        <td>Draws multiple points, lines, or polygons</td>
+                    </tr>
+                    <tr>
+                        <td><code>drawRawPoints(PointMode pointMode, Float32List points, Paint paint)</code></td>
+                        <td><code>PointMode, Float32List, Paint</code></td>
+                        <td>Draws points from raw float array (more efficient for many points)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Other Drawing Methods</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Parameters</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>drawImage(Image image, Offset offset, Paint paint)</code></td>
+                        <td><code>Image, Offset, Paint</code></td>
+                        <td>Draws an image on the canvas</td>
+                    </tr>
+                    <tr>
+                        <td><code>drawImageRect(Image image, Rect src, Rect dst, Paint paint)</code></td>
+                        <td><code>Image, Rect src, Rect dst, Paint</code></td>
+                        <td>Draws a portion of an image scaled to fit a rectangle</td>
+                    </tr>
+                    <tr>
+                        <td><code>drawImageNine(Image image, Rect center, Rect dst, Paint paint)</code></td>
+                        <td><code>Image, Rect center, Rect dst, Paint</code></td>
+                        <td>Draws an image using 9-patch scaling</td>
+                    </tr>
+                    <tr>
+                        <td><code>drawParagraph(Paragraph paragraph, Offset offset)</code></td>
+                        <td><code>Paragraph, Offset</code></td>
+                        <td>Draws text on the canvas</td>
+                    </tr>
+                    <tr>
+                        <td><code>drawPicture(Picture picture)</code></td>
+                        <td><code>Picture picture</code></td>
+                        <td>Draws a recorded picture</td>
+                    </tr>
+                    <tr>
+                        <td><code>drawVertices(Vertices vertices, BlendMode blendMode, Paint paint)</code></td>
+                        <td><code>Vertices, BlendMode, Paint</code></td>
+                        <td>Draws vertices (for 3D-like effects)</td>
+                    </tr>
+                    <tr>
+                        <td><code>drawAtlas(Image atlas, List&lt;RSTransform&gt; transforms, List&lt;Rect&gt; rects, List&lt;Color&gt;? colors, BlendMode? blendMode, Rect? cullRect, Paint paint)</code>
+                        </td>
+                        <td><code>Image, List&lt;RSTransform&gt;, List&lt;Rect&gt;, List&lt;Color&gt;?, BlendMode?, Rect?, Paint</code>
+                        </td>
+                        <td>Draws multiple sprites from an atlas efficiently</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>📱 Example Screen</h2>
+            <p>
+                See a complete, real-world example of how Canvas Drawing APIs are used together to create beautiful UI
+                designs:
+            </p>
+
+            <div class="demo-link-container">
+                <a href="../examples/login-screen-example.html" class="demo-link">
+                    <div class="demo-link-content">
+                        <div class="demo-link-title">Login Screen Example</div>
+                        <div class="demo-link-description">
+                            Step-by-step walkthrough of creating a beautiful login screen with gradient donut
+                            backgrounds
+                            using CustomPainter. Learn how to combine multiple Canvas APIs like <code>drawDRRect</code>,
+                            <code>SweepGradient</code>, and <code>MaskFilter.blur</code> to create modern, glowing
+                            background effects.
+                        </div>
+                    </div>
+                    <div class="demo-link-arrow">→</div>
+                </a>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🖼️ Visual Guide</h2>
+            <p>
+                Here is a comprehensive visual guide to Canvas Drawing APIs:
+            </p>
+
+            <div class="example-images">
+                <div class="example-item">
+                    <img src="../assets/canvas-drawing-apis-infographics.png"
+                        alt="Flutter Canvas Drawing APIs Complete Visual Guide">
+                    <p class="image-caption">Complete Visual Guide to Flutter's Canvas Drawing APIs</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">
+        <span>↑</span>
+    </button>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.nextElementSibling;
+            const code = codeBlock.textContent;
+
+            navigator.clipboard.writeText(code).then(() => {
+                button.classList.add('copied');
+                const originalText = button.querySelector('.copy-text').textContent;
+                button.querySelector('.copy-text').textContent = 'Copied!';
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.querySelector('.copy-text').textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        // Back to top button
+        const backToTopButton = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 Filled, Outlined, Gradient Filled and Multiple Shapes - Custom Painter Documentation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #2c3e50; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { background-color: #1a73e8; color: white; padding: 40px 0; margin-bottom: 40px; }
+        header h1 { font-size: 2em; font-weight: 600; text-align: center; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #1a73e8; text-decoration: none; font-size: 1em; padding: 10px 15px; background-color: white; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.2s; }
+        .back-link:hover { background-color: #e8f0fe; transform: translateX(-3px); }
+        .section { background-color: white; padding: 30px; margin-bottom: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h2 { font-size: 1.6em; font-weight: 600; color: #1a73e8; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #e8f0fe; }
+        h3 { font-size: 1.3em; font-weight: 600; color: #34495e; margin-top: 24px; margin-bottom: 12px; }
+        h3:first-of-type { margin-top: 0; }
+        p { margin-bottom: 15px; color: #495057; line-height: 1.8; }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; color: #495057; line-height: 1.7; }
+        strong { font-weight: 600; color: #2c3e50; }
+        code { background-color: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; font-size: 0.9em; color: #d63384; }
+        .code-block { background-color: #f4f4f4; padding: 20px; border-radius: 5px; overflow-x: auto; border-left: 4px solid #1a73e8; margin: 16px 0; }
+        .code-block code { color: #2c3e50; background: transparent; padding: 0; font-size: 0.95em; line-height: 1.6; }
+        .info-box { background-color: #e8f0fe; border-left: 4px solid #1a73e8; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        .technique-card { border: 1px solid #dee2e6; border-radius: 8px; padding: 18px 20px; margin-bottom: 16px; background-color: #fafbfc; }
+        .technique-card h3 { margin-top: 0; margin-bottom: 8px; }
+        .technique-card .detail-link { display: inline-block; color: #1a73e8; text-decoration: none; font-weight: 500; font-size: 0.95em; }
+        .technique-card .detail-link:hover { text-decoration: underline; }
+        .technique-card .detail-link::after { content: " →"; }
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; padding: 12px 20px; background-color: #1a73e8; color: #fff; border: none; border-radius: 30px; cursor: pointer; z-index: 1000; box-shadow: 0 4px 12px rgba(26,115,232,0.4); transition: all 0.3s ease; opacity: 0; transform: scale(0.8); pointer-events: none; font-weight: 600; }
+        .back-to-top.show { opacity: 1; transform: scale(1); pointer-events: auto; }
+        .back-to-top:hover { background-color: #1557b0; transform: translateY(-2px); }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>🎨 Filled, Outlined, Gradient Filled and Multiple Shapes</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>Overview</h2>
+            <p>
+                This page summarises how to draw shapes with different looks: <strong>filled</strong> (solid colour),
+                <strong>outlined</strong> (stroke only), <strong>gradient filled</strong> (shader), and
+                <strong>multiple shapes</strong> (several draws, different <code>Paint</code> objects, or combined
+                paths). Each technique uses the <code>Paint</code> object and the <code>Canvas</code> draw APIs
+                explained elsewhere; below we link to the relevant topics.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Filled shapes</h2>
+            <div class="technique-card">
+                <h3>Solid fill</h3>
+                <p>
+                    To draw a shape with a solid colour inside, set <code>Paint.color</code> to the desired
+                    colour and <code>Paint.style = PaintingStyle.fill</code>. Then use any canvas draw method
+                    (<code>drawRect</code>, <code>drawCircle</code>, <code>drawPath</code>, etc.). The interior
+                    of the shape is filled with that colour.
+                </p>
+                <div class="code-block">
+                    <code>
+final paint = Paint()<br>
+&nbsp;&nbsp;..color = Colors.blue<br>
+&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+canvas.drawRect(rect, paint);
+                    </code>
+                </div>
+                <a href="what-is-paint.html#color" class="detail-link">Paint <code>color</code></a>
+                <span style="margin: 0 8px;">·</span>
+                <a href="what-is-paint.html#style" class="detail-link">Paint <code>style</code> (fill/stroke)</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Outlined shapes</h2>
+            <div class="technique-card">
+                <h3>Stroke only</h3>
+                <p>
+                    To draw only the outline (border) of a shape, set <code>Paint.style = PaintingStyle.stroke</code>
+                    and <code>Paint.strokeWidth</code> to the line thickness. The same draw methods are used; only
+                    the outline is drawn, not the interior.
+                </p>
+                <div class="code-block">
+                    <code>
+final paint = Paint()<br>
+&nbsp;&nbsp;..color = Colors.blue<br>
+&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;..strokeWidth = 2.0;<br>
+canvas.drawRect(rect, paint);
+                    </code>
+                </div>
+                <a href="what-is-paint.html#style" class="detail-link">Paint <code>style</code></a>
+                <span style="margin: 0 8px;">·</span>
+                <a href="what-is-paint.html#strokeWidth" class="detail-link">Paint <code>strokeWidth</code></a>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Gradient filled shapes</h2>
+            <div class="technique-card">
+                <h3>Fill with a gradient</h3>
+                <p>
+                    Instead of a solid colour, set <code>Paint.shader</code> to a shader created from a
+                    <code>LinearGradient</code>, <code>RadialGradient</code>, or <code>SweepGradient</code> via
+                    <code>createShader(rect)</code>. The shape is then filled with that gradient. When
+                    <code>shader</code> is set, <code>color</code> is ignored.
+                </p>
+                <div class="code-block">
+                    <code>
+final paint = Paint()<br>
+&nbsp;&nbsp;..shader = LinearGradient(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;colors: [Colors.blue, Colors.purple],<br>
+&nbsp;&nbsp;).createShader(rect);<br>
+canvas.drawRect(rect, paint);
+                    </code>
+                </div>
+                <a href="what-is-paint.html#shader" class="detail-link">Paint <code>shader</code></a>
+                <span style="margin: 0 8px;">·</span>
+                <a href="gradient-types-shader-usage.html" class="detail-link">Gradient types & shader usage</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Multiple shapes</h2>
+            <p>
+                To draw several shapes in one <code>paint()</code> call:
+            </p>
+            <ul>
+                <li>
+                    <strong>Draw multiple shapes by calling draw methods multiple times.</strong>
+                    Use the same <code>Canvas</code> and call <code>drawRect</code>, <code>drawCircle</code>,
+                    <code>drawPath</code>, etc., as many times as you need. Each call draws one shape. See the
+                    <a href="what-is-canvas-and-size.html">Canvas and Size</a> page for the drawing API, and
+                    <a href="primitive-shapes.html">Primitive Shapes</a> / <a href="complex-shapes.html">Complex Shapes</a>
+                    for the full list of draw methods.
+                </li>
+                <li>
+                    <strong>Use different <code>Paint</code> objects for different styles.</strong>
+                    Create one <code>Paint</code> for filled blue, another for stroked red, another with a
+                    gradient, and pass the right one to each draw call. See
+                    <a href="what-is-paint.html">What is Paint?</a> for all Paint properties.
+                </li>
+                <li>
+                    <strong>Combine shapes using paths.</strong>
+                    Build one <code>Path</code> from multiple segments (lines, curves, arcs) and draw it once
+                    with <code>drawPath</code>. Useful for custom icons or a single outline made of many parts.
+                    See the <a href="what-is-path.html">Path</a> page and
+                    <a href="path-building-methods.html">Path Building Methods</a>.
+                </li>
+            </ul>
+            <div class="info-box">
+                <strong>📌 Quick links:</strong>
+                <a href="what-is-canvas-and-size.html">Canvas page</a> — drawing API and context.
+                <a href="what-is-path.html">Path page</a> — building and drawing paths.
+            </div>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
+    <script>
+        var b = document.getElementById('backToTop');
+        if (b) {
+            window.addEventListener('scroll', function () { b.classList.toggle('show', window.pageYOffset > 300); });
+            b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        }
+    </script>
+</body>
+
+</html>

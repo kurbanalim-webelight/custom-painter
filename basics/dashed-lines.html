@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>▬ Dashed Lines - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        h3:first-of-type {
+            margin-top: 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            color: #495057;
+            line-height: 1.7;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+            margin: 16px 0;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+            gap: 20px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        @media (max-width: 900px) {
+            .property-layout {
+                flex-direction: column;
+            }
+            .property-image {
+                margin-top: 15px;
+            }
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>▬ Dashed Lines</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>Overview</h2>
+            <p>
+                A <strong>dashed line</strong> is a path that is not drawn in one go: you draw a short segment (a
+                “dash”), leave a gap, draw the next dash, and so on. So the same path (straight line, curve,
+                rectangle outline, etc.) is split into many small pieces and only some of those pieces are drawn.
+                In Flutter you do this by walking along the path using <strong>PathMetric</strong> and drawing only
+                the segments that correspond to dashes; the gaps are simply the parts you skip.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Custom PathMetric iteration</h2>
+            <p>
+                A <strong>PathMetric</strong> describes one contour of a path: its total length and how to ask “what
+                point and direction do I have at distance <code>d</code> along this path?” You get
+                <code>PathMetric</code> objects by calling <code>path.computeMetrics()</code>, which returns an
+                iterable. For a single continuous path (e.g. one line or one closed shape), you usually take the
+                first (and often only) metric.
+            </p>
+            <p>
+                With one <code>PathMetric</code> you can:
+            </p>
+            <ul>
+                <li><strong><code>metric.length</code></strong> — Total length of that contour in logical pixels.</li>
+                <li><strong><code>metric.getTangentForOffset(distance)</code></strong> — Position and tangent
+                    (direction) at a given distance along the path. Useful if you need to place something at a
+                    specific point along the path.</li>
+                <li><strong><code>metric.extractPath(startDistance, endDistance)</code></strong> — Returns a new
+                    <code>Path</code> that is only the portion of the original path between <code>startDistance</code>
+                    and <code>endDistance</code>. This is what you use for dashed lines: you extract each “dash”
+                    segment and draw it; the parts between dashes are never extracted, so they become gaps.
+                </li>
+            </ul>
+            <p>
+                <strong>Custom iteration</strong> means you loop in steps along the path (e.g. by a “dash length”
+                plus “gap length”). At each step you compute the start and end distance for the next dash, call
+                <code>extractPath(start, end)</code>, and draw the returned path. You stop when the start of the
+                next dash would be beyond <code>metric.length</code>. That way you only draw the dash segments and
+                leave gaps in between.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Drawing segments with gaps</h2>
+            <p>
+                The idea is: along the path, you repeatedly <strong>draw a segment of length <code>dashLength</code>,
+                    then skip a length of <code>gapLength</code></strong>. So the pattern is: [dash] [gap] [dash] [gap]
+                … until you reach the end of the path. The “drawing” part is: for each dash, you take the path
+                from distance <code>start</code> to <code>start + dashLength</code> (clamped to the path end),
+                extract that as a small path with <code>extractPath(start, end)</code>, and call
+                <code>canvas.drawPath(extractedPath, paint)</code>. The “gap” is just advancing <code>start</code> by
+                <code>dashLength + gapLength</code> without drawing.
+            </p>
+            <ul>
+                <li><strong>Dash length</strong> — How long each visible segment is (in logical pixels along the path).
+                </li>
+                <li><strong>Gap length</strong> — How much space you leave between dashes. No drawing happens in the
+                    gap.</li>
+            </ul>
+            <p>
+                If the path is closed (e.g. a rectangle), the last dash might wrap from the end of the path back to
+                the beginning. <code>extractPath</code> handles that when the end distance is greater than the path
+                length, so you can still get a correct last dash. For a simple open path, you just stop when
+                <code>start >= metric.length</code>.
+            </p>
+            <div class="info-box">
+                <strong>💡 In short:</strong> Use <code>path.computeMetrics()</code> to get a <code>PathMetric</code>.
+                Loop: set <code>start = 0</code>, then repeatedly extract
+                <code>extractPath(start, start + dashLength)</code>,
+                draw it, then set <code>start += dashLength + gapLength</code>. Stop when
+                <code>start >= metric.length</code>.
+            </div>
+            <h3>Example</h3>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <code>
+final path = Path()..lineTo(200, 100);<br>
+final paint = Paint()..style = PaintingStyle.stroke..strokeWidth = 3..color = Colors.blue;<br>
+const dashLength = 12.0;<br>
+const gapLength = 8.0;<br>
+<br>
+for (final metric in path.computeMetrics()) {<br>
+&nbsp;&nbsp;var start = 0.0;<br>
+&nbsp;&nbsp;while (start &lt; metric.length) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final end = (start + dashLength).clamp(0.0, metric.length);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (end &gt; start) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;final segment = metric.extractPath(start, end);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawPath(segment, paint);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;start += dashLength + gapLength;<br>
+&nbsp;&nbsp;}<br>
+}
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/dashed_path_matric.png" alt="Dashed line drawn using PathMetric and extractPath">
+                    <p class="image-caption">Dashed line drawn by iterating with <code>computeMetrics()</code> and
+                        <code>extractPath(start, end)</code>. Each dash is a short segment of the path; gaps are
+                        the skipped portions.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
+    <script>
+        function copyCode(btn) {
+            var block = btn.parentElement, code = block.querySelector('code');
+            if (!code) return;
+            var t = code.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/&nbsp;/g, ' ');
+            var d = document.createElement('div'); d.innerHTML = t; t = (d.textContent || d.innerText || '').trim();
+            navigator.clipboard.writeText(t).then(function () {
+                btn.classList.add('copied'); var o = btn.textContent; btn.textContent = 'Copied!';
+                setTimeout(function () { btn.classList.remove('copied'); btn.textContent = o; }, 2000);
+            });
+        }
+        var b = document.getElementById('backToTop');
+        if (b) {
+            window.addEventListener('scroll', function () { b.classList.toggle('show', window.pageYOffset > 300); });
+            b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        }
+    </script>
+</body>
+
+</html>

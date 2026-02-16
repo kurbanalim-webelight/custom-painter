@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✂️ Clipping Types and Usage - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 28px;
+            margin-bottom: 12px;
+        }
+
+        h3:first-of-type {
+            margin-top: 0;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #5a6c7d;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            color: #495057;
+            line-height: 1.7;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+            margin: 16px 0;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .clip-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+            background-color: #fafbfc;
+        }
+
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+            gap: 20px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        @media (max-width: 900px) {
+            .property-layout {
+                flex-direction: column;
+            }
+
+            .property-image {
+                margin-top: 15px;
+            }
+        }
+
+        .clip-card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .example-images {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .example-item {
+            width: 100%;
+            text-align: center;
+        }
+
+        .example-item img {
+            max-width: 100%;
+            height: auto;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>✂️ Clipping Types and Usage</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>What is clipping?</h2>
+
+            <h3>What does “clip” even mean?</h3>
+            <p>
+                <strong>Clipping</strong> = <strong>“Only allow drawing inside this area.”</strong>
+            </p>
+            <p>
+                Anything you draw <strong>outside</strong> the clip:
+            </p>
+            <ul>
+                <li>❌ will <strong>not</strong> appear</li>
+                <li>✔️ is silently ignored</li>
+            </ul>
+            <p>
+                So you define a region (rectangle, rounded rect, or custom path), and only the pixels inside that
+                region are drawn. The rest of the canvas is unchanged for that region and nothing is drawn outside.
+                Think of it as a stencil or a cookie cutter.
+            </p>
+
+            <p>
+                Clipping is part of the canvas <strong>state</strong>. When you call <code>canvas.save()</code>,
+                the current clip is saved too. After drawing in a clipped area, you call
+                <code>canvas.restore()</code> to remove the clip and return to the previous state. So you can
+                safely clip, draw, then restore without affecting later drawing.
+            </p>
+
+            <h3>What you can clip</h3>
+            <p>You can clip:</p>
+            <ul>
+                <li><strong>Images</strong> — e.g. <code>drawImage</code></li>
+                <li><strong>Text</strong> — e.g. <code>drawParagraph</code></li>
+                <li><strong>Shapes</strong> — e.g. <code>drawCircle</code>, <code>drawRect</code>, <code>drawPath</code>
+                </li>
+            </ul>
+
+            <h3>What EXACTLY can be clipped?</h3>
+            <p>
+                👉 <strong>Everything drawn after the clip call.</strong> The clip does not care what you draw;
+                it only cares <em>when</em> you draw. Any draw call that happens after <code>clipRect</code>,
+                <code>clipRRect</code>, or <code>clipPath</code> is limited to the clip region.
+            </p>
+            <p>Examples of calls that are clipped when they run after a clip:</p>
+            <ul>
+                <li><code>drawImage</code></li>
+                <li><code>drawCircle</code></li>
+                <li><code>drawPath</code></li>
+                <li><code>drawParagraph</code></li>
+                <li><code>drawRect</code></li>
+            </ul>
+            <p>Example: clip to a circle, then draw an image — only the circular part of the image is visible.</p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                <code>
+canvas.save();<br>
+<br>
+canvas.clipPath(<br>
+&nbsp;&nbsp;Path()..addOval(Rect.fromCircle(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;center: Offset(100, 100),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;radius: 50,<br>
+&nbsp;&nbsp;)),<br>
+);<br>
+<br>
+canvas.drawImage(image, Offset.zero, Paint());<br>
+<br>
+canvas.restore();
+                </code>
+            </div>
+
+            <h3>Why use it?</h3>
+            <ul>
+                <li><strong>Contain content</strong> — Keep drawings inside a rectangle, rounded rect, or custom
+                    shape (e.g. a card, a circular avatar, a custom panel).</li>
+                <li><strong>Avoid overflow</strong> — Prevent shapes or gradients from spilling outside a defined
+                    area.</li>
+                <li><strong>Visual effects</strong> — Create circular/rounded thumbnails, custom-shaped
+                    viewports, or “reveal” effects by combining clip with animation.</li>
+                <li><strong>Performance</strong> — The engine can skip drawing pixels outside the clip region.</li>
+            </ul>
+            <div class="info-box">
+                <strong>💡 Tip:</strong> Always pair clipping with <code>save()</code> and <code>restore()</code>
+                so the clip only affects the block you intend. Otherwise the clip stays active for all later
+                drawing in <code>paint()</code>.
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Clipping types</h2>
+
+
+            <h3><code>clipRect</code> — Clip to rectangle</h3>
+            <p>
+                Clips the canvas to a rectangular region. Only the area inside the given <code>Rect</code> will
+                show subsequent drawing. Useful for rectangular panels, list items, or any box-shaped mask.
+            </p>
+            <h4>Example</h4>
+            <p>
+                The code below draws four grey-bordered rectangles and, inside each, a blue circle clipped to that
+                rect. The circle radius varies per row (smaller, then touching top/bottom, then larger, then
+                covering the whole rect) so you can see how <code>clipRect</code> cuts off anything outside the
+                box.
+            </p>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final paint1 = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.fill;<br>
+&nbsp;&nbsp;final borderPaint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.grey<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 2;<br>
+<br>
+&nbsp;&nbsp;const boxWidth = 200.0;<br>
+&nbsp;&nbsp;const boxHeight = 120.0;<br>
+&nbsp;&nbsp;const left = 20.0;<br>
+&nbsp;&nbsp;const gap = 20.0;<br>
+<br>
+&nbsp;&nbsp;final clipRects = &lt;Rect&gt;[];<br>
+&nbsp;&nbsp;for (var i = 0; i &lt; 4; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final top = left + i * (boxHeight + gap);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;clipRects.add(Rect.fromLTWH(left, top, boxWidth, boxHeight));<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;for (var i = 0; i &lt; clipRects.length; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final rect = clipRects[i];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawRect(rect, borderPaint);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.save();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.clipRect(rect);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final center = rect.center;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final radius = switch (i) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 =&gt; (rect.shortestSide / 2) - 12,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 =&gt; rect.shortestSide / 2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 =&gt; rect.height * 0.7,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ =&gt; sqrt(rect.width * rect.width + rect.height * rect.height) / 2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;};<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawCircle(center, radius, paint1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.restore();<br>
+&nbsp;&nbsp;}<br>
+}
+                            </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/clip_rect.png"
+                        alt="clipRect demo: four rectangles with blue circles clipped to each box">
+                    <p class="image-caption">Four clip rects: blue circles drawn inside each rect; only the part
+                        inside the grey border is visible. From top: circle fully inside; circle touching top/bottom
+                        (sides clipped); larger circle (all sides clipped); circle large enough to fill the rect.
+                    </p>
+                </div>
+            </div>
+
+            <h3><code>clipRRect</code> — Clip to rounded rectangle</h3>
+            <p>
+                Clips to a rounded rectangle (<code>RRect</code>). Same idea as <code>clipRect</code>, but
+                the visible region has rounded corners. Ideal for cards, buttons, or any UI that uses
+                rounded rectangles as masks.
+            </p>
+            <h4>Typical use</h4>
+            <p>
+                When the visible area should have rounded corners (e.g. a card with corner radius, or a
+                thumbnail with rounded corners). You pass an <code>RRect</code> (from
+                <code>RRect.fromRectAndRadius()</code>, <code>RRect.fromRectAndCorners()</code>, etc.).
+            </p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                <code>
+canvas.save();<br>
+final rrect = RRect.fromRectAndRadius(<br>
+&nbsp;&nbsp;Rect.fromLTWH(20, 20, 200, 120),<br>
+&nbsp;&nbsp;const Radius.circular(16),<br>
+);<br>
+canvas.clipRRect(rrect);<br>
+// Drawing only visible inside the rounded rect<br>
+canvas.drawPaint(paint);<br>
+canvas.restore();
+                    </code>
+            </div>
+
+            <h3><code>clipPath</code> — Clip to custom path</h3>
+            <p>
+                Clips to an arbitrary <code>Path</code>. You can use any shape you can build with Path (circle,
+                polygon, star, text outline, etc.). Maximum flexibility for custom-shaped masks.
+            </p>
+            <h4>Typical use</h4>
+            <p>
+                When you need a non-rectangular mask: circular avatar, hexagon, star, or a complex outline.
+                You build a <code>Path</code>, then call <code>canvas.clipPath(path)</code>. Optional
+                <code>ClipOp.intersect</code> (default) or <code>ClipOp.difference</code> control whether
+                you keep inside or outside the path.
+            </p>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                <code>
+canvas.save();<br>
+final path = Path()<br>
+&nbsp;&nbsp;..addOval(Rect.fromCircle(center: Offset(120, 120), radius: 80));<br>
+canvas.clipPath(path);<br>
+// Only the circular region shows drawing<br>
+canvas.drawRect(Rect.fromLTWH(0, 0, 240, 240), paint);<br>
+canvas.restore();
+                    </code>
+            </div>
+
+        </section>
+
+        <section class="section">
+            <h2>Quick comparison</h2>
+            <ul>
+                <li><strong><code>clipRect</code></strong> — Rectangular mask. Simple and fast.</li>
+                <li><strong><code>clipRRect</code></strong> — Rounded-rectangle mask. Same as rect but with rounded
+                    corners.</li>
+                <li><strong><code>clipPath</code></strong> — Any shape defined by a <code>Path</code>. Use when you need
+                    circles, polygons, or custom shapes.</li>
+            </ul>
+            <p>
+                For all three, use <code>save()</code> before clipping and <code>restore()</code> after so the
+                clip does not leak into the rest of your <code>paint()</code> method.
+            </p>
+        </section>
+        <section class="section">
+            <h2>🖼️ Visual Guide</h2>
+            <p>
+                Here is a comprehensive visual guide to Clipping Types and Usage:
+            </p>
+
+            <div class="example-images">
+                <div class="example-item">
+                    <img src="../assets/clipping_infographics.png"
+                        alt="Flutter Canvas Drawing APIs Complete Visual Guide">
+                    <p class="image-caption">Complete Visual Guide to Flutter's Clipping Types and Usage</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
+
+    <script>
+        function copyCode(button) {
+            const block = button.parentElement;
+            const codeEl = block.querySelector('code');
+            if (!codeEl) return;
+            let text = codeEl.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/&nbsp;/g, ' ');
+            const div = document.createElement('div');
+            div.innerHTML = text;
+            text = (div.textContent || div.innerText || '').trim();
+            navigator.clipboard.writeText(text).then(() => {
+                button.classList.add('copied');
+                const orig = button.textContent;
+                button.textContent = 'Copied!';
+                setTimeout(() => { button.classList.remove('copied'); button.textContent = orig; }, 2000);
+            });
+        }
+        const backToTopButton = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTopButton.classList.toggle('show', window.pageYOffset > 300);
+        });
+        backToTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
+</body>
+
+</html>

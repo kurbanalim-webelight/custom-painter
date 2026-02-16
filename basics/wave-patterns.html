@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>〰️ Wave Patterns - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        h3:first-of-type {
+            margin-top: 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            color: #495057;
+            line-height: 1.7;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .helper-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            background-color: #fafbfc;
+        }
+
+        .helper-card h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .helper-card .detail-link {
+            display: inline-block;
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+
+        .helper-card .detail-link:hover {
+            text-decoration: underline;
+        }
+
+        .helper-card .detail-link::after {
+            content: " →";
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>〰️ Wave Patterns</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>Overview</h2>
+            <p>
+                Wave patterns are smooth, repeating up‑and‑down curves — useful for water, sound, progress, or
+                decorative borders. In CustomPainter you can draw them in two main ways: with <strong>sine/cosine
+                    maths</strong> (plot points and join with lines) or with <strong>quadratic Bezier curves</strong>
+                (<code>quadraticBezierTo</code>) for smooth wave segments.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Sine and cosine curves</h2>
+            <p>
+                A <strong>sine wave</strong> is the classic smooth wave: it goes up and down in a regular pattern.
+                Mathematically, for a point at horizontal position <code>x</code>, the vertical position is
+                <code>y = centerY + amplitude * sin(angle)</code>, where <code>angle</code> increases with
+                <code>x</code> so that one full wave (360°) fits in a chosen width (the <strong>wavelength</strong>).
+            </p>
+            <p>
+                In code we usually do something like: loop over <code>x</code> from left to right in small steps;
+                for each <code>x</code>, compute <code>angle = 2 * pi * x / wavelength</code> (so one full wave
+                fits in <code>wavelength</code> pixels), then <code>y = centerY + amplitude * sin(angle)</code>.
+                Add each <code>(x, y)</code> to a <code>Path</code> with <code>lineTo</code> (and
+                <code>moveTo</code> for the first point). When you draw that path, you get a smooth sine wave.
+            </p>
+            <ul>
+                <li><strong>Amplitude</strong> — how far the wave goes up and down from the centre line (half the total
+                    height of the wave).</li>
+                <li><strong>Wavelength</strong> — the horizontal distance for one complete cycle (one “hump” and one
+                    “dip”).</li>
+                <li><strong>Cosine</strong> — same idea as sine but shifted by 90°; <code>cos(angle)</code> instead of
+                    <code>sin(angle)</code>. Use it when you want the wave to start at a peak or trough instead of at
+                    the centre.</li>
+            </ul>
+            <div class="info-box">
+                <strong>💡 In short:</strong> For each <code>x</code>, set <code>angle = 2 * pi * x / wavelength</code>,
+                then <code>y = centerY + amplitude * sin(angle)</code>. Connect the points with a Path to get a sine
+                wave. Use <code>dart:math</code> for <code>sin</code> and <code>cos</code> (angles in radians).
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Using quadraticBezierTo for smooth waves</h2>
+            <div class="helper-card">
+                <h3><code>quadraticBezierTo</code> — Smooth wave segments</h3>
+                <p>
+                    Instead of many small line segments, you can build a wave by chaining <strong>quadratic Bezier
+                        curves</strong> with <code>Path.quadraticBezierTo(controlX, controlY, endX, endY)</code>. Each
+                    curve has one control point that “pulls” the line into a smooth arc. By placing control points
+                    above and below in turn, you get a smooth, wavy path — good for flowing borders, water effects,
+                    or custom wave shapes.
+                </p>
+                <a href="what-is-path.html#quadraticBezierTo" class="detail-link">Full explanation with code and
+                    screenshot</a>
+            </div>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
+    <script>
+        var b = document.getElementById('backToTop');
+        if (b) {
+            window.addEventListener('scroll', function () { b.classList.toggle('show', window.pageYOffset > 300); });
+            b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        }
+    </script>
+</body>
+
+</html>

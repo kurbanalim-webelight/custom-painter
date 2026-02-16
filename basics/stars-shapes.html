@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⭐ Stars - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        h3:first-of-type {
+            margin-top: 0;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #5a6c7d;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            color: #495057;
+            line-height: 1.7;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+            margin: 16px 0;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+            gap: 20px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        @media (max-width: 900px) {
+            .property-layout {
+                flex-direction: column;
+            }
+
+            .property-image {
+                margin-top: 15px;
+            }
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>⭐ Stars</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>How a star is different from a polygon</h2>
+            <p>
+                A <strong>star</strong> has pointed tips (like the tips of a star) and inward dips between them. So we
+                need two kinds of points: <strong>outer points</strong> (the tips, far from the centre) and
+                <strong>inner points</strong> (the dips, closer to the centre). We place them one after the other in an
+                alternating way: outer, inner, outer, inner, … That’s what gives the star shape.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Outer and inner radius</h2>
+            <p>
+                We use two circles with the same centre but different sizes:
+            </p>
+            <ul>
+                <li><strong>Outer radius</strong> — distance from centre to the <strong>tips</strong> of the star. All
+                    tip points lie on this circle.</li>
+                <li><strong>Inner radius</strong> — distance from centre to the <strong>dips</strong> (the inward
+                    corners). All dip points lie on this smaller circle.</li>
+            </ul>
+            <p>
+                So we have two radii: <code>outerRadius</code> and <code>innerRadius</code>. The more the inner radius
+                is smaller than the outer, the “sharper” and more star-like the shape. If inner and outer were equal,
+                we would get a normal polygon. So the difference between these two radii is what creates the star look.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Alternating points</h2>
+            <p>
+                We have a fixed number of <strong>points</strong> (e.g. 5 for a 5-pointed star). For each point we need
+                an angle, same as in a polygon: <strong>angle step = 360° ÷ number of points</strong> (in radians:
+                <code>2π / points</code>). So point 0 at angle 0, point 1 at angleStep, point 2 at 2*angleStep, etc.
+            </p>
+            <p>
+                The only twist: we <strong>alternate the radius</strong>. For point 0 we use <strong>outer</strong>
+                radius, for point 1 we use <strong>inner</strong> radius, for point 2 we use <strong>outer</strong>
+                again, then inner, and so on. So:
+            </p>
+            <ul>
+                <li>Even index (0, 2, 4, …) → use <code>outerRadius</code> → tip of the star</li>
+                <li>Odd index (1, 3, 5, …) → use <code>innerRadius</code> → dip between tips</li>
+            </ul>
+            <p>
+                Each point is still: <code>Offset(centerX + radius * cos(angle), centerY + radius * sin(angle))</code>,
+                but <code>radius</code> is either <code>outerRadius</code> or <code>innerRadius</code> depending on
+                whether the index is even or odd. We add these points to the path in order and close it — that’s our
+                star.
+            </p>
+            <div class="info-box">
+                <strong>💡 In short:</strong> Same angle step as a polygon. At each angle, use outer radius for
+                even-index points (tips) and inner radius for odd-index points (dips). Join the points in order and
+                close the path.
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Example code</h2>
+            <p>
+                Below, <code>starPath</code> is defined inside <code>paint()</code> and used to draw a 5-pointed star
+                at the centre of the canvas. The GIF shows the result.
+            </p>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final paint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue;<br>
+<br>
+&nbsp;&nbsp;Path starPath({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;required Offset center,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;required int points,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;required double outerRadius,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;required double innerRadius,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;double startAngle = -math.pi / 2, // top tip first<br>
+&nbsp;&nbsp;}) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final path = Path();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final angleStep = math.pi / points; // half turn / points<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for (var i = 0; i &lt; 2 * points; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;final angle = startAngle + i * angleStep;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;final radius = i.isEven ? outerRadius : innerRadius;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;final x = center.dx + radius * math.cos(angle);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;final y = center.dy + radius * math.sin(angle);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (i == 0) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path.moveTo(x, y);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} else {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path.lineTo(x, y);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path.close();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return path;<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;// Usage: 5-pointed star<br>
+&nbsp;&nbsp;canvas.drawPath(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;starPath(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;center: Offset(size.width / 2, size.height / 2),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;points: 5,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outerRadius: 60,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;innerRadius: 25,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paint,<br>
+&nbsp;&nbsp;);<br>
+}
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/stars.gif" alt="Star shape drawn with starPath (5-pointed star)">
+                    <p class="image-caption">5-pointed star drawn with <code>starPath</code> (outer radius 60, inner
+                        radius 25).</p>
+                </div>
+            </div>
+            <p>
+                We go through <code>2 * points</code> positions (each tip and each dip) and use
+                <code>i.isEven ? outerRadius : innerRadius</code> so tips and dips alternate. Change
+                <code>points</code>, <code>outerRadius</code> and <code>innerRadius</code> for different star shapes.
+            </p>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
+    <script>
+        function copyCode(btn) {
+            var block = btn.parentElement, code = block.querySelector('code');
+            if (!code) return;
+            var t = code.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/&nbsp;/g, ' ');
+            var d = document.createElement('div'); d.innerHTML = t; t = (d.textContent || d.innerText || '').trim();
+            navigator.clipboard.writeText(t).then(function () {
+                btn.classList.add('copied'); var o = btn.textContent; btn.textContent = 'Copied!';
+                setTimeout(function () { btn.classList.remove('copied'); btn.textContent = o; }, 2000);
+            });
+        }
+        var b = document.getElementById('backToTop');
+        window.addEventListener('scroll', function () { b.classList.toggle('show', window.pageYOffset > 300); });
+        b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    </script>
+</body>
+
+</html>

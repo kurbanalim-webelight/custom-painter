@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📏 Distance & Angles - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        h3:first-of-type {
+            margin-top: 0;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #5a6c7d;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            color: #495057;
+            line-height: 1.7;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+            margin: 16px 0;
+            min-height: 120px;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .formula-block {
+            background-color: #f8f9fa;
+            padding: 14px 18px;
+            border-left: 4px solid #1a73e8;
+            margin: 12px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            color: #2c3e50;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+            gap: 24px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .screenshot-placeholder {
+            min-height: 280px;
+            background-color: #e9ecef;
+            border: 2px dashed #adb5bd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 1em;
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .example-images {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .example-item {
+            width: 100%;
+            text-align: center;
+        }
+
+        .example-item img {
+            max-width: 100%;
+            height: auto;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .example-item .image-caption {
+            margin-top: 10px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 900px) {
+            .property-layout {
+                flex-direction: column;
+            }
+
+            .property-image {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>📏 Distance & Angles</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>Explanation</h2>
+            <p>
+                In CustomPainter you often need the <strong>distance</strong> between two points (e.g. to scale or clamp
+                sizes) and the <strong>angle</strong> from one point to another (e.g. to orient a shape or compute
+                direction). Both come from the same idea: treat the segment between two points as a vector.
+            </p>
+            <p>
+                The <strong>distance formula</strong> gives the length of that segment. The <strong>atan2</strong>
+                function gives the angle (in radians) from the positive x-axis to the segment, which is exactly what you
+                need for direction, rotation, or placing items along a line. In Flutter, <code>Offset</code> provides
+                <code>Offset.zero.directionTo(point)</code> and distance helpers; for raw math you use the distance
+                formula and <code>dart:math</code>’s <code>atan2</code>.
+            </p>
+            <p>
+                <strong>Use cases:</strong> hit testing (distance to a point), pointing shapes toward a target (angle),
+                dashed lines (distance along path), and any layout that depends on “how far” or “which direction.”
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Formulas</h2>
+            <h3>Distance formula</h3>
+            <p>Distance between two points <code>(x₁, y₁)</code> and <code>(x₂, y₂)</code>:</p>
+            <div class="formula-block">distance = √((x₂ − x₁)² + (y₂ − y₁)²)</div>
+            <p>In Dart you can use <code>math.sqrt(dx*dx + dy*dy)</code> where <code>dx = p2.dx - p1.dx</code>,
+                <code>dy = p2.dy - p1.dy</code>, or use <code>(p2 - p1).distance</code> with <code>Offset</code>.
+            </p>
+
+            <h3>atan2 angle formula</h3>
+            <p>Angle (in radians) from the positive x-axis to the vector <code>(dx, dy)</code>:</p>
+            <div class="formula-block">angle = atan2(dy, dx)</div>
+            <p>Result is in the range (−π, π]. In Flutter, <code>Offset</code> has a <code>direction</code> getter that
+                returns this angle. Use it for rotation, direction to a target, or converting back to unit vector with
+                cos/sin.</p>
+        </section>
+
+        <section class="section">
+            <h2>Visual Demo</h2>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <code>
+class DistanceAnglesDemoScreen extends StatefulWidget {<br>
+&nbsp;&nbsp;const DistanceAnglesDemoScreen({super.key});<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;State&lt;DistanceAnglesDemoScreen&gt; createState() =&gt; _DistanceAnglesDemoScreenState();<br>
+}<br>
+<br>
+class _DistanceAnglesDemoScreenState extends State&lt;DistanceAnglesDemoScreen&gt; {<br>
+&nbsp;&nbsp;late Offset _p1;<br>
+&nbsp;&nbsp;late Offset _p2;<br>
+&nbsp;&nbsp;Offset? _dragging;<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;void initState() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;super.initState();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;_p1 = const Offset(80, 200);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;_p2 = const Offset(280, 320);<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;void _onPanStart(DragStartDetails d, Size size) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final pos = d.localPosition;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;const hitRadius = 24.0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final d1 = sqrt((pos.dx - _p1.dx) * (pos.dx - _p1.dx) + (pos.dy - _p1.dy) * (pos.dy - _p1.dy));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final d2 = sqrt((pos.dx - _p2.dx) * (pos.dx - _p2.dx) + (pos.dy - _p2.dy) * (pos.dy - _p2.dy));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (d1 &lt; hitRadius) { _dragging = _p1; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;else if (d2 &lt; hitRadius) { _dragging = _p2; }<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;void _onPanUpdate(DragUpdateDetails d) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (_dragging == null) return;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;setState(() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (_dragging == _p1) { _p1 = Offset(_p1.dx + d.delta.dx, _p1.dy + d.delta.dy); }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else { _p2 = Offset(_p2.dx + d.delta.dx, _p2.dy + d.delta.dy); }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;});<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;void _onPanEnd(DragEndDetails _) { setState(() =&gt; _dragging = null); }<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;Widget build(BuildContext context) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return Scaffold(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;appBar: AppBar(title: const Text('Distance &amp; Angles Demo'), centerTitle: true),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;body: LayoutBuilder(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;builder: (context, constraints) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return GestureDetector(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onPanStart: (d) =&gt; _onPanStart(d, constraints.biggest),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onPanUpdate: _onPanUpdate,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onPanEnd: _onPanEnd,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;child: CustomPaint(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;painter: DistanceAnglesDemoPainter(p1: _p1, p2: _p2),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size: constraints.biggest,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;}<br>
+}<br>
+<br>
+class DistanceAnglesDemoPainter extends CustomPainter {<br>
+&nbsp;&nbsp;DistanceAnglesDemoPainter({required this.p1, required this.p2});<br>
+&nbsp;&nbsp;final Offset p1;<br>
+&nbsp;&nbsp;final Offset p2;<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// ---- Line connecting the two points ----<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final linePaint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawLine(p1, p2, linePaint);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// ---- Distance: sqrt((x2-x1)² + (y2-y1)²) ----<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final dx = p2.dx - p1.dx;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final dy = p2.dy - p1.dy;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final distance = sqrt(dx * dx + dy * dy);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// ---- Angle (radians): atan2(y2-y1, x2-x1) — then convert to degrees ----<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final angleRad = atan2(dy, dx);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final angleDeg = angleRad * 180 / 3.14159265359;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// ---- Draw the two points ----<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final pointPaint = Paint()..color = Colors.orange..style = PaintingStyle.fill;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawCircle(p1, 16, pointPaint);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawCircle(p2, 16, pointPaint);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final strokePaint = Paint()..color = Colors.deepOrange..style = PaintingStyle.stroke..strokeWidth = 2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawCircle(p1, 16, strokePaint);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;canvas.drawCircle(p2, 16, strokePaint);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// ---- Display distance and angle on screen ----<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final textStyle = TextStyle(color: Colors.grey[800], fontSize: 18, fontWeight: FontWeight.w600);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;final paragraph = TextPainter(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text: TextSpan(style: textStyle, children: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const TextSpan(text: 'Distance = '),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TextSpan(text: distance.toStringAsFixed(1), style: TextStyle(color: Colors.blue[700])),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const TextSpan(text: '\nAngle = '),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TextSpan(text: '${angleDeg.toStringAsFixed(1)}°', style: TextStyle(color: Colors.blue[700])),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const TextSpan(text: ' (atan2(Δy, Δx))'),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;textDirection: TextDirection.ltr,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;)..layout(maxWidth: size.width - 32);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paragraph.paint(canvas, const Offset(16, 24));<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;@override<br>
+&nbsp;&nbsp;bool shouldRepaint(covariant DistanceAnglesDemoPainter oldDelegate) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return oldDelegate.p1 != p1 || oldDelegate.p2 != p2;<br>
+&nbsp;&nbsp;}<br>
+}<br>
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/distance-and-angle.gif"
+                        alt="Distance &amp; Angles demo: two draggable points with live distance and atan2 angle">
+                    <p class="image-caption">Distance &amp; Angles demo: drag the orange points; the blue line connects
+                        them and the on-screen values show <code>distance</code> (sqrt formula) and <code>angle</code>
+                        (atan2(Δy, Δx)) in degrees.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🖼️ Visual Guide</h2>
+            <p>
+                Here is a comprehensive visual guide to the Path class:
+            </p>
+
+            <div class="example-images">
+                <div class="example-item">
+                    <img src="../assets/distance-and-angles-infographics.png"
+                        alt="Flutter Path Class Complete Visual Guide">
+                    <p class="image-caption">Complete Visual Guide to Flutter's Path Class</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
+    <script>
+        var b = document.getElementById('backToTop');
+        if (b) { window.addEventListener('scroll', function () { b.classList.toggle('show', window.pageYOffset > 300); }); b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); }); }
+    </script>
+</body>
+
+</html>

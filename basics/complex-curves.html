@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>〰️ Complex Curves - Custom Painter Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            transform: translateX(-3px);
+        }
+
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        h3:first-of-type {
+            margin-top: 0;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #5a6c7d;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            color: #495057;
+            line-height: 1.7;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #1a73e8;
+            position: relative;
+            margin: 16px 0;
+        }
+
+        .code-block code {
+            color: #2c3e50;
+            background: transparent;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .property-layout {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+            gap: 20px;
+        }
+
+        .property-code {
+            flex: 1.5;
+            min-width: 0;
+        }
+
+        .property-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .property-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            color: #6c757d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        @media (max-width: 900px) {
+            .property-layout {
+                flex-direction: column;
+            }
+
+            .property-image {
+                margin-top: 15px;
+            }
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #1557b0;
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .info-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .helper-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            background-color: #fafbfc;
+        }
+
+        .helper-card h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .helper-card .detail-link {
+            display: inline-block;
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+
+        .helper-card .detail-link:hover {
+            text-decoration: underline;
+        }
+
+        .helper-card .detail-link::after {
+            content: " →";
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            font-weight: 600;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>〰️ Complex Curves</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Topics</a>
+
+        <section class="section">
+            <h2>Overview</h2>
+            <p>
+                <strong>Complex curves</strong> are paths built from more than one kind of segment: lines, quadratic
+                Bezier curves, cubic Bezier curves, and arcs. Flutter’s <code>Path</code> lets you mix
+                <code>lineTo</code>, <code>quadraticBezierTo</code>, <code>cubicTo</code>, <code>arcTo</code>,
+                <code>arcToPoint</code>, and their relative variants in a single path. You use Bezier methods for
+                smooth, controllable curves; combining several curve types in one path gives you complex shapes (e.g.
+                custom icons, waves, or organic outlines).
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Bezier curves for smooth shapes</h2>
+            <p>
+                Bezier curves are smooth curves defined by control points. <strong>Quadratic</strong> Bezier uses one
+                control point; <strong>cubic</strong> uses two. They are the main way to draw smooth, curved shapes
+                that are not simple arcs. Two core methods:
+            </p>
+            <div class="helper-card">
+                <h3><code>quadraticBezierTo</code> — Absolute quadratic curve</h3>
+                <p>
+                    Draws a quadratic Bezier curve from the current point to an end point, with one control point.
+                    All coordinates are in absolute (canvas) space. Ideal when you know the exact positions of
+                    control and end points.
+                </p>
+                <a href="what-is-path.html#quadraticBezierTo" class="detail-link">Full explanation with code and
+                    screenshot</a>
+            </div>
+            <div class="helper-card">
+                <h3><code>relativeQuadraticBezierTo</code> — Relative quadratic curve</h3>
+                <p>
+                    Same as <code>quadraticBezierTo</code> but the control point and end point are given
+                    <strong>relative to the current point</strong>. Handy for repeated patterns (e.g. waves or
+                    scallops) where each segment is offset from the previous one by fixed deltas.
+                </p>
+                <a href="path-building-methods.html#relativeQuadraticBezierTo" class="detail-link">Full explanation with
+                    code and screenshot</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Combining multiple curve types</h2>
+            <p>
+                A single <code>Path</code> can mix straight lines, quadratic curves, cubic curves, and arcs. You
+                call <code>moveTo</code> once to start, then chain <code>lineTo</code>, <code>quadraticBezierTo</code>,
+                <code>cubicTo</code>, <code>arcTo</code>, <code>arcToPoint</code>, etc. Each call continues from the
+                current point. The result is one path that can be stroked or filled in one go — useful for custom
+                shapes that have both straight and curved sections.
+            </p>
+            <h4>Example: path with line, quadratic curve, and cubic curve</h4>
+            <p>
+                Below, the path starts with a line, then a quadratic Bezier (one control point), then a cubic
+                Bezier (two control points). All in one path, drawn with a single <code>drawPath</code>.
+            </p>
+            <div class="property-layout">
+                <div class="property-code">
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <code>
+@override<br>
+void paint(Canvas canvas, Size size) {<br>
+&nbsp;&nbsp;final paint = Paint()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..style = PaintingStyle.stroke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..strokeWidth = 3<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..color = Colors.blue;<br>
+<br>
+&nbsp;&nbsp;final w = size.width;<br>
+&nbsp;&nbsp;final h = size.height;<br>
+<br>
+&nbsp;&nbsp;// Combine: line → quadratic → cubic<br>
+&nbsp;&nbsp;final path = Path()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..moveTo(40, h * 0.5)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..lineTo(w * 0.25, h * 0.5)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..quadraticBezierTo(w * 0.4, h * 0.2, w * 0.5, h * 0.5)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;..cubicTo(w * 0.6, h * 0.2, w * 0.75, h * 0.8, w - 40, h * 0.5);<br>
+<br>
+&nbsp;&nbsp;canvas.drawPath(path, paint);<br>
+}
+                        </code>
+                    </div>
+                </div>
+                <div class="property-image">
+                    <img src="../assets/curves-multiple-method.png"
+                        alt="Curves using multiple path methods: line, quadratic, cubic">
+                    <p class="image-caption">One path built with <code>lineTo</code>, <code>quadraticBezierTo</code>,
+                        and
+                        <code>cubicTo</code>. The blue curve shows the straight segment, then the quadratic hump, then
+                        the
+                        cubic wave.
+                    </p>
+                </div>
+            </div>
+            <p>
+                You can add <code>arcTo</code>, <code>arcToPoint</code>, or <code>relativeQuadraticBezierTo</code> in
+                the same way — each call continues from the last point. Order and choice of method define the
+                shape.
+            </p>
+        </section>
+    </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
+    <script>
+        function copyCode(btn) {
+            var block = btn.parentElement, code = block.querySelector('code');
+            if (!code) return;
+            var t = code.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/&nbsp;/g, ' ');
+            var d = document.createElement('div'); d.innerHTML = t; t = (d.textContent || d.innerText || '').trim();
+            navigator.clipboard.writeText(t).then(function () {
+                btn.classList.add('copied'); var o = btn.textContent; btn.textContent = 'Copied!';
+                setTimeout(function () { btn.classList.remove('copied'); btn.textContent = o; }, 2000);
+            });
+        }
+        var b = document.getElementById('backToTop');
+        if (b) {
+            window.addEventListener('scroll', function () { b.classList.toggle('show', window.pageYOffset > 300); });
+            b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        }
+    </script>
+</body>
+
+</html>
